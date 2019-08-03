@@ -2,27 +2,44 @@ package com.thud.myecormerce.Fragments;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.thud.myecormerce.Adapter.CategoryAdapter;
+import com.thud.myecormerce.Adapter.SliderAdapter;
 import com.thud.myecormerce.Models.CategoryModel;
+import com.thud.myecormerce.Models.SliderModel;
 import com.thud.myecormerce.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment {
 
+    //RecyclerView
     private RecyclerView recycler_Category;
     private CategoryAdapter categoryAdapter;
+
+    //Banner Slider
+    private ViewPager bannerviewpager;
+    private List<SliderModel> sliderModelList;
+    private int currentPage;
+    private Timer timer;
+    final private long DELAY_TIME = 3000;
+    final private long PERIOD_TIME = 3000;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -54,7 +71,96 @@ public class HomeFragment extends Fragment {
         recycler_Category.setAdapter(categoryAdapter);
         categoryAdapter.notifyDataSetChanged();
 
+        //Banner Slider
+        bannerviewpager = view.findViewById(R.id.banner_viewpager_main);
+
+        sliderModelList = new ArrayList<SliderModel>();
+
+        sliderModelList.add(new SliderModel(R.drawable.banner4));
+        sliderModelList.add(new SliderModel(R.drawable.banner5));
+        sliderModelList.add(new SliderModel(R.drawable.banner1));
+        sliderModelList.add(new SliderModel(R.drawable.banner2));
+        sliderModelList.add(new SliderModel(R.drawable.banner3));
+        sliderModelList.add(new SliderModel(R.drawable.banner4));
+        sliderModelList.add(new SliderModel(R.drawable.banner5));
+        sliderModelList.add(new SliderModel(R.drawable.banner1));
+        sliderModelList.add(new SliderModel(R.drawable.banner2));
+
+        SliderAdapter sliderAdapter = new SliderAdapter(sliderModelList);
+        bannerviewpager.setAdapter(sliderAdapter);
+        bannerviewpager.setClipToPadding(false);
+        bannerviewpager.setPageMargin(20);
+        ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                currentPage = i;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+                if (i == ViewPager.SCROLL_STATE_IDLE){
+                    LoopPagerBanner();
+                }
+            }
+        };
+
+        bannerviewpager.addOnPageChangeListener(onPageChangeListener);
+
+        startBannerSlideShow();
+
+        bannerviewpager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                LoopPagerBanner();
+                stopBannerSlideShow();
+                if(event.getAction() == MotionEvent.ACTION_UP){
+                    startBannerSlideShow();
+                }
+                return false;
+            }
+        });
+        ////////////////////////BANNER SLIDER
+
+
         return view;
+    }
+    private  void LoopPagerBanner(){
+        if (currentPage == sliderModelList.size() -2 ){
+            currentPage = 2;
+            bannerviewpager.setCurrentItem(currentPage, false);
+        }
+        if (currentPage == 1 ){
+            currentPage = sliderModelList.size() - 3;
+            bannerviewpager.setCurrentItem(currentPage, false);
+        }
+    }
+
+    private void startBannerSlideShow(){
+        final Handler handler = new Handler();
+        final Runnable update = new Runnable() {
+            @Override
+            public void run() {
+                if (currentPage > sliderModelList.size()){
+                    currentPage = 1;
+                }
+                bannerviewpager.setCurrentItem(currentPage++, true);
+            }
+        };
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(update);
+            }
+        },DELAY_TIME,PERIOD_TIME);
+    }
+    private void stopBannerSlideShow() {
+        timer.cancel();
     }
 
 }
