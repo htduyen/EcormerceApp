@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="Trang chủ" />
+        <item
+            android:id="@+id/nav_my_order"
+            android:icon="@drawable/oder"
+            android:title="Đơn Mua" />
+        <item
+            android:id="@+id/nav_my_reward"
+            android:icon="@drawable/reward"
+            android:title="Phần Thưởng" />
+        <item
+            android:id="@+id/nav_my_cart"
+            android:icon="@drawable/shopping_cart_green"
+            android:title="Giỏ Hàng" />
+        <item
+            android:id="@+id/nav_my_wishlist"
+            android:icon="@drawable/heart_orange"
+            android:title="Đã thích" />
+        <item
+            android:id="@+id/nav_my_account"
+            android:icon="@drawable/user"
+            android:title="Hồ sơ" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Seeting" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/logout"
+                android:title="Sign Out" />
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/design_default_color_primary"
+    tools:context=".Fragments.SignInFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/icon_lose_sigin"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="20px"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/button_close"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/img_logo_signin"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_below="@+id/icon_lose_sigin"
+            android:src="@drawable/logo"
+            app:civ_border_width="2dp"
+            android:layout_centerHorizontal="true"
+            app:civ_border_color="#fffefe"/>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_username_signin"
+            android:layout_below="@+id/img_logo_signin">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_email_signin"
+                android:hint="Nhập email đăng nhập"
+                android:textColorHint="@android:color/white"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:textColor="@android:color/white"
+                android:padding="10dp"
+                android:inputType="textEmailAddress"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="20dp"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_password_password"
+            android:layout_below="@+id/layout_username_signin"
+            app:passwordToggleEnabled="true"
+            android:layout_marginTop="20dp">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edt_password_signin"
+                android:hint="Nhập mật khẩu"
+                android:textColorHint="@android:color/white"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:textColor="@android:color/white"
+                android:padding="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="20dp"
+                android:inputType="textPassword"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ckb_remember_me"
+            android:layout_below="@+id/layout_password_password"
+            android:textColor="@color/colorWhite"
+            android:layout_marginLeft="30dp"
+            android:text="Remember me"
+            android:buttonTint="@color/colorWhite"
+            android:layout_marginTop="5dp"
+
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layout_both_fogot_signup"
+            android:layout_below="@id/ckb_remember_me">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_fogot_pass_signin"
+                android:text="Fogot Password"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="10dp"
+                android:textStyle="italic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_signup_signin"
+                android:text="Don't have account! Sign up?"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="60dp"
+                android:layout_marginTop="10dp"
+                android:textStyle="italic"/>
+        </LinearLayout>
+        <ProgressBar
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/progress_signin"
+            android:layout_below="@id/layout_both_fogot_signup"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible"
+            android:layout_margin="10dp"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_signin_signin"
+            android:layout_below="@+id/progress_signin"
+            android:padding="10dp"
+            android:enabled="false"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Sign In"
+            android:textAllCaps="false"
+            />
+
+    </RelativeLayout>
+
+</FrameLayout>

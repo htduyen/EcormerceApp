@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "351535192680",
+    "firebase_url": "https://ecormerceapp.firebaseio.com",
+    "project_id": "ecormerceapp",
+    "storage_bucket": "ecormerceapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351535192680:android:380abdcfb9c90260",
+        "android_client_info": {
+          "package_name": "com.thud.myecormerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351535192680-3onc2f97g13oh3loehrjlgs60v508nru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thud.myecormerce",
+            "certificate_hash": "df43f075c0b26487b57c18fbd82a2c7678737099"
+          }
+        },
+        {
+          "client_id": "351535192680-tn774s8f9clg5hpajis2jm8pr2jgdn2q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX5dlMPnEZrFWRtwXl1WdGpEWbv8gq8SM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351535192680-tn774s8f9clg5hpajis2jm8pr2jgdn2q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
