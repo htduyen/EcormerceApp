@@ -1,6 +1,9 @@
 package com.thud.myecormerce.Adapter;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +29,8 @@ public class SliderAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.slider_main, container, false);
-
+        ConstraintLayout bannerContainner = view.findViewById(R.id.banner_container);
+        bannerContainner.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(sliderModelList.get(position).getBackground())));
         ImageView imageView = view.findViewById(R.id.imv_slider_main_layout);
         imageView.setImageResource(sliderModelList.get(position).getBanner());
         container.addView(view,0);

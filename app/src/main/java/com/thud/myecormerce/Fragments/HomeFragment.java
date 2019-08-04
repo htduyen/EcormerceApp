@@ -1,8 +1,10 @@
 package com.thud.myecormerce.Fragments;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.thud.myecormerce.Adapter.CategoryAdapter;
 import com.thud.myecormerce.Adapter.SliderAdapter;
@@ -32,13 +35,17 @@ public class HomeFragment extends Fragment {
     private RecyclerView recycler_Category;
     private CategoryAdapter categoryAdapter;
 
-    //Banner Slider
+    //*************Banner Slider***************
     private ViewPager bannerviewpager;
     private List<SliderModel> sliderModelList;
     private int currentPage;
     private Timer timer;
     final private long DELAY_TIME = 3000;
     final private long PERIOD_TIME = 3000;
+
+    //***********Strip ads *******************
+    private ImageView imv_strip_ads;
+    private ConstraintLayout strip_constrain;
 
 
     public HomeFragment() {
@@ -76,20 +83,26 @@ public class HomeFragment extends Fragment {
 
         sliderModelList = new ArrayList<SliderModel>();
 
-        sliderModelList.add(new SliderModel(R.drawable.banner4));
-        sliderModelList.add(new SliderModel(R.drawable.banner5));
-        sliderModelList.add(new SliderModel(R.drawable.banner1));
-        sliderModelList.add(new SliderModel(R.drawable.banner2));
-        sliderModelList.add(new SliderModel(R.drawable.banner3));
-        sliderModelList.add(new SliderModel(R.drawable.banner4));
-        sliderModelList.add(new SliderModel(R.drawable.banner5));
-        sliderModelList.add(new SliderModel(R.drawable.banner1));
-        sliderModelList.add(new SliderModel(R.drawable.banner2));
+        sliderModelList.add(new SliderModel(R.drawable.banner5, "#BADBF7"));
+        sliderModelList.add(new SliderModel(R.drawable.banner6, "#BADBF7"));
+        sliderModelList.add(new SliderModel(R.drawable.banner7, "#BADBF7"));
+        sliderModelList.add(new SliderModel(R.drawable.banner8, "#BADBF7"));
+
+        sliderModelList.add(new SliderModel(R.drawable.banner1, "#BADBF7"));
+        sliderModelList.add(new SliderModel(R.drawable.banner2, "#BADBF7"));
+        sliderModelList.add(new SliderModel(R.drawable.banner3, "#BADBF7"));
+        sliderModelList.add(new SliderModel(R.drawable.banner4, "#BADBF7"));
+        sliderModelList.add(new SliderModel(R.drawable.banner5, "#BADBF7"));
+        sliderModelList.add(new SliderModel(R.drawable.banner6, "#BADBF7"));
+        sliderModelList.add(new SliderModel(R.drawable.banner7, "#BADBF7"));
+        sliderModelList.add(new SliderModel(R.drawable.banner8, "#BADBF7"));
 
         SliderAdapter sliderAdapter = new SliderAdapter(sliderModelList);
         bannerviewpager.setAdapter(sliderAdapter);
         bannerviewpager.setClipToPadding(false);
         bannerviewpager.setPageMargin(20);
+
+        bannerviewpager.setCurrentItem(currentPage);
         ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
@@ -124,8 +137,15 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
-        ////////////////////////BANNER SLIDER
+        ////////////////////////End BANNER SLIDER
 
+        //***************** Strip ads ********************
+        imv_strip_ads = view.findViewById(R.id.imv_strip_main);
+        strip_constrain = view.findViewById(R.id.stript_ads_contrain);
+
+        imv_strip_ads.setImageResource(R.drawable.stript);
+        strip_constrain.setBackgroundColor(Color.parseColor("#000000"));
+        //*****************End Strip ads ********************
 
         return view;
     }
