@@ -13,11 +13,19 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.thud.myecormerce.Adapter.CategoryAdapter;
+import com.thud.myecormerce.Adapter.GridProductAdapter;
+import com.thud.myecormerce.Adapter.HomePageAdapter;
+import com.thud.myecormerce.Adapter.ProductHorizonAdapter;
 import com.thud.myecormerce.Adapter.SliderAdapter;
 import com.thud.myecormerce.Models.CategoryModel;
+import com.thud.myecormerce.Models.HomePageModel;
+import com.thud.myecormerce.Models.ProductHorizonModel;
 import com.thud.myecormerce.Models.SliderModel;
 import com.thud.myecormerce.R;
 
@@ -46,8 +54,17 @@ public class HomeFragment extends Fragment {
     //***********Strip ads *******************
     private ImageView imv_strip_ads;
     private ConstraintLayout strip_constrain;
+    //***********Strip ads *******************
 
+    //***************** Product Horizon ********************
+    private TextView txt_title_pro_horizon;
+    private Button btn_viewall_pro_horizon;
+    private RecyclerView recyclerView_pro_horizon;
 
+    //***************** Product Horizon ********************
+
+    //***************** Product Product ***********************
+    //***************** Product Product ***********************
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -143,9 +160,64 @@ public class HomeFragment extends Fragment {
         imv_strip_ads = view.findViewById(R.id.imv_strip_main);
         strip_constrain = view.findViewById(R.id.stript_ads_contrain);
 
-        imv_strip_ads.setImageResource(R.drawable.stript);
+        imv_strip_ads.setImageResource(R.drawable.stript1);
         strip_constrain.setBackgroundColor(Color.parseColor("#000000"));
         //*****************End Strip ads ********************
+
+        //***************** Product Horizon ********************
+        txt_title_pro_horizon = view.findViewById(R.id.txt_title_pro_horizon);
+        btn_viewall_pro_horizon = view.findViewById(R.id.btn_view_all_pro_horizon);
+        recyclerView_pro_horizon = view.findViewById(R.id.recyclerview_pro_horizon);
+
+        List<ProductHorizonModel> horizonModels = new ArrayList<>();
+        horizonModels.add(new ProductHorizonModel(R.drawable.phone1, "Phone 1", "Descr 1", "2 000 000"));
+        horizonModels.add(new ProductHorizonModel(R.drawable.phone2, "Phone 2", "Descr 1", "2 000 000"));
+        horizonModels.add(new ProductHorizonModel(R.drawable.phone3, "Phone 3", "Descr 1", "2 000 000"));
+        horizonModels.add(new ProductHorizonModel(R.drawable.phone4, "Phone 4", "Descr 1", "2 000 000"));
+        horizonModels.add(new ProductHorizonModel(R.drawable.phone5, "Phone 5", "Descr 1", "2 000 000"));
+        horizonModels.add(new ProductHorizonModel(R.drawable.phone6, "Phone 6", "Descr 1", "2 000 000"));
+        horizonModels.add(new ProductHorizonModel(R.drawable.phone7, "Phone 7", "Descr 1", "2 000 000"));
+        horizonModels.add(new ProductHorizonModel(R.drawable.phone1, "Phone 8", "Descr 1", "2 000 000"));
+
+        ProductHorizonAdapter productHorizonAdapter = new ProductHorizonAdapter(horizonModels);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
+        recyclerView_pro_horizon.setLayoutManager(layoutManager);
+
+        recyclerView_pro_horizon.setAdapter(productHorizonAdapter);
+        productHorizonAdapter.notifyDataSetChanged();
+        //*****************End Product Horizon ********************
+
+        //***************** Product Product ***********************
+        TextView txt_title_grid_pro = view.findViewById(R.id.txt_title_grid_product);
+        Button btn_viewall = view.findViewById(R.id.btn_viewall_grid_product);
+        GridView gdv_grid_pro = view.findViewById(R.id.gdv_grid_product);
+
+        gdv_grid_pro.setAdapter(new GridProductAdapter(horizonModels));
+        //*****************End Product Product ********************
+
+        //*****************RcuclerView Testing ********************
+        RecyclerView recyclerViewTesting = view.findViewById(R.id.recyclerview_testing);
+        LinearLayoutManager testingLinearlayout = new LinearLayoutManager(getContext());
+        recyclerViewTesting.setLayoutManager(testingLinearlayout);
+
+        List<HomePageModel> homePageModelList = new ArrayList<>();
+        homePageModelList.add(new HomePageModel(1, R.drawable.stript1,"#ffff00"));
+        homePageModelList.add(new HomePageModel(0, sliderModelList));
+        homePageModelList.add(new HomePageModel(0, sliderModelList));
+        homePageModelList.add(new HomePageModel(0, sliderModelList));
+        homePageModelList.add(new HomePageModel(1, R.drawable.stript1,"#ffff00"));
+        homePageModelList.add(new HomePageModel(0, sliderModelList));
+        homePageModelList.add(new HomePageModel(0, sliderModelList));
+
+        HomePageAdapter adapter = new HomePageAdapter(homePageModelList);
+        recyclerViewTesting.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        //*****************RcuclerView Testing ********************
+
+
+
+
 
         return view;
     }
