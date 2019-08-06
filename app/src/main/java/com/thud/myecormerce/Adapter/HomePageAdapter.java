@@ -5,14 +5,20 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.thud.myecormerce.Models.HomePageModel;
+import com.thud.myecormerce.Models.ProductHorizonModel;
 import com.thud.myecormerce.Models.SliderModel;
 import com.thud.myecormerce.R;
 
@@ -23,7 +29,8 @@ import java.util.TimerTask;
 
 public class HomePageAdapter extends RecyclerView.Adapter {
 
-    List<HomePageModel> homePageModelList = new ArrayList<>();
+    private List<HomePageModel> homePageModelList;
+    //<HomePageModel> homePageModelList = new ArrayList<>();
 
     //Tao constructor
     public HomePageAdapter(List<HomePageModel> homePageModelList) {
@@ -38,6 +45,10 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 return HomePageModel.BANNER_SLIDER;
             case 1:
                 return HomePageModel.STRIP_ADS;
+            case 2:
+                return HomePageModel.HORIZONTAL_PRODUCT_VIEW;
+            case 3:
+                return HomePageModel.GRID_PRODUCT_VIEW;
             default:
                     return -1;
         }
@@ -53,6 +64,12 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             case HomePageModel.STRIP_ADS:
                 View stripview = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.stript_ads_layout, viewGroup,false);
                 return new StripAdsViewHolder(stripview);
+            case HomePageModel.HORIZONTAL_PRODUCT_VIEW:
+                View horizontalproductview = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.product_horizon_layout, viewGroup,false);
+                return new HorizontalProductViewHolder(horizontalproductview);
+            case HomePageModel.GRID_PRODUCT_VIEW:
+                View gridproductview = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.grid_product_layout, viewGroup,false);
+                return new GridPoductViewHolder(gridproductview);
             default:
                 return null;
         }
@@ -70,6 +87,21 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 String color = homePageModelList.get(i).getBackgroundColor();
                 ((StripAdsViewHolder) viewHolder).setStripAds(resource,color);
                 break;
+            case HomePageModel.HORIZONTAL_PRODUCT_VIEW:
+                String horizontitle = homePageModelList.get(i).getTitle();
+                List<ProductHorizonModel> horizontalProductViewList = homePageModelList.get(i).getProductHorizonModelList();
+                ((HorizontalProductViewHolder) viewHolder).setHorizontalProductLayout(horizontalProductViewList, horizontitle);
+            case HomePageModel.GRID_PRODUCT_VIEW:
+                String gridtitle = homePageModelList.get(i).getTitle();
+                List<ProductHorizonModel> GridProductViewList = homePageModelList.get(i).getProductHorizonModelList();
+
+                try{
+                    ((GridPoductViewHolder) viewHolder).setGridProductLayout(GridProductViewList, gridtitle);
+                } catch (Exception ex){
+                    Log.d("debug", "onBindViewHolder: " + ex);
+                }
+//                ((GridPoductViewHolder) viewHolder).setGridProductLayout(GridProductViewList, gridtitle);
+
             default:
                 return;
         }
@@ -187,6 +219,60 @@ public class HomePageAdapter extends RecyclerView.Adapter {
         private void setStripAds(int resource, String color){
             imv_strip_ads.setImageResource(resource);
             strip_constrain.setBackgroundColor(Color.parseColor(color));
+        }
+    }
+
+    public class HorizontalProductViewHolder extends RecyclerView.ViewHolder{
+
+        private TextView txt_title_pro_horizon;
+        private Button btn_viewall_pro_horizon;
+        private RecyclerView recyclerView_pro_horizon;
+
+        public HorizontalProductViewHolder(@NonNull View itemView) {
+            super(itemView);
+            txt_title_pro_horizon = itemView.findViewById(R.id.txt_title_pro_horizon);
+            btn_viewall_pro_horizon = itemView.findViewById(R.id.btn_view_all_pro_horizon);
+            recyclerView_pro_horizon = itemView.findViewById(R.id.recyclerview_pro_horizon);
+        }
+        private void setHorizontalProductLayout(List<ProductHorizonModel>  horizonModels, String title){
+
+            txt_title_pro_horizon.setText(title);
+
+            if(horizonModels.size() > 8){
+                btn_viewall_pro_horizon.setVisibility(View.VISIBLE);
+            }
+            else {
+                btn_viewall_pro_horizon.setVisibility(View.INVISIBLE);
+            }
+
+            ProductHorizonAdapter productHorizonAdapter = new ProductHorizonAdapter(horizonModels);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext());
+            layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+            recyclerView_pro_horizon.setLayoutManager(layoutManager);
+            recyclerView_pro_horizon.setAdapter(productHorizonAdapter);
+            productHorizonAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public class GridPoductViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView txt_title_grid_pro;
+        private Button btn_viewall;
+        private GridView gdv_grid_pro;
+
+        public GridPoductViewHolder(@NonNull View itemView) {
+             super(itemView);
+             txt_title_grid_pro = itemView.findViewById(R.id.txt_title_grid_product);
+             btn_viewall = itemView.findViewById(R.id.btn_viewall_grid_product);
+             gdv_grid_pro = itemView.findViewById(R.id.gdv_grid_product);
+        }
+
+        private void setGridProductLayout(List<ProductHorizonModel> horizonModelList, String title){
+
+            txt_title_grid_pro.setText(title);
+            GridProductAdapter gridProductAdapter = new GridProductAdapter(horizonModelList);
+            gdv_grid_pro.setAdapter(gridProductAdapter);
         }
     }
 }

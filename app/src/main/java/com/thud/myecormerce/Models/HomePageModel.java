@@ -6,6 +6,8 @@ public class HomePageModel {
 
     public static final int BANNER_SLIDER = 0;
     public static final int STRIP_ADS = 1;
+    public static final int HORIZONTAL_PRODUCT_VIEW = 2;
+    public static final int GRID_PRODUCT_VIEW = 3;
 
     private int type;
 
@@ -59,6 +61,37 @@ public class HomePageModel {
     }
 
 //***************** Strip Ads ****************
+
+//***************** Horizontal ProductView & Grid ProductView ****************
+    private String title;
+    private List<ProductHorizonModel> productHorizonModelList;
+
+    public HomePageModel(int type, String title, List<ProductHorizonModel> productHorizonModelList) {
+        this.type = type;
+        this.title = title;
+        this.productHorizonModelList = productHorizonModelList;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public List<ProductHorizonModel> getProductHorizonModelList() {
+        return productHorizonModelList;
+    }
+
+    public void setProductHorizonModelList(List<ProductHorizonModel> productHorizonModelList) {
+        this.productHorizonModelList = productHorizonModelList;
+    }
+
+
+    // ***************** Horizontal ProductView & Grid ProductView ****************
+
+
 
 
 }

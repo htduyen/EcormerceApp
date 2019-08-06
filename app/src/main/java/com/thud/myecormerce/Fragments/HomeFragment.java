@@ -179,6 +179,16 @@ public class HomeFragment extends Fragment {
         horizonModels.add(new ProductHorizonModel(R.drawable.phone7, "Phone 7", "Descr 1", "2 000 000"));
         horizonModels.add(new ProductHorizonModel(R.drawable.phone1, "Phone 8", "Descr 1", "2 000 000"));
 
+//        List<ProductHorizonModel> gridhorizonModels = new ArrayList<>();
+//        horizonModels.add(new ProductHorizonModel(R.drawable.phone1, "Phone 1", "Descr 1", "2 000 000"));
+//        horizonModels.add(new ProductHorizonModel(R.drawable.phone2, "Phone 2", "Descr 1", "2 000 000"));
+//        horizonModels.add(new ProductHorizonModel(R.drawable.phone3, "Phone 3", "Descr 1", "2 000 000"));
+//        horizonModels.add(new ProductHorizonModel(R.drawable.phone4, "Phone 4", "Descr 1", "2 000 000"));
+//        horizonModels.add(new ProductHorizonModel(R.drawable.phone5, "Phone 5", "Descr 1", "2 000 000"));
+//        horizonModels.add(new ProductHorizonModel(R.drawable.phone6, "Phone 6", "Descr 1", "2 000 000"));
+//        horizonModels.add(new ProductHorizonModel(R.drawable.phone7, "Phone 7", "Descr 1", "2 000 000"));
+//        horizonModels.add(new ProductHorizonModel(R.drawable.phone1, "Phone 8", "Descr 1", "2 000 000"));
+
         ProductHorizonAdapter productHorizonAdapter = new ProductHorizonAdapter(horizonModels);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(linearLayoutManager.HORIZONTAL);
@@ -205,10 +215,11 @@ public class HomeFragment extends Fragment {
         homePageModelList.add(new HomePageModel(1, R.drawable.stript1,"#ffff00"));
         homePageModelList.add(new HomePageModel(0, sliderModelList));
         homePageModelList.add(new HomePageModel(0, sliderModelList));
-        homePageModelList.add(new HomePageModel(0, sliderModelList));
-        homePageModelList.add(new HomePageModel(1, R.drawable.stript1,"#ffff00"));
-        homePageModelList.add(new HomePageModel(0, sliderModelList));
-        homePageModelList.add(new HomePageModel(0, sliderModelList));
+        homePageModelList.add(new HomePageModel(2,"Sales Product", horizonModels));
+        homePageModelList.add(new HomePageModel(3,"Phone Product", horizonModels));
+        homePageModelList.add(new HomePageModel(3,"Shoes Product", horizonModels));
+        homePageModelList.add(new HomePageModel(3,"Laptop Product", horizonModels));
+
 
         HomePageAdapter adapter = new HomePageAdapter(homePageModelList);
         recyclerViewTesting.setAdapter(adapter);

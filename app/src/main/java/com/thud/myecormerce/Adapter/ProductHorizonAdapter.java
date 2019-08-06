@@ -49,7 +49,13 @@ public class ProductHorizonAdapter extends RecyclerView.Adapter<ProductHorizonAd
 
     @Override
     public int getItemCount() {
-        return productHorizonModelList.size();
+
+        if(productHorizonModelList.size() > 8 ){
+            return 8;
+        }
+        else {
+            return productHorizonModelList.size();
+        }
     }
 
 
