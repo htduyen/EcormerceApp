@@ -14,9 +14,7 @@
         <activity
             android:name=".View.SplashscreenActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme">
-
-        </activity>
+            android:theme="@style/SplashTheme" />
         <activity
             android:name=".View.RegisterActivity"
             android:screenOrientation="portrait" />
@@ -31,6 +29,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".View.CategoryActivity" />
+        <activity android:name=".View.ProductDetailActivity"></activity>
     </application>
 
 </manifest>

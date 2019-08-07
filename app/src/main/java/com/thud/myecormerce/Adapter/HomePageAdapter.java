@@ -238,7 +238,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
             txt_title_pro_horizon.setText(title);
 
-            if(horizonModels.size() > 8){
+            if(horizonModels.size() >= 8){
                 btn_viewall_pro_horizon.setVisibility(View.VISIBLE);
             }
             else {

@@ -1,5 +1,6 @@
 package com.thud.myecormerce.Adapter;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.thud.myecormerce.Models.ProductHorizonModel;
 import com.thud.myecormerce.R;
+import com.thud.myecormerce.View.ProductDetailActivity;
 
 import java.util.List;
 
@@ -66,12 +68,21 @@ public class ProductHorizonAdapter extends RecyclerView.Adapter<ProductHorizonAd
         private TextView txt_descr;
         private TextView txt_price;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             imv_product = itemView.findViewById(R.id.imv_pro_horizon);
             txt_name_pro = itemView.findViewById(R.id.txt_name_pro_horizon);
             txt_descr = itemView.findViewById(R.id.txt_descr_pro_horizon);
             txt_price = itemView.findViewById(R.id.txt_price_pro_horizon);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent_product_detail = new Intent(itemView.getContext(), ProductDetailActivity.class);
+    
+                    itemView.getContext().startActivity(intent_product_detail);
+                }
+            });
 
         }
         private void setImv_product(int resource){

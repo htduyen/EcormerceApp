@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:elevation="3dp"
+    android:id="@+id/layout_rating_detail"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/product_img_viewpapeger"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/view_pager_indicator"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/product_img_viewpapeger"
+        app:tabBackground="@drawable/dot_selector"
+        app:tabIndicatorHeight="0dp"
+        app:tabRippleColor="@null" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floating_add_wishlist"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:fabCustomSize="40dp"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        app:layout_anchorGravity="center"
+        android:src="@drawable/heart_orange"
+        android:tint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rippleColor="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/txt_product_name_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Product Name"
+        android:textColor="@color/colorBlack"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_pager_indicator" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/slider_main"
+        android:backgroundTint="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_product_name_detail">
+
+        <TextView
+            android:id="@+id/txt_product_rating_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="4.5"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="2dp"
+            android:padding="3dp"
+            android:src="@drawable/star" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_total_rating_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="(2,000) ratings"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintStart_toEndOf="@+id/linearLayout2"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
+
+    <TextView
+        android:id="@+id/txt_product_new_price_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorRed"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:text="7,000,000 VND"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <TextView
+        android:id="@+id/txt_old_price_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="5,000,000"
+        android:textColor="@color/colorGray"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_product_new_price_detail"
+        app:layout_constraintStart_toEndOf="@+id/txt_product_new_price_detail" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/colorGray"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_old_price_detail"
+        app:layout_constraintEnd_toEndOf="@+id/txt_old_price_detail"
+        app:layout_constraintStart_toStartOf="@+id/txt_old_price_detail"
+        app:layout_constraintTop_toTopOf="@+id/txt_old_price_detail" />
+
+    <ImageButton
+        android:id="@+id/imv_cod_full_detail"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/divider2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/product_img_viewpapeger"
+        app:srcCompat="@drawable/storage" />
+
+    <TextView
+        android:id="@+id/txt_cod_full_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Available"
+        android:textSize="12sp"
+        android:textColor="@color/colorGreenDark"
+        app:layout_constraintEnd_toEndOf="@+id/imv_cod_full_detail"
+        app:layout_constraintStart_toStartOf="@+id/imv_cod_full_detail"
+        app:layout_constraintTop_toBottomOf="@+id/imv_cod_full_detail" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:background="#f73b3b"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="right"
+        app:layout_constraintTop_toBottomOf="@+id/txt_product_new_price_detail">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_redemption_detail"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/colorWhite"
+            android:text="Check if if you have sale bill"/>
+        <Button
+            android:layout_width="85dp"
+            android:layout_height="30dp"
+            android:id="@+id/btn_redemption_detail"
+            android:layout_gravity="center"
+            android:textAllCaps="false"
+            android:layout_marginRight="10dp"
+            android:padding="3dp"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/button_radius_border"
+
+            android:text="Check price"/>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
