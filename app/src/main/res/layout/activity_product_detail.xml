@@ -42,6 +42,12 @@
             <include layout="@layout/product_img_detail"></include>
 
             <include layout="@layout/reward_layout"></include>
+
+            <include layout="@layout/product_description_layout"></include>
+
+            <include layout="@layout/product_detail_layout"></include>
+
+            <include layout="@layout/product_rating_layout"></include>
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

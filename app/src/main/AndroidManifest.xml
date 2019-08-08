@@ -14,7 +14,13 @@
         <activity
             android:name=".View.SplashscreenActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme" />
+            android:theme="@style/SplashTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".View.RegisterActivity"
             android:screenOrientation="portrait" />
@@ -23,11 +29,7 @@
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".View.CategoryActivity" />
         <activity android:name=".View.ProductDetailActivity"></activity>

@@ -34,12 +34,12 @@ public class SplashscreenActivity extends AppCompatActivity {
         }
         else {
             Toast.makeText(this, "You have account", Toast.LENGTH_SHORT).show();
-            Intent intentRegis = new Intent(getApplicationContext(), RegisterActivity.class);
-            startActivity(intentRegis);
-            finish();
-//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//            startActivity(intent);
+//            Intent intentRegis = new Intent(getApplicationContext(), RegisterActivity.class);
+//            startActivity(intentRegis);
 //            finish();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 }

@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.thud.myecormerce.Adapter.ProductDetailAdapter;
 import com.thud.myecormerce.Adapter.ProductImageAdapter;
 import com.thud.myecormerce.R;
 
@@ -22,6 +23,10 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private ViewPager productImageViewPager;
     private TabLayout viewPagerIndicator;
+
+    private ViewPager product_descr_viewpager;
+    private TabLayout product_content_tab;
+
     private FloatingActionButton add_wishlist;
     private boolean ADDED_WISHLIST = false;
 
@@ -37,6 +42,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         productImageViewPager = findViewById(R.id.product_img_viewpapeger);
         viewPagerIndicator = findViewById(R.id.view_pager_indicator);
         add_wishlist = findViewById(R.id.floating_add_wishlist);
+
+        product_descr_viewpager = findViewById(R.id.content_viewpager_description_layout);
+        product_content_tab = findViewById(R.id.tab_description_layoutout);
 
 
         List<Integer> productImages = new ArrayList<>();
@@ -63,6 +71,29 @@ public class ProductDetailActivity extends AppCompatActivity {
                 }
             }
         });
+        //Mô tả - Description
+        product_descr_viewpager.setAdapter(new ProductDetailAdapter(getSupportFragmentManager(), product_content_tab.getTabCount()));
+        product_descr_viewpager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(product_content_tab));
+
+        product_content_tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                product_descr_viewpager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
     }
         @Override
     public boolean onCreateOptionsMenu(Menu menu) {

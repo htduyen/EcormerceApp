@@ -124,7 +124,6 @@ public class HomeFragment extends Fragment {
         List<HomePageModel> homePageModelList = new ArrayList<>();
         homePageModelList.add(new HomePageModel(1, R.drawable.stript1,"#ffff00"));
         homePageModelList.add(new HomePageModel(0, sliderModelList));
-        homePageModelList.add(new HomePageModel(0, sliderModelList));
         homePageModelList.add(new HomePageModel(2,"Sales Product", horizonModels));
         homePageModelList.add(new HomePageModel(3,"Phone Product", horizonModels));
         homePageModelList.add(new HomePageModel(3,"Shoes Product", horizonModels));

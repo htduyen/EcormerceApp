@@ -5,7 +5,7 @@
     <color name="colorAccent">#ffffff</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorGray">#705e5e</color>
-    <color name="colorWhiteplus">#f7e9e9</color>
+    <color name="colorWhiteplus">#e9dddd</color>
     <color name="colorGreenDark">#0f8f0b</color>
     <color name="colorGreen">#1cff14</color>
     <color name="colorRed">#ff142b</color>
@@ -13,4 +13,6 @@
     <color name="colorOrange">#f5880b</color>
     <color name="colorBlueDark">#242cd1</color>
     <color name="colorPinkDark">#ca098a</color>
+    <color name="colorPinkWarning">#ca7009</color>
+    <color name="colorPinkDanger">#d2020c</color>
 </resources>
