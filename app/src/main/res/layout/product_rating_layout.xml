@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/txt_title_rating_rating_layout"
@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
         android:layout_marginTop="8dp"
+        android:padding="10dp"
         android:background="@color/colorPrimaryDark"
         android:text="Rating"
         android:textColor="@color/colorWhite"
@@ -53,6 +54,7 @@
             android:layout_height="30dp"
             android:layout_margin="4dp"
             android:layout_weight="1"
+            android:tint="#ffbb00"
             app:srcCompat="@drawable/star" />
 
     </LinearLayout>
@@ -359,49 +361,56 @@
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_sum_total_number_each_star" />
+
     <LinearLayout
+        android:id="@+id/linear_rating_now"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/txt_your_rating"
-        app:layout_constraintEnd_toStartOf="parent"
-        android:orientation="horizontal"
         android:gravity="center"
+        android:orientation="horizontal"
         android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_your_rating">
+
         <ImageView
+            android:id="@+id/imv_star_your_rating5"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/star"
             android:layout_margin="5dp"
-            android:tint="@color/colorGray"
-            android:id="@+id/imv_star_your_rating5"/>
+            android:src="@drawable/star"
+            android:tint="@color/colorGrayStar" />
+
         <ImageView
+            android:id="@+id/imv_star_your_rating4"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/star"
             android:layout_margin="5dp"
-            android:tint="@color/colorGray"
-            android:id="@+id/imv_star_your_rating4"/>
+            android:src="@drawable/star"
+            android:tint="@color/colorGrayStar" />
+
         <ImageView
+            android:id="@+id/imv_star_your_rating3"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/star"
             android:layout_margin="5dp"
-            android:tint="@color/colorGray"
-            android:id="@+id/imv_star_your_rating3"/>
+            android:src="@drawable/star"
+            android:tint="@color/colorGrayStar" />
+
         <ImageView
+            android:id="@+id/imv_star_your_rating2"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/star"
             android:layout_margin="5dp"
-            android:tint="@color/colorGray"
-            android:id="@+id/imv_star_your_rating2"/>
+            android:src="@drawable/star"
+            android:tint="@color/colorGrayStar" />
+
         <ImageView
+            android:id="@+id/imv_star_your_rating1"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/star"
             android:layout_margin="5dp"
-            android:tint="@color/colorGray"
-            android:id="@+id/imv_star_your_rating1"/>
+            android:src="@drawable/star"
+            android:tint="@color/colorGrayStar" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

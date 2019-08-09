@@ -15,4 +15,5 @@
     <color name="colorPinkDark">#ca098a</color>
     <color name="colorPinkWarning">#ca7009</color>
     <color name="colorPinkDanger">#d2020c</color>
+    <color name="colorGrayStar">#bebebe</color>
 </resources>

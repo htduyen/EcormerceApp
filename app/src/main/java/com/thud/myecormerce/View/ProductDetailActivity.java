@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.thud.myecormerce.Adapter.ProductDetailAdapter;
 import com.thud.myecormerce.Adapter.ProductImageAdapter;
@@ -26,7 +28,9 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private ViewPager product_descr_viewpager;
     private TabLayout product_content_tab;
-
+    //Rating layout
+    private LinearLayout rating;
+    //Rating layout
     private FloatingActionButton add_wishlist;
     private boolean ADDED_WISHLIST = false;
 
@@ -92,10 +96,33 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             }
         });
+        //Rating
+        rating = findViewById(R.id.linear_rating_now);
+        for (int x=0; x < rating.getChildCount(); x++){
+            final  int  startPosition = x;
+            rating.getChildAt(x).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setRating(startPosition);
+                }
+            });
 
+        }
+        //Rating
 
     }
-        @Override
+
+    private void setRating(int startPosition) {
+        for(int x = 0; x < rating.getChildCount(); x++){
+            ImageView starbtn = (ImageView) rating.getChildAt(x);
+            starbtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#bebebe")));
+            if(x  <= startPosition){
+                starbtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#ffbb00")));
+            }
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.search_and_cart_menu, menu);

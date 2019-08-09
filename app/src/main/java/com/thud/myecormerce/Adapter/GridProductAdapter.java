@@ -1,5 +1,6 @@
 package com.thud.myecormerce.Adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.thud.myecormerce.Models.ProductHorizonModel;
 import com.thud.myecormerce.R;
+import com.thud.myecormerce.View.ProductDetailActivity;
 
 import java.util.List;
 
@@ -41,10 +43,18 @@ public class GridProductAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, final View convertView, final ViewGroup parent) {
         View view;
         if(convertView == null ){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_horizon_item_layout, null);
+            view.setElevation(0);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent productdetailintent = new Intent(parent.getContext(), ProductDetailActivity.class);
+                    parent.getContext().startActivity(productdetailintent);
+                }
+            });
             ImageView imv_product = view.findViewById(R.id.imv_pro_horizon);
             TextView txt_name = view.findViewById(R.id.txt_name_pro_horizon);
             TextView txt_descr = view.findViewById(R.id.txt_descr_pro_horizon);
