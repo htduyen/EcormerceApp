@@ -16,11 +16,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.thud.myecormerce.Fragments.CartFragment;
 import com.thud.myecormerce.Fragments.HomeFragment;
 import com.thud.myecormerce.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final int HOME_FRAGMENT = 0;
+    private static final int CART_FRAGMENT = 1;
+
+    private static  int currentFragment;
+    private NavigationView navigationView;
 
     private FrameLayout frameLayout;
 
@@ -40,11 +47,11 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
-        setFragment(new HomeFragment());
+        setFragment(new HomeFragment(),HOME_FRAGMENT);
     }
 
     @Override
@@ -81,12 +88,18 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         else if (id == R.id.icon_shopping_cart) {
-
+            MyCart();
             return true;
         }
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void MyCart() {
+        invalidateOptionsMenu();
+        setFragment(new CartFragment(), CART_FRAGMENT);
+        navigationView.getMenu().getItem(3).setChecked(true);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -96,13 +109,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
+            setFragment(new HomeFragment(), HOME_FRAGMENT);
         } else if (id == R.id.nav_my_order) {
 
         } else if (id == R.id.nav_my_reward) {
 
         } else if (id == R.id.nav_my_cart) {
-
+            MyCart();
         } else if (id == R.id.nav_my_account) {
 
         } else if (id == R.id.nav_my_wishlist) {
@@ -118,7 +131,8 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void setFragment(Fragment fragment){
+    private void setFragment(Fragment fragment, int NumFragment){
+        currentFragment = NumFragment;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(frameLayout.getId(), fragment);
         fragmentTransaction.commit();

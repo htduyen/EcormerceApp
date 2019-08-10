@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorWhite"
+    android:elevation="3dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imv_product_cart_item"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/phone1" />
+
+    <TextView
+        android:id="@+id/txt_product_name_cart_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Vivo 2010"
+        android:textColor="@color/colorBlackBlur"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@+id/imv_product_cart_item"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imv_discount_cart_item"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/txt_product_name_cart_item"
+        app:layout_constraintTop_toBottomOf="@+id/txt_product_name_cart_item"
+        app:srcCompat="@drawable/tag" />
+
+    <TextView
+        android:id="@+id/txt_discount_cart_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Giảm 10%"
+        android:textColor="@color/colorPrimary"
+        android:textSize="11sp"
+        app:layout_constraintStart_toEndOf="@+id/imv_discount_cart_item"
+        app:layout_constraintTop_toBottomOf="@+id/txt_product_name_cart_item" />
+
+    <TextView
+        android:id="@+id/txt_product_price_cart_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="4,000,000 Đ"
+        android:textColor="@color/colorBlack"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_discount_cart_item" />
+
+    <TextView
+        android:id="@+id/txt_old_price_cart_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="5,000,000 Đ"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_product_price_cart_item"
+        app:layout_constraintEnd_toStartOf="@+id/txt_product_price_cart_item" />
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_old_price_cart_item"
+        app:layout_constraintEnd_toEndOf="@+id/txt_old_price_cart_item"
+        app:layout_constraintStart_toStartOf="@+id/txt_old_price_cart_item"
+        app:layout_constraintTop_toTopOf="@+id/txt_old_price_cart_item" />
+
+    <TextView
+        android:id="@+id/txt_offer_applied_cart_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Đã đặt mua"
+        android:textColor="@color/colorGreenDark"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_product_price_cart_item" />
+
+    <TextView
+        android:id="@+id/txt_discounted_cart_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:text="Đã giảm giá"
+        android:textColor="@color/colorRed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_offer_applied_cart_item" />
+
+    <TextView
+        android:id="@+id/txt_quantity_cart_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/button_radius_border"
+        android:backgroundTint="@color/colorGray"
+        android:drawableEnd="@drawable/drop_down_arrow16"
+        android:drawablePadding="4dp"
+        android:padding="3dp"
+        android:text="Qty: "
+        android:textColor="@color/colorBlack"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_discounted_cart_item"
+        app:layout_constraintStart_toEndOf="@+id/imv_product_cart_item" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:background="#f73b3b"
+        android:gravity="right"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_discounted_cart_item">
+
+        <TextView
+            android:id="@+id/txt_redemption_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:text="Check if if you have sale bill"
+            android:textColor="@color/colorWhite" />
+
+        <Button
+            android:id="@+id/btn_redemption_detail"
+            android:layout_width="85dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/button_radius_border"
+            android:padding="3dp"
+            android:text="Check price"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_remove_item_cart_item"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="0dp"
+        android:background="#f5e4e4"
+        android:elevation="3dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableStart="@drawable/rubbish_bin24"
+            android:drawablePadding="3dp"
+            android:drawableTint="@color/colorBlack"
+            android:gravity="center"
+            android:text="Xóa sản phẩm"
+            android:textAlignment="center" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>
