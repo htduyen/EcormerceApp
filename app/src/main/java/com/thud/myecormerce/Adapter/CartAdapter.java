@@ -115,11 +115,11 @@ public class CartAdapter extends RecyclerView.Adapter {
                 productIconDiscount.setVisibility(View.VISIBLE);
                 productfreeDiscount.setVisibility(View.VISIBLE);
                 if(freeDiscount == 1){
-                    productfreeDiscount.setText("giảm ít " + freeDiscount + "%");
+                    productfreeDiscount.setText("giảm ít " + freeDiscount + " %");
                 }
                 else
                 {
-                    productfreeDiscount.setText("giảm nhiều" + freeDiscount + "%");
+                    productfreeDiscount.setText("giảm nhiều" + freeDiscount + " %");
                 }
             }
             else {
@@ -130,7 +130,7 @@ public class CartAdapter extends RecyclerView.Adapter {
             productCuttedPrice.setText(cuttedprice);
             if(offerAplied > 0 ){
                 productOfferAplied.setVisibility(View.VISIBLE);
-                productOfferAplied.setText(offerAplied + "offers aplied");
+                productOfferAplied.setText(offerAplied + " offers aplied");
             }
             else {
                 productOfferAplied.setVisibility(View.INVISIBLE);

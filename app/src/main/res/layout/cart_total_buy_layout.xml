@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_marginBottom="4dp"
+    android:background="@color/colorwhitewhite"
+    android:layout_height="wrap_content">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
@@ -136,7 +138,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="Bạn đã tiết kiệm được 500,000 Đ"
-            android:textColor="@color/colorGreen"
+            android:textColor="@color/colorGreenDark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider8" />
     </android.support.constraint.ConstraintLayout>
