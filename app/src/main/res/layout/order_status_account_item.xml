@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="3dp"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/txt_title_order_status_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_radius_border"
+        android:padding="4dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
+        android:text="Quá trình đặt hàng của bạn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/imv_status_order_myaccount"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/phone1"
+        app:civ_border_color="@color/colorBlueDark"
+        app:civ_border_width="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_title_order_status_account" />
+
+    <TextView
+        android:id="@+id/txt_current_order_status_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Tiến Trình Chuyển Hàng"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/slider_main"
+        android:padding="5dp"
+        android:textStyle="bold"
+        android:elevation="6dp"
+        android:backgroundTint="@color/colorBlueDark"
+        app:layout_constraintEnd_toEndOf="@+id/imv_status_order_myaccount"
+        app:layout_constraintStart_toStartOf="@+id/imv_status_order_myaccount"
+        app:layout_constraintTop_toBottomOf="@+id/imv_status_order_myaccount" />
+
+    <LinearLayout
+        android:id="@+id/linear_progress_dilivery_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/slider_main"
+        android:elevation="6dp"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_current_order_status_account">
+
+        <ImageView
+            android:id="@+id/imv_ordered_indicator_myaccount"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:translationX="30dp"
+            android:tint="@color/colorGrayStar"
+            app:srcCompat="@drawable/red_dot" />
+
+        <ProgressBar
+            android:id="@+id/progress_ordered_packed_myaccount"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:progress="0"
+            android:progressBackgroundTint="@color/colorGrayStar"
+            android:progressTint="@color/colorGreenDark"
+            android:translationX="20dp" />
+
+        <ImageView
+            android:id="@+id/imv_packed_indocator_myaccount"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:translationX="10dp"
+            android:tint="@color/colorGrayStar"
+            app:srcCompat="@drawable/red_dot" />
+
+        <ProgressBar
+            android:id="@+id/progress_packed_shipped_myaccount"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:progressBackgroundTint="@color/colorGrayStar"
+            android:layout_weight="1"
+            android:progress="0"
+            android:progressTint="@color/colorGreenDark" />
+
+        <ImageView
+            android:id="@+id/imv_shipped_indicator_myaccount"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:translationX="-10dp"
+            android:tint="@color/colorGrayStar"
+            app:srcCompat="@drawable/red_dot" />
+
+        <ProgressBar
+            android:id="@+id/progress_shipped_delivered_myaccount"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:progressBackgroundTint="@color/colorGrayStar"
+            android:progress="0"
+            android:progressTint="@color/colorGreenDark"
+            android:translationX="-20dp" />
+
+        <ImageView
+            android:id="@+id/imv_dilivered_indicator_myaccount"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_weight="1"
+            android:translationX="-30dp"
+            android:tint="@color/colorGrayStar"
+            app:srcCompat="@drawable/red_dot" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -3,25 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.OrderDetailFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragments.MyAccountFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorGrayStar"
             android:orientation="vertical" >
 
-            <include layout="@layout/order_detail_item_layout1"></include>
-
-            <include layout="@layout/ship_detail_item_layout"></include>
-
-            <include layout="@layout/cart_total_buy_layout"></include>
+            <include layout="@layout/account_data_item"></include>
+            <include layout="@layout/order_status_account_item"></include>
+            <include layout="@layout/your_recents_order_item_layout"></include>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

@@ -1,5 +1,6 @@
 package com.thud.myecormerce.Adapter;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.thud.myecormerce.Models.MyOrderItemModel;
 import com.thud.myecormerce.R;
+import com.thud.myecormerce.View.OrderDateilsActivity;
 
 import java.util.List;
 
@@ -60,7 +62,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         private  TextView diliveryStatus;
         private LinearLayout rating;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             productImage = itemView.findViewById(R.id.imv_product_myorder);
             productName = itemView.findViewById(R.id.txt_product_name_myorder);
@@ -68,6 +70,13 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
             diliveryStatus= itemView.findViewById(R.id.txt_time_dilivered);
             rating = itemView.findViewById(R.id.linear_rating_now);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intentMyOrderDetail = new Intent(itemView.getContext(), OrderDateilsActivity.class);
+                    itemView.getContext().startActivity(intentMyOrderDetail);
+                }
+            });
         }
 
         private void setData(int resource, String name, String status_date, int numRating)

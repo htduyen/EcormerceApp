@@ -317,7 +317,7 @@
         android:layout_marginStart="16dp"
         android:textStyle="bold"/>
     <LinearLayout
-        android:id="@+id/linear_rating_now"
+        android:id="@+id/linear_rating_now_orderdetail"
         android:layout_width="match_parent"
         android:layout_height="66dp"
         android:layout_marginStart="10dp"

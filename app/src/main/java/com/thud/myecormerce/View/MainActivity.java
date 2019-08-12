@@ -1,8 +1,7 @@
 package com.thud.myecormerce.View;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -14,13 +13,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.thud.myecormerce.Fragments.CartFragment;
 import com.thud.myecormerce.Fragments.HomeFragment;
+import com.thud.myecormerce.Fragments.MyAccountFragment;
 import com.thud.myecormerce.Fragments.MyOrderFragment;
-import com.thud.myecormerce.Fragments.OrderDetailFragment;
+import com.thud.myecormerce.Fragments.MyRewardFragment;
+import com.thud.myecormerce.Fragments.MyWishlistFragment;
 import com.thud.myecormerce.R;
 
 public class MainActivity extends AppCompatActivity
@@ -29,20 +32,28 @@ public class MainActivity extends AppCompatActivity
     private static final int HOME_FRAGMENT = 0;
     private static final int CART_FRAGMENT = 1;
     private static final int MYORDER_FRAGMENT = 2;
+    private static final int MYWISHLIST_FRAGMENT = 3;
+    private static final int MYREWARD_FRAGMENT = 4;
+    private static final int MYACCOUNT_FRAGMENT = 5;
 
     private static  int currentFragment = -1;
     private NavigationView navigationView;
     private ImageView actionBar_logo;
     private FrameLayout frameLayout;
+    private Window window;
+    private Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         actionBar_logo = findViewById(R.id.actionbar_logo);
         setSupportActionBar(toolbar);
 
+        window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
         frameLayout = findViewById(R.id.main_framelayout);
 
@@ -56,7 +67,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
-        setFragment(new OrderDetailFragment(),HOME_FRAGMENT);
+        setFragment(new HomeFragment(),HOME_FRAGMENT);
     }
 
     @Override
@@ -65,7 +76,16 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if(currentFragment == HOME_FRAGMENT){
+                super.onBackPressed();
+            }
+            else {
+                actionBar_logo.setVisibility(View.VISIBLE);
+                invalidateOptionsMenu();
+                setFragment(new HomeFragment(), HOME_FRAGMENT);
+                navigationView.getMenu().getItem(0).setChecked(true);
+            }
+
         }
     }
 
@@ -96,7 +116,7 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         else if (id == R.id.icon_shopping_cart) {
-            toFragment("Giỏ hàng",new CartFragment(),1);
+            toFragment("Giỏ hàng",new CartFragment(),CART_FRAGMENT);
             return true;
         }
 
@@ -113,6 +133,7 @@ public class MainActivity extends AppCompatActivity
         setFragment(fragment, numFragment);
         if(numFragment == CART_FRAGMENT){
             navigationView.getMenu().getItem(3).setChecked(true);
+
         }
         if(numFragment == MYORDER_FRAGMENT) {
             navigationView.getMenu().getItem(1).setChecked(true);
@@ -135,15 +156,15 @@ public class MainActivity extends AppCompatActivity
             invalidateOptionsMenu();
             setFragment(new HomeFragment(), HOME_FRAGMENT);
         } else if (id == R.id.nav_my_order) {
-            toFragment("Đơn mua",new MyOrderFragment(),2);
+            toFragment("Đơn mua",new MyOrderFragment(),MYORDER_FRAGMENT);
         } else if (id == R.id.nav_my_reward) {
-
+            toFragment("Danh sách yêu thích", new MyRewardFragment(),MYREWARD_FRAGMENT);
         } else if (id == R.id.nav_my_cart) {
-            toFragment("Giỏ hàng",new CartFragment(),1);
+            toFragment("Giỏ hàng",new CartFragment(),CART_FRAGMENT);
         } else if (id == R.id.nav_my_account) {
-
+            toFragment("Hồ Sơ",new MyAccountFragment(),MYACCOUNT_FRAGMENT);
         } else if (id == R.id.nav_my_wishlist) {
-
+            toFragment("Danh sách mong muốn",new MyWishlistFragment(),MYWISHLIST_FRAGMENT);
         } else if (id == R.id.nav_setting) {
 
         } else if (id == R.id.nav_logout) {
@@ -157,6 +178,15 @@ public class MainActivity extends AppCompatActivity
 
     private void setFragment(Fragment fragment, int NumFragment){
         if(NumFragment != currentFragment){
+            if(NumFragment == MYREWARD_FRAGMENT){
+                window.setStatusBarColor(Color.parseColor("#ca098a"));
+                toolbar.setBackgroundColor(Color.parseColor("#ca098a"));
+            }
+            else {
+                window.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+                toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            }
+
             currentFragment = NumFragment;
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);

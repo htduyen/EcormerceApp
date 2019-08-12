@@ -99,7 +99,7 @@ public class CartAdapter extends RecyclerView.Adapter {
         public CartItemViewHolder(@NonNull View itemView) {
             super(itemView);
             productImage = itemView.findViewById(R.id.imv_product_cart_item);
-            productIconDiscount = itemView.findViewById(R.id.imv_discount_cart_item);
+            productIconDiscount = itemView.findViewById(R.id.imv_discount_wishlist);
             productName = itemView.findViewById(R.id.txt_product_name_cart_item);
             productfreeDiscount = itemView.findViewById(R.id.txt_discount_cart_item);
             productPrice = itemView.findViewById(R.id.txt_product_price_cart_item);
