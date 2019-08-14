@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:elevation="10dp"
         android:textColor="@color/colorBlack"
         android:textStyle="bold"
         android:text="Các sản phẩm đã đặt gần đây"

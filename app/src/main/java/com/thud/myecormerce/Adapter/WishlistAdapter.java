@@ -1,5 +1,6 @@
 package com.thud.myecormerce.Adapter;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,15 +12,18 @@ import android.widget.Toast;
 
 import com.thud.myecormerce.Models.WishlistModel;
 import com.thud.myecormerce.R;
+import com.thud.myecormerce.View.ProductDetailActivity;
 
 import java.util.List;
 
 public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHolder> {
 
     private List<WishlistModel> wishlistModelList;
+    private Boolean wishlist;
 
-    public WishlistAdapter(List<WishlistModel> wishlistModelList) {
+    public WishlistAdapter(List<WishlistModel> wishlistModelList, Boolean wishlist) {
         this.wishlistModelList = wishlistModelList;
+        this.wishlist = wishlist;
     }
 
     @NonNull
@@ -95,14 +99,28 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             productRating.setText(averageRate);
             productTotalRating.setText("(" + totalRating + ") người bình chọn" );
             productPaymentMethod.setText(paymentMethod);
-            
-            productDelete.setOnClickListener(new View.OnClickListener() {
+
+            if (wishlist){
+                productDelete.setVisibility(View.VISIBLE);
+                productDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(itemView.getContext(), "Delete", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            else {
+                productDelete.setVisibility(View.GONE);
+            }
+
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(itemView.getContext(), "Delete", Toast.LENGTH_SHORT).show();
+                    Intent intentProduct = new Intent(itemView.getContext(), ProductDetailActivity.class);
+                    //ma cua product
+                    itemView.getContext().startActivity(intentProduct);
                 }
             });
-
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.thud.myecormerce.View;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -31,6 +33,9 @@ public class ProductDetailActivity extends AppCompatActivity {
     //Rating layout
     private LinearLayout rating;
     //Rating layout
+
+    private Button btn_buy_now;
+
     private FloatingActionButton add_wishlist;
     private boolean ADDED_WISHLIST = false;
 
@@ -46,7 +51,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         productImageViewPager = findViewById(R.id.product_img_viewpapeger);
         viewPagerIndicator = findViewById(R.id.view_pager_indicator);
         add_wishlist = findViewById(R.id.floating_add_wishlist);
-
+        btn_buy_now = findViewById(R.id.btn_buy_now);
         product_descr_viewpager = findViewById(R.id.content_viewpager_description_layout);
         product_content_tab = findViewById(R.id.tab_description_layoutout);
 
@@ -109,7 +114,13 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         }
         //Rating
-
+        btn_buy_now.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentDelivery = new Intent(ProductDetailActivity.this, DeliveryActivity.class );
+                startActivity(intentDelivery);
+            }
+        });
     }
 
     private void setRating(int startPosition) {
@@ -141,7 +152,9 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             return true;
         }else if(id == R.id.icon_shopping_cart){
-
+            Intent intentCart = new Intent(ProductDetailActivity.this, MainActivity.class);
+            MainActivity.SHOW_CART = true;
+            startActivity(intentCart);
             return true;
         }
         else if(id == android.R.id.home)

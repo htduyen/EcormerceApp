@@ -20,6 +20,23 @@
             <include layout="@layout/account_data_item"></include>
             <include layout="@layout/order_status_account_item"></include>
             <include layout="@layout/your_recents_order_item_layout"></include>
+            <include layout="@layout/address_item_account_layout"></include>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:id="@+id/btn_signout_account"
+                android:text="Sign Out"
+                android:elevation="4dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:background="@drawable/slider_main"
+                android:backgroundTint="@color/colorRed"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"/>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

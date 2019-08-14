@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginBottom="4dp"
-    android:paddingBottom="8dp"
-    android:background="@color/colorwhitewhite"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:background="@color/colorwhitewhite"
+    android:paddingBottom="8dp">
 
     <TextView
         android:id="@+id/txt_shipping_detail"
@@ -36,10 +35,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="huỳnh thanh duyên"
-        android:textColor="@color/colorBlack"
         android:textAllCaps="true"
-        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
         android:textSize="16dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider12" />
 
@@ -60,10 +59,33 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
         android:text="SDT: 0357027748"
         android:textColor="@color/colorBlack"
         android:textSize="14sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btn_change_or_add_address"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_full_address_detail_shipping" />
+
+    <Button
+        android:id="@+id/btn_change_or_add_address"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Change or Addd A New Address"
+        android:background="@drawable/slider_main"
+        android:backgroundTint="@color/colorRed"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:elevation="5dp"
+        android:visibility="gone"
+        android:textColor="@color/colorWhite"
+        android:padding="5dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -35,8 +35,9 @@ public class MainActivity extends AppCompatActivity
     private static final int MYWISHLIST_FRAGMENT = 3;
     private static final int MYREWARD_FRAGMENT = 4;
     private static final int MYACCOUNT_FRAGMENT = 5;
+    public static Boolean SHOW_CART = false;
 
-    private static  int currentFragment = -1;
+    private int currentFragment = -1;
     private NavigationView navigationView;
     private ImageView actionBar_logo;
     private FrameLayout frameLayout;
@@ -57,17 +58,26 @@ public class MainActivity extends AppCompatActivity
 
         frameLayout = findViewById(R.id.main_framelayout);
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
-        setFragment(new HomeFragment(),HOME_FRAGMENT);
+        if(SHOW_CART){
+            drawer.setDrawerLockMode(1);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            toFragment("Giỏ Hàng", new CartFragment(), -2);
+        }
+        else {
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+            setFragment(new HomeFragment(),HOME_FRAGMENT);
+        }
+
     }
 
     @Override
@@ -77,13 +87,21 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if(currentFragment == HOME_FRAGMENT){
+                currentFragment = -1;
                 super.onBackPressed();
             }
             else {
-                actionBar_logo.setVisibility(View.VISIBLE);
-                invalidateOptionsMenu();
-                setFragment(new HomeFragment(), HOME_FRAGMENT);
-                navigationView.getMenu().getItem(0).setChecked(true);
+                if(SHOW_CART){
+                    SHOW_CART = false;
+                    finish();
+                }
+                else {
+                    actionBar_logo.setVisibility(View.VISIBLE);
+                    invalidateOptionsMenu();
+                    setFragment(new HomeFragment(), HOME_FRAGMENT);
+                    navigationView.getMenu().getItem(0).setChecked(true);
+
+                }
             }
 
         }
@@ -117,6 +135,10 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.icon_shopping_cart) {
             toFragment("Giỏ hàng",new CartFragment(),CART_FRAGMENT);
+            return true;
+        }else if(id == android.R.id.home){
+            SHOW_CART = false;
+            finish();
             return true;
         }
 

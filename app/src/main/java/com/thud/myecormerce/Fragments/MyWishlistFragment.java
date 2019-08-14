@@ -47,7 +47,7 @@ public class MyWishlistFragment extends Fragment {
         wishlistModelList.add(new WishlistModel(R.drawable.phone5, "Iphone 5","4,000,000 Đ","5,000,000 Đ", 1,"Tiền mặt","2.5", 34));
         wishlistModelList.add(new WishlistModel(R.drawable.phone6, "Iphone 6","4,000,000 Đ","5,000,000 Đ", 5,"Chuyển khoản","4.0", 100));
 
-        WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelList);
+        WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelList, true);
         recyclerView_wishlist.setAdapter(wishlistAdapter);
         wishlistAdapter.notifyDataSetChanged();
 

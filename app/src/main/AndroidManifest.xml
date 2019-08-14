@@ -28,10 +28,16 @@
             android:name=".View.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity android:name=".View.CategoryActivity" />
         <activity android:name=".View.ProductDetailActivity" />
-        <activity android:name=".View.OrderDateilsActivity"></activity>
+        <activity android:name=".View.OrderDateilsActivity" />
+        <activity android:name=".View.DeliveryActivity" />
+        <activity
+            android:name=".View.AddAddressActivity"
+            android:theme="@style/Dark" />
+        <activity android:name=".View.MyAddressActivity" />
+        <activity android:name=".View.ViewAllActivity"></activity>
     </application>
 
 </manifest>

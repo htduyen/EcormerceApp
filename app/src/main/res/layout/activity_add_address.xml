@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.AddAddressActivity">
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:nestedScrollingEnabled="true"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhiteplus"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imv_location_new_address"
+                android:layout_width="100dp"
+                android:layout_height="110dp"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/location"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_weight="2"
+                    android:background="@color/colorwhitewhite"
+                    android:textColorHint="@color/colorBlack"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/edt_province_newaddress"
+                        android:hint="Tỉnh*"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold"
+                        android:textSize="18sp"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorwhitewhite"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ext_country_newaddress"
+                        android:hint="Quốc gia"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBlack"
+                        android:text="Việt Nam"
+                        android:layout_gravity="right"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorBlack"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorwhitewhite"
+                android:layout_marginBottom="8dp">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edt_location_newaddress"
+                    android:lines="3"
+                    android:ems="10"
+                    android:isScrollContainer="true"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBlack"
+                    android:gravity="start"
+                    android:hint="Chi tiết: Số đường, số nhà, ấp, xã, huyện...*"
+                    android:textSize="17sp"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGrayStar"></LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorBlack"
+                    android:background="@color/colorwhitewhite"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/edt_full_name_newaddress"
+                        android:hint="Full name"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_weight="1"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+                <RadioGroup
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rdg_gender_newaddress"
+                        android:layout_marginBottom="4dp"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center">
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/rd_male_newaddress"
+                            android:textStyle="bold"
+                            android:checked="true"
+                            android:buttonTint="@color/colorBlueDark"
+                            android:textColor="@color/colorBlack"
+                            android:text="Nam"/>
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/rd_femail_newaddress"
+                            android:textStyle="bold"
+                            android:buttonTint="@color/colorBlueDark"
+                            android:textColor="@color/colorBlack"
+                            android:text="Nữ"/>
+                    </RadioGroup>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorBlack"
+                    android:background="@color/colorwhitewhite"
+                    android:layout_marginBottom="8dp">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/edt_email_address_newaddress"
+                        android:hint="Địa chỉ email"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBlack"
+                        android:inputType="textEmailAddress"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorBlack"
+                    android:background="@color/colorwhitewhite"
+                    android:layout_marginBottom="8dp">
+
+                    <EditText
+                        android:id="@+id/edt_phonenumber_newaddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Số điện thoại"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorBlack"
+                        android:inputType="number"
+                        />
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_save_newaddress"
+                    android:text="Lưu"
+                    android:layout_marginBottom="8dp"
+                    android:textAllCaps="false"
+                    android:textSize="18sp"
+                    android:background="@drawable/slider_main"
+                    android:backgroundTint="@color/colorRed"
+                    android:textColor="@color/colorWhite"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
+
+
+</android.support.constraint.ConstraintLayout>
