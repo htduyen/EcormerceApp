@@ -47,7 +47,7 @@ public class MyRewardFragment extends Fragment {
         rewardModelList.add(new RewardModel("Lễ Quốc Khánh", "Từ 1-3/9/2019","Giảm 30% tất cả các sản phẩm."));
         rewardModelList.add(new RewardModel("Ngày Nhà Giáo Việt Nam", "Từ 19-21/11/2019","Giảm 50% tất cả các sản phẩm cho CBNV giáo viên trên cả nước."));
 
-        RewardAdapter rewardAdapter = new RewardAdapter(rewardModelList);
+        RewardAdapter rewardAdapter = new RewardAdapter(rewardModelList, false);
         recyclerViewReward.setAdapter(rewardAdapter);
         rewardAdapter.notifyDataSetChanged();
 

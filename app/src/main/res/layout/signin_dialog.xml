@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/signin_dialog"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="300dp"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorGreenDark"
+        android:text="Tham gia cùng chúng tôi để có những phần quà hấp dẫn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout9"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <Button
+            android:id="@+id/btn_signup_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:stateListAnimator="@null"
+            android:text="Đăng Ký"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btn_signin_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:stateListAnimator="@null"
+            android:text="Đăng Nhập"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider15"
+        android:layout_width="368dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorGrayStar"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <View
+        android:id="@+id/divider17"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/colorGrayStar"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout9"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout9"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout9"
+        app:layout_constraintTop_toBottomOf="@+id/divider15" />
+</android.support.constraint.ConstraintLayout>

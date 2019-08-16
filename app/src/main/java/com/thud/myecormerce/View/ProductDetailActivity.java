@@ -1,5 +1,6 @@
 package com.thud.myecormerce.View;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -8,6 +9,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,10 +18,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.thud.myecormerce.Adapter.ProductDetailAdapter;
 import com.thud.myecormerce.Adapter.ProductImageAdapter;
+import com.thud.myecormerce.Adapter.RewardAdapter;
+import com.thud.myecormerce.Models.RewardModel;
 import com.thud.myecormerce.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +41,16 @@ public class ProductDetailActivity extends AppCompatActivity {
     //Rating layout
     private LinearLayout rating;
     //Rating layout
+    //Dialog discount layout
+    public static TextView discountTitle;
+    public static TextView discountTime;
+    public static TextView discountContent;
+    private static RecyclerView recyclerViewDiscount;
+    private static LinearLayout linearLayoutDiscount;
+    //Dialog discount layout
 
     private Button btn_buy_now;
+    private Button btn_discount;
 
     private FloatingActionButton add_wishlist;
     private boolean ADDED_WISHLIST = false;
@@ -54,7 +70,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         btn_buy_now = findViewById(R.id.btn_buy_now);
         product_descr_viewpager = findViewById(R.id.content_viewpager_description_layout);
         product_content_tab = findViewById(R.id.tab_description_layoutout);
-
+        btn_discount = findViewById(R.id.btn_redemption_detail);
 
         List<Integer> productImages = new ArrayList<>();
         productImages.add(R.drawable.phone1);
@@ -121,8 +137,67 @@ public class ProductDetailActivity extends AppCompatActivity {
                 startActivity(intentDelivery);
             }
         });
-    }
+        ///Dialog discount
+        final Dialog dialogDiscount = new Dialog(ProductDetailActivity.this);
+        dialogDiscount.setContentView(R.layout.discount_dialog);
+        dialogDiscount.setCancelable(true);
+        dialogDiscount.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
+        ImageView imv_togle_recycler = dialogDiscount.findViewById(R.id.imv_togle_discount_dialog);
+        recyclerViewDiscount =  dialogDiscount.findViewById(R.id.recyclerView_discount_dialog);
+        linearLayoutDiscount = dialogDiscount.findViewById(R.id.linea_selected_discount_dialog);
+        //Luu Y
+        discountTitle = dialogDiscount.findViewById(R.id.txt_name_reward_reward);
+        discountTime = dialogDiscount.findViewById(R.id.txt_time_reward);
+        discountContent = dialogDiscount.findViewById(R.id.txt_content_reward);
+
+        TextView txt_origin_price = dialogDiscount.findViewById(R.id.txt_origin_price_dialog);
+        TextView txt_discounted_price = dialogDiscount.findViewById(R.id.txt_discounted_price_dialog);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ProductDetailActivity.this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerViewDiscount.setLayoutManager(linearLayoutManager);
+
+        List<RewardModel> rewardModelList = new ArrayList<>();
+        rewardModelList.add(new RewardModel("Lễ 30/4 - 1/5", "Từ 29-2/5/2019","Giảm 20% tất cả các sản phẩm."));
+        rewardModelList.add(new RewardModel("Lễ Tình Nhân", "Từ 12-14/2/2019","Giảm 30% tất cả các sản phẩm cho các cặp tình nhân."));
+        rewardModelList.add(new RewardModel("Lễ Quốc Tế Thiếu Nhi", "Từ 30-1/6/2019","Giảm 10% tất cả các sản phẩm."));
+        rewardModelList.add(new RewardModel("Ngày Thương Binh Liệt Sĩ", "Từ 26-28/7/2019","Giảm 50% tất cả các sản phẩm đối với người có công với đất nước, CBNV nhà nước."));
+        rewardModelList.add(new RewardModel("Lễ Quốc Khánh", "Từ 1-3/9/2019","Giảm 30% tất cả các sản phẩm."));
+        rewardModelList.add(new RewardModel("Ngày Nhà Giáo Việt Nam", "Từ 19-21/11/2019","Giảm 50% tất cả các sản phẩm cho CBNV giáo viên trên cả nước."));
+
+        RewardAdapter discountAdapter = new RewardAdapter(rewardModelList, true);
+        recyclerViewDiscount.setAdapter(discountAdapter);
+        discountAdapter.notifyDataSetChanged();
+
+        imv_togle_recycler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogDisCount();
+            }
+        });
+
+
+
+        btn_discount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialogDiscount.show();
+            }
+        });
+        ///Dialog discount
+    }
+    public static void showDialogDisCount(){
+        if(recyclerViewDiscount.getVisibility() == View.GONE){
+            recyclerViewDiscount.setVisibility(View.VISIBLE);
+            linearLayoutDiscount.setVisibility(View.GONE);
+        }
+        else {
+            recyclerViewDiscount.setVisibility(View.GONE);
+            linearLayoutDiscount.setVisibility(View.VISIBLE);
+        }
+    }
     private void setRating(int startPosition) {
         for(int x = 0; x < rating.getChildCount(); x++){
             ImageView starbtn = (ImageView) rating.getChildAt(x);

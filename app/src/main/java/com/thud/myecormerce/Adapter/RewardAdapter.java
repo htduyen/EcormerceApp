@@ -9,23 +9,32 @@ import android.widget.TextView;
 
 import com.thud.myecormerce.Models.RewardModel;
 import com.thud.myecormerce.R;
+import com.thud.myecormerce.View.ProductDetailActivity;
 
 import java.util.List;
 
 public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.ViewHolder> {
 
     private List<RewardModel> rewardModelList;
+    private Boolean miniLayout = false;
 
-    public RewardAdapter(List<RewardModel> rewardModelList) {
+    public RewardAdapter(List<RewardModel> rewardModelList, Boolean miniLayout) {
         this.rewardModelList = rewardModelList;
+        this.miniLayout = miniLayout;
     }
 
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.reward_item_layout, viewGroup,false);
 
+        View view;
+        if(miniLayout){
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.reward_item_mini_recycler_layout, viewGroup,false);
+        }
+        else {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.reward_item_layout, viewGroup,false);
+        }
         return new ViewHolder(view);
     }
 
@@ -55,10 +64,23 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.ViewHolder
             reward_time = itemView.findViewById(R.id.txt_time_reward);
             reward_content = itemView.findViewById(R.id.txt_content_reward);
         }
-        private void setData(String title, String time, String content){
+        private void setData(final String title, final String time, final String content){
             reward_title.setText(title);
             reward_time.setText(time);
             reward_content.setText(content);
+
+            if(miniLayout){
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ProductDetailActivity.discountTitle.setText(title);
+                        ProductDetailActivity.discountTime.setText(time);
+                        ProductDetailActivity.discountContent.setText(content);
+
+                        ProductDetailActivity.showDialogDisCount();
+                    }
+                });
+            }
         }
 
     }

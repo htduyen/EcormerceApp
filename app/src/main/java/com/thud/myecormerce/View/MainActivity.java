@@ -1,5 +1,7 @@
 package com.thud.myecormerce.View;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,8 +15,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -134,7 +138,35 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         else if (id == R.id.icon_shopping_cart) {
-            toFragment("Giỏ hàng",new CartFragment(),CART_FRAGMENT);
+
+            final Dialog signin_dialog = new Dialog(MainActivity.this);
+            signin_dialog.setContentView(R.layout.signin_dialog);
+            signin_dialog.setCancelable(true);
+            signin_dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            final Intent intentSignInUp = new Intent(MainActivity.this, RegisterActivity.class);
+
+            Button btn_signin = signin_dialog.findViewById(R.id.btn_signin_dialog);
+            Button btn_signup =  signin_dialog.findViewById(R.id.btn_signup_dialog);
+
+            btn_signin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    signin_dialog.dismiss();
+                    RegisterActivity.signupfragment = false;
+                    startActivity(intentSignInUp);
+                }
+            });
+            btn_signup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    signin_dialog.dismiss();
+                    RegisterActivity.signupfragment = true;
+                    startActivity(intentSignInUp);
+
+                }
+            });
+            signin_dialog.show();
+            //toFragment("Giỏ hàng",new CartFragment(),CART_FRAGMENT);
             return true;
         }else if(id == android.R.id.home){
             SHOW_CART = false;

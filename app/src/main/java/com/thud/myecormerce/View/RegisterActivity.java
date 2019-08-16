@@ -8,12 +8,14 @@ import android.view.KeyEvent;
 import android.widget.FrameLayout;
 
 import com.thud.myecormerce.Fragments.SignInFragment;
+import com.thud.myecormerce.Fragments.SignUpFragment;
 import com.thud.myecormerce.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private FrameLayout register_frame_layout;
     public static boolean onResetPass = false;
+    public static boolean signupfragment = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +23,16 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         register_frame_layout = findViewById(R.id.register_frame_layout);
-        //Set fragment cho tabview
-        setDefaultFragment(new SignInFragment());
+
+        //Set fragment cho tabview, nhận dữ liệu từ dialog MainActivity
+        if (signupfragment){
+            signupfragment = false;
+            setDefaultFragment(new SignUpFragment());
+        }
+        else {
+            setDefaultFragment(new SignInFragment());
+        }
+
     }
 
     @Override

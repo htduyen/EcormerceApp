@@ -1,10 +1,13 @@
 package com.thud.myecormerce.Adapter;
 
+import android.app.Dialog;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -135,13 +138,34 @@ public class CartAdapter extends RecyclerView.Adapter {
             else {
                 productOfferAplied.setVisibility(View.INVISIBLE);
             }
-//            if(discountAplied > 0 ){
-//                productDiscountAplied.setVisibility(View.VISIBLE);
-//
-//            }
-//            else {
-//                productDiscountAplied.setVisibility(View.INVISIBLE);
-//            }
+            productQuantity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Dialog dialogQuantity = new Dialog(itemView.getContext());
+                    dialogQuantity.setContentView(R.layout.quantity_dialog);
+                    dialogQuantity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    dialogQuantity.setCancelable(false);
+
+                    final EditText edt_quantity = dialogQuantity.findViewById(R.id.edt_quantity_dialog);
+                    Button btn_cancel = dialogQuantity.findViewById(R.id.btn_cancel_dialog);
+                    Button btn_ok = dialogQuantity.findViewById(R.id.btn_okay_dialog);
+
+                    btn_cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogQuantity.dismiss();
+                        }
+                    });
+                    btn_ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            productQuantity.setText("Số lượng: " + edt_quantity.getText());
+                            dialogQuantity.dismiss();
+                        }
+                    });
+                    dialogQuantity.show();
+                }
+            });
         }
 
     }
