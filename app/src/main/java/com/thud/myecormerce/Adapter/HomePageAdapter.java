@@ -18,7 +18,10 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.thud.myecormerce.Models.HomePageModel;
 import com.thud.myecormerce.Models.ProductHorizonModel;
 import com.thud.myecormerce.Models.SliderModel;
@@ -88,7 +91,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 ((BannerSliderViewHolder) viewHolder).setBannerSliderViewPager(sliderModelList);
                 break;
             case HomePageModel.STRIP_ADS:
-                int resource = homePageModelList.get(i).getResource();
+                String resource = homePageModelList.get(i).getResource();
                 String color = homePageModelList.get(i).getBackgroundColor();
                 ((StripAdsViewHolder) viewHolder).setStripAds(resource,color);
                 break;
@@ -144,6 +147,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             for(int x = 0; x < sliderModelList.size(); x++){
                 arrangeList.add(x, sliderModelList.get(x));
             }
+            Toast.makeText(itemView.getContext(), "Length: " + sliderModelList.size(), Toast.LENGTH_SHORT).show();
             arrangeList.add(0, sliderModelList.get(sliderModelList.size() -2 ));
             arrangeList.add(1, sliderModelList.get(sliderModelList.size() -1 ));
             arrangeList.add(sliderModelList.get(0));
@@ -236,9 +240,10 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             strip_constrain = itemView.findViewById(R.id.stript_ads_contrain);
         }
 
-        private void setStripAds(int resource, String color){
-            imv_strip_ads.setImageResource(resource);
-            strip_constrain.setBackgroundColor(Color.parseColor(color));
+        private void setStripAds(String resource, String color){
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.home)).into(imv_strip_ads);
+//            imv_strip_ads.setImageResource(resource);
+              strip_constrain.setBackgroundColor(Color.parseColor(color));
         }
     }
 

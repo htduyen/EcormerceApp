@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.thud.myecormerce.Models.CategoryModel;
 import com.thud.myecormerce.R;
 import com.thud.myecormerce.View.CategoryActivity;
@@ -35,7 +37,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         String icon = categoryModelList.get(i).getCateIconLink();
         String name = categoryModelList.get(i).getCateName();
         viewHolder.setCategory(name, i);
-
+        viewHolder.setCate_icon(icon);
     }
 
     @Override
@@ -54,10 +56,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             cate_icon = itemView.findViewById(R.id.imv_cate);
             cate_name = itemView.findViewById(R.id.txt_name_cate);
         }
-        private void  setCate_icon(){
+        private void  setCate_icon(String urlIcon){
             //set ảnh cho catagory item
-
-
+            if(!urlIcon.equals("null")){
+                Glide.with(itemView.getContext()).load(urlIcon).apply(new RequestOptions().placeholder(R.drawable.home)).into(cate_icon);
+            }
         }
         private void setCategory(final String name, final int position){
             //set name cho category item

@@ -2,19 +2,19 @@ package com.thud.myecormerce.Models;
 
 public class SliderModel {
 
-    private int banner;
+    private String banner;
     private String background;
 
-    public SliderModel(int banner, String background) {
+    public SliderModel(String banner, String background) {
         this.banner = banner;
         this.background = background;
     }
 
-    public int getBanner() {
+    public String getBanner() {
         return banner;
     }
 
-    public void setBanner(int banner) {
+    public void setBanner(String banner) {
         this.banner = banner;
     }
 
