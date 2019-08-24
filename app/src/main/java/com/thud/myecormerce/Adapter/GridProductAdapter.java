@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.thud.myecormerce.Models.ProductHorizonModel;
 import com.thud.myecormerce.R;
 import com.thud.myecormerce.View.ProductDetailActivity;
@@ -60,10 +62,11 @@ public class GridProductAdapter extends BaseAdapter {
             TextView txt_descr = view.findViewById(R.id.txt_descr_pro_horizon);
             TextView txt_price = view.findViewById(R.id.txt_price_pro_horizon);
 
-            imv_product.setImageResource(productHorizonModelList.get(position).getProductImv());
+//            imv_product.setImageResource(productHorizonModelList.get(position).getProductImv());
+            Glide.with(parent.getContext()).load(productHorizonModelList.get(position).getProductImv()).apply(new RequestOptions().placeholder(R.drawable.phone1)).into(imv_product);
             txt_name.setText(productHorizonModelList.get(position).getProductName());
             txt_descr.setText(productHorizonModelList.get(position).getProductDescription());
-            txt_price.setText(productHorizonModelList.get(position).getProductPrice());
+            txt_price.setText(productHorizonModelList.get(position).getProductPrice()+" Đ");
 
 
         }

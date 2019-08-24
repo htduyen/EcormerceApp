@@ -1,8 +1,11 @@
 package com.thud.myecormerce.View;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,6 +25,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.thud.myecormerce.Fragments.CartFragment;
 import com.thud.myecormerce.Fragments.HomeFragment;
 import com.thud.myecormerce.Fragments.MyAccountFragment;
@@ -62,7 +66,6 @@ public class MainActivity extends AppCompatActivity
 
         frameLayout = findViewById(R.id.main_framelayout);
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -82,6 +85,9 @@ public class MainActivity extends AppCompatActivity
             setFragment(new HomeFragment(),HOME_FRAGMENT);
         }
 
+
+
+
     }
 
     @Override
@@ -95,21 +101,25 @@ public class MainActivity extends AppCompatActivity
                 super.onBackPressed();
             }
             else {
-                if(SHOW_CART){
-                    SHOW_CART = false;
-                    finish();
-                }
-                else {
-                    actionBar_logo.setVisibility(View.VISIBLE);
-                    invalidateOptionsMenu();
-                    setFragment(new HomeFragment(), HOME_FRAGMENT);
-                    navigationView.getMenu().getItem(0).setChecked(true);
 
+                    if(SHOW_CART){
+                        SHOW_CART = false;
+                        finish();
+                    }
+                    else {
+                        actionBar_logo.setVisibility(View.VISIBLE);
+                        invalidateOptionsMenu();
+                        setFragment(new HomeFragment(), HOME_FRAGMENT);
+                        navigationView.getMenu().getItem(0).setChecked(true);
+
+                    }
                 }
+
+
             }
 
         }
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

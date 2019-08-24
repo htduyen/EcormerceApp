@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.thud.myecormerce.Models.WishlistModel;
 import com.thud.myecormerce.R;
 import com.thud.myecormerce.View.ProductDetailActivity;
@@ -36,14 +38,14 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull WishlistAdapter.ViewHolder viewHolder, int i) {
-        int resource = wishlistModelList.get(i).getProductImage();
+        String resource = wishlistModelList.get(i).getProductImage();
         String name = wishlistModelList.get(i).getProductName();
         String price = wishlistModelList.get(i).getProductPrice();
         String cuttedPrice = wishlistModelList.get(i).getProductCuttedPrice();
-        int freeDiscount = wishlistModelList.get(i).getFreeDiscount();
-        String payment = wishlistModelList.get(i).getPaymentMethod();
+        long freeDiscount = wishlistModelList.get(i).getFreeDiscount();
+        boolean payment = wishlistModelList.get(i).isPaymentMethod();
         String rating = wishlistModelList.get(i).getRating();
-        int totalRating = wishlistModelList.get(i).getTotalRating();
+        long totalRating = wishlistModelList.get(i).getTotalRating();
 
         viewHolder.setData(resource,name,price,freeDiscount,rating, totalRating,cuttedPrice,payment);
     }
@@ -82,11 +84,12 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             horizon_cutted = itemView.findViewById(R.id.horizon_cutted_price_wishlist);
 
         }
-        private  void setData(int resource, String name, String price, int discountNo, String averageRate, int totalRating, String cutted_price, String paymentMethod){
+        private  void setData(String resource, String name, String price, long discountNo, String averageRate, long totalRating, String cutted_price, boolean paymentMethod){
 
-            productImage.setImageResource(resource);
+//            productImage.setImageResource(resource);
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.home)).into(productImage);
             productName.setText(name);
-            productPrice.setText(price);
+            productPrice.setText(price + " Đ");
             productCuttedPrice.setText(cutted_price);
             if(discountNo != 0){
                 productIconDiscount.setVisibility(View.VISIBLE);
@@ -98,7 +101,13 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             }
             productRating.setText(averageRate);
             productTotalRating.setText("(" + totalRating + ") người bình chọn" );
-            productPaymentMethod.setText(paymentMethod);
+            if(paymentMethod){
+                productPaymentMethod.setVisibility(View.VISIBLE);
+            }
+            else {
+                productPaymentMethod.setVisibility(View.INVISIBLE);
+            }
+
 
             if (wishlist){
                 productDelete.setVisibility(View.VISIBLE);

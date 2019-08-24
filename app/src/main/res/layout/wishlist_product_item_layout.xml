@@ -14,7 +14,7 @@
         android:id="@+id/imv_product_wishlist"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,12 +22,14 @@
 
     <TextView
         android:id="@+id/txt_product_name_wishlist"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="18dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="Iphone X"
         android:textColor="@color/colorBlack"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imv_product_wishlist"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -103,8 +105,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="4,000,000 Đ"
-        android:textColor="@color/colorBlack"
-        android:textSize="12sp"
+        android:textColor="@color/colorBlueDark"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/linearLayout_rating_wisthlist"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout_rating_wisthlist" />
 
@@ -133,7 +135,7 @@
         android:id="@+id/txt_payment_method_wishlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:text="Thanh toán tiền mặt"
         android:textColor="@color/colorGreenDark"
         android:textSize="10sp"

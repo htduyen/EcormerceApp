@@ -2,16 +2,16 @@ package com.thud.myecormerce.Models;
 
 public class WishlistModel {
 
-    private int productImage;
+    private String productImage;
     private String productName;
     private String productPrice;
     private String productCuttedPrice;
-    private int freeDiscount;
-    private String paymentMethod;
+    private long freeDiscount;
+    private boolean paymentMethod;
     private String rating;
-    private int totalRating;
+    private long totalRating;
 
-    public WishlistModel(int productImage, String productName, String productPrice, String productCuttedPrice, int freeDiscount, String paymentMethod, String rating, int totalRating) {
+    public WishlistModel(String productImage, String productName, String productPrice, String productCuttedPrice, long freeDiscount, boolean paymentMethod, String rating, long totalRating) {
         this.productImage = productImage;
         this.productName = productName;
         this.productPrice = productPrice;
@@ -22,11 +22,11 @@ public class WishlistModel {
         this.totalRating = totalRating;
     }
 
-    public int getProductImage() {
+    public String getProductImage() {
         return productImage;
     }
 
-    public void setProductImage(int productImage) {
+    public void setProductImage(String productImage) {
         this.productImage = productImage;
     }
 
@@ -54,19 +54,19 @@ public class WishlistModel {
         this.productCuttedPrice = productCuttedPrice;
     }
 
-    public int getFreeDiscount() {
+    public long getFreeDiscount() {
         return freeDiscount;
     }
 
-    public void setFreeDiscount(int freeDiscount) {
+    public void setFreeDiscount(long freeDiscount) {
         this.freeDiscount = freeDiscount;
     }
 
-    public String getPaymentMethod() {
+    public boolean isPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
+    public void setPaymentMethod(boolean paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 
@@ -78,11 +78,11 @@ public class WishlistModel {
         this.rating = rating;
     }
 
-    public int getTotalRating() {
+    public long getTotalRating() {
         return totalRating;
     }
 
-    public void setTotalRating(int totalRating) {
+    public void setTotalRating(long totalRating) {
         this.totalRating = totalRating;
     }
 }

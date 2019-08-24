@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.thud.myecormerce.Models.ProductHorizonModel;
 import com.thud.myecormerce.R;
 import com.thud.myecormerce.View.ProductDetailActivity;
@@ -38,7 +40,7 @@ public class ProductHorizonAdapter extends RecyclerView.Adapter<ProductHorizonAd
 
     @Override
     public void onBindViewHolder(@NonNull ProductHorizonAdapter.ViewHolder viewHolder, int i) {
-        int resource = productHorizonModelList.get(i).getProductImv();
+        String resource = productHorizonModelList.get(i).getProductImv();
         String name = productHorizonModelList.get(i).getProductName();
         String descr = productHorizonModelList.get(i).getProductDescription();
         String price = productHorizonModelList.get(i).getProductPrice();
@@ -85,8 +87,9 @@ public class ProductHorizonAdapter extends RecyclerView.Adapter<ProductHorizonAd
             });
 
         }
-        private void setImv_product(int resource){
-            imv_product.setImageResource(resource);
+        private void setImv_product(String resource){
+//            imv_product.setImageResource(resource);
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.phone1)).into(imv_product);
         }
         private void setTxt_name_pro(String name){
             txt_name_pro.setText(name);
@@ -95,7 +98,7 @@ public class ProductHorizonAdapter extends RecyclerView.Adapter<ProductHorizonAd
             txt_descr.setText(descr);
         }
         private void setTxt_price(String price){
-            txt_price.setText(price);
+            txt_price.setText(price+ " Đ");
         }
     }
 }

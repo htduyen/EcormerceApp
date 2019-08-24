@@ -23,6 +23,8 @@ public class ViewAllActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView recyclerViewViewAll;
     private GridView gridViewViewAll;
+    public static List<ProductHorizonModel> productHorizonModelList;
+    public static List<WishlistModel> wishlistModelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class ViewAllActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("Sản Phẩm Bán Chạy");
+        getSupportActionBar().setTitle(getIntent().getStringExtra("group_product_title"));
 
         recyclerViewViewAll = findViewById(R.id.recyclerView_ViewAll);
         gridViewViewAll = findViewById(R.id.gridView_viewall);
@@ -46,13 +48,13 @@ public class ViewAllActivity extends AppCompatActivity {
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerViewViewAll.setLayoutManager(linearLayoutManager);
 
-            List<WishlistModel> wishlistModelList = new ArrayList<>();
-            wishlistModelList.add(new WishlistModel(R.drawable.phone1, "Iphone 1","4,000,000 Đ","5,000,000 Đ", 2,"Tiền mặt","4.5", 67));
-            wishlistModelList.add(new WishlistModel(R.drawable.phone2, "Iphone 2","4,000,000 Đ","5,000,000 Đ", 0,"Chuyển khoản","4.5", 27));
-            wishlistModelList.add(new WishlistModel(R.drawable.phone3, "Iphone 3","4,000,000 Đ","5,000,000 Đ", 2,"Tiền mặt","4.5", 27));
-            wishlistModelList.add(new WishlistModel(R.drawable.phone4, "Iphone 4","4,000,000 Đ","5,000,000 Đ", 3,"Trả góp","3.5", 32));
-            wishlistModelList.add(new WishlistModel(R.drawable.phone5, "Iphone 5","4,000,000 Đ","5,000,000 Đ", 1,"Tiền mặt","2.5", 34));
-            wishlistModelList.add(new WishlistModel(R.drawable.phone6, "Iphone 6","4,000,000 Đ","5,000,000 Đ", 5,"Chuyển khoản","4.0", 100));
+//            List<WishlistModel> wishlistModelList = new ArrayList<>();
+//            wishlistModelList.add(new WishlistModel(R.drawable.phone1, "Iphone 1","4,000,000 Đ","5,000,000 Đ", 2,"Tiền mặt","4.5", 67));
+//            wishlistModelList.add(new WishlistModel(R.drawable.phone2, "Iphone 2","4,000,000 Đ","5,000,000 Đ", 0,"Chuyển khoản","4.5", 27));
+//            wishlistModelList.add(new WishlistModel(R.drawable.phone3, "Iphone 3","4,000,000 Đ","5,000,000 Đ", 2,"Tiền mặt","4.5", 27));
+//            wishlistModelList.add(new WishlistModel(R.drawable.phone4, "Iphone 4","4,000,000 Đ","5,000,000 Đ", 3,"Trả góp","3.5", 32));
+//            wishlistModelList.add(new WishlistModel(R.drawable.phone5, "Iphone 5","4,000,000 Đ","5,000,000 Đ", 1,"Tiền mặt","2.5", 34));
+//            wishlistModelList.add(new WishlistModel(R.drawable.phone6, "Iphone 6","4,000,000 Đ","5,000,000 Đ", 5,"Chuyển khoản","4.0", 100));
 
 
             WishlistAdapter viewall_Adapter = new WishlistAdapter(wishlistModelList, false);
@@ -64,15 +66,15 @@ public class ViewAllActivity extends AppCompatActivity {
             //  Gidview product
             gridViewViewAll.setVisibility(View.VISIBLE);
 
-            List<ProductHorizonModel> productHorizonModelList = new ArrayList<>();
-            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone1, "Phone 1", "Descr 1", "2 000 000"));
-            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone2, "Phone 2", "Descr 1", "2 000 000"));
-            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone3, "Phone 3", "Descr 1", "2 000 000"));
-            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone4, "Phone 4", "Descr 1", "2 000 000"));
-            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone5, "Phone 5", "Descr 1", "2 000 000"));
-            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone6, "Phone 6", "Descr 1", "2 000 000"));
-            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone7, "Phone 7", "Descr 1", "2 000 000"));
-            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone1, "Phone 8", "Descr 1", "2 000 000"));
+
+//            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone1, "Phone 1", "Descr 1", "2 000 000"));
+//            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone2, "Phone 2", "Descr 1", "2 000 000"));
+//            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone3, "Phone 3", "Descr 1", "2 000 000"));
+//            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone4, "Phone 4", "Descr 1", "2 000 000"));
+//            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone5, "Phone 5", "Descr 1", "2 000 000"));
+//            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone6, "Phone 6", "Descr 1", "2 000 000"));
+//            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone7, "Phone 7", "Descr 1", "2 000 000"));
+//            productHorizonModelList.add(new ProductHorizonModel(R.drawable.phone1, "Phone 8", "Descr 1", "2 000 000"));
 
 
             GridProductAdapter adapter = new GridProductAdapter(productHorizonModelList);

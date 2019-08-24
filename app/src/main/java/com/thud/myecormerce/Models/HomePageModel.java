@@ -10,6 +10,7 @@ public class HomePageModel {
     public static final int GRID_PRODUCT_VIEW = 3;
 
     private int type;
+    private String backgroundColor;
 
     private List<SliderModel> sliderModelList;
 
@@ -39,7 +40,7 @@ public class HomePageModel {
 
     //***************** Strip Ads ****************
     private String resource;
-    private String backgroundColor;
+
 
     public HomePageModel(int type, String resource, String backgroundColor) {
         this.type = type;
@@ -65,10 +66,28 @@ public class HomePageModel {
 //***************** Horizontal ProductView & Grid ProductView ****************
     private String title;
     private List<ProductHorizonModel> productHorizonModelList;
+    private List<WishlistModel> wishlistViewAllModelList;
 
-    public HomePageModel(int type, String title, List<ProductHorizonModel> productHorizonModelList) {
+    public HomePageModel(int type, String title,String backgroundColor, List<ProductHorizonModel> productHorizonModelList, List<WishlistModel> wishlistModels) {
         this.type = type;
         this.title = title;
+        this.backgroundColor = backgroundColor;
+        this.productHorizonModelList = productHorizonModelList;
+        this.wishlistViewAllModelList = wishlistModels;
+    }
+
+    public List<WishlistModel> getWishlistViewAllModelList() {
+        return wishlistViewAllModelList;
+    }
+
+    public void setWishlistViewAllModelList(List<WishlistModel> wishlistViewAllModelList) {
+        this.wishlistViewAllModelList = wishlistViewAllModelList;
+    }
+
+    public HomePageModel(int type, String title, String backgroundColor, List<ProductHorizonModel> productHorizonModelList) {
+        this.type = type;
+        this.title = title;
+        this.backgroundColor = backgroundColor;
         this.productHorizonModelList = productHorizonModelList;
     }
 

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="8dp"
-    android:paddingBottom="8dp"
-    android:elevation="3dp"
-    android:background="@drawable/slider_main"
+    android:id="@+id/contrain_product_horizon"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@drawable/slider_main"
+    android:elevation="3dp"
+    android:paddingBottom="8dp">
 
     <Button
         android:id="@+id/btn_view_all_pro_horizon"
@@ -16,9 +16,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/colorRed"
         android:text="View All"
         android:textAllCaps="false"
-        android:backgroundTint="@color/colorRed"
         android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

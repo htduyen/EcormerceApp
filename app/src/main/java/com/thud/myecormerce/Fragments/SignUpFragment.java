@@ -80,7 +80,7 @@ public class SignUpFragment extends Fragment {
         edt_conform_pass = view.findViewById(R.id.edt_conform_pass_signup);
 
         //Settext mặc định
-        edt_username.setText("Thanh Duyen");
+        edt_username.setText("Thanh Duyen....");
         edt_email.setText("thanhduyen@gmail.com");
         edt_password.setText("123456");
         edt_conform_pass.setText("123456");
@@ -226,8 +226,9 @@ public class SignUpFragment extends Fragment {
                                                     });
                                         }
                                         else {
+                                            process.setVisibility(View.INVISIBLE);
                                             String error = task.getException().toString();
-                                            Toast.makeText(getActivity(), "Lỗi: " + error, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), "Tài khoản đã tồn tại!" ,Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
@@ -241,6 +242,7 @@ public class SignUpFragment extends Fragment {
                 }
                 else
                 {
+                    process.setVisibility(View.INVISIBLE);
                     edt_email.setError("Sai định dạng email");
                 }
             }

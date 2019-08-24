@@ -2,11 +2,11 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="4dp"
-    android:elevation="3dp"
-    android:background="@drawable/slider_main"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:layout_margin="4dp"
+    android:background="@drawable/slider_main"
+    android:elevation="3dp">
 
     <ImageView
         android:id="@+id/imv_pro_horizon"
@@ -23,22 +23,22 @@
 
     <TextView
         android:id="@+id/txt_name_pro_horizon"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="Name product"
-        android:textSize="12sp"
-        android:textColor="@color/colorBlack"
         android:textAlignment="center"
+        android:textColor="@color/colorBlack"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imv_pro_horizon" />
 
     <TextView
         android:id="@+id/txt_descr_pro_horizon"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
@@ -55,13 +55,15 @@
 
     <TextView
         android:id="@+id/txt_price_pro_horizon"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Price"
-        android:textSize="10sp"
         android:textAlignment="center"
+        android:textColor="@color/colorRed"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

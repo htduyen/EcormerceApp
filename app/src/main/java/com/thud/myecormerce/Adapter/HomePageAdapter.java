@@ -1,6 +1,7 @@
 package com.thud.myecormerce.Adapter;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.thud.myecormerce.Models.HomePageModel;
 import com.thud.myecormerce.Models.ProductHorizonModel;
 import com.thud.myecormerce.Models.SliderModel;
+import com.thud.myecormerce.Models.WishlistModel;
 import com.thud.myecormerce.R;
 import com.thud.myecormerce.View.ProductDetailActivity;
 import com.thud.myecormerce.View.ViewAllActivity;
@@ -96,15 +98,18 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 ((StripAdsViewHolder) viewHolder).setStripAds(resource,color);
                 break;
             case HomePageModel.HORIZONTAL_PRODUCT_VIEW:
+                String bg_color = homePageModelList.get(i).getBackgroundColor();
                 String horizontitle = homePageModelList.get(i).getTitle();
+                List<WishlistModel> wishlistViewAllModelList = homePageModelList.get(i).getWishlistViewAllModelList();
                 List<ProductHorizonModel> horizontalProductViewList = homePageModelList.get(i).getProductHorizonModelList();
-                ((HorizontalProductViewHolder) viewHolder).setHorizontalProductLayout(horizontalProductViewList, horizontitle);
+                ((HorizontalProductViewHolder) viewHolder).setHorizontalProductLayout(horizontalProductViewList, horizontitle, bg_color, wishlistViewAllModelList);
             case HomePageModel.GRID_PRODUCT_VIEW:
                 String gridtitle = homePageModelList.get(i).getTitle();
                 List<ProductHorizonModel> GridProductViewList = homePageModelList.get(i).getProductHorizonModelList();
-
+                String grid_color = homePageModelList.get(i).getBackgroundColor();
                 try{
-                    ((GridPoductViewHolder) viewHolder).setGridProductLayout(GridProductViewList, gridtitle);
+
+                    ((GridPoductViewHolder) viewHolder).setGridProductLayout(GridProductViewList, gridtitle, grid_color);
                 } catch (Exception ex){
                     Log.d("debug", "onBindViewHolder: " + ex);
                 }
@@ -147,7 +152,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             for(int x = 0; x < sliderModelList.size(); x++){
                 arrangeList.add(x, sliderModelList.get(x));
             }
-            Toast.makeText(itemView.getContext(), "Length: " + sliderModelList.size(), Toast.LENGTH_SHORT).show();
+  //          Toast.makeText(itemView.getContext(), "Length: " + sliderModelList.size(), Toast.LENGTH_SHORT).show();
             arrangeList.add(0, sliderModelList.get(sliderModelList.size() -2 ));
             arrangeList.add(1, sliderModelList.get(sliderModelList.size() -1 ));
             arrangeList.add(sliderModelList.get(0));
@@ -249,6 +254,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
     public class HorizontalProductViewHolder extends RecyclerView.ViewHolder{
 
+        private ConstraintLayout constraintLayout_horizon;
         private TextView txt_title_pro_horizon;
         private Button btn_viewall_pro_horizon;
         private RecyclerView recyclerView_pro_horizon;
@@ -258,19 +264,22 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             txt_title_pro_horizon = itemView.findViewById(R.id.txt_title_pro_horizon);
             btn_viewall_pro_horizon = itemView.findViewById(R.id.btn_view_all_pro_horizon);
             recyclerView_pro_horizon = itemView.findViewById(R.id.recyclerview_pro_horizon);
+            constraintLayout_horizon = itemView.findViewById(R.id.contrain_product_horizon);
             recyclerView_pro_horizon.setRecycledViewPool(recycledViewPool);
         }
-        private void setHorizontalProductLayout(List<ProductHorizonModel>  horizonModels, String title){
+        private void setHorizontalProductLayout(List<ProductHorizonModel>  horizonModels, final String title, String color, final List<WishlistModel> wishlistModelList){
 
             txt_title_pro_horizon.setText(title);
-
+            constraintLayout_horizon.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
             if(horizonModels.size() >= 8){
                 btn_viewall_pro_horizon.setVisibility(View.VISIBLE);
                 btn_viewall_pro_horizon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        ViewAllActivity.wishlistModelList = wishlistModelList;
                         Intent intentViewAll = new Intent(itemView.getContext(), ViewAllActivity.class);
                         intentViewAll.putExtra("view_all_code", 0);
+                        intentViewAll.putExtra("title_group",title);
                         itemView.getContext().startActivity(intentViewAll);
                     }
                 });
@@ -294,17 +303,21 @@ public class HomePageAdapter extends RecyclerView.Adapter {
         private TextView txt_title_grid_pro;
         private Button btn_viewall;
         private GridLayout gridLayout;
+        private ConstraintLayout constraintLayout_gridproduct;
 
         public GridPoductViewHolder(@NonNull View itemView) {
              super(itemView);
+
              txt_title_grid_pro = itemView.findViewById(R.id.txt_title_grid_product);
              btn_viewall = itemView.findViewById(R.id.btn_viewall_grid_product);
              gridLayout = itemView.findViewById(R.id.grid_layout);
+             constraintLayout_gridproduct = itemView.findViewById(R.id.contrain_grid_products);
         }
 
-        private void setGridProductLayout(List<ProductHorizonModel> horizonModelList, String title){
+        private void setGridProductLayout(final List<ProductHorizonModel> horizonModelList, final String title, String color){
 
             txt_title_grid_pro.setText(title);
+            constraintLayout_gridproduct.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
 
             for (int x = 0; x < 4; x++){
                 ImageView productImage = gridLayout.getChildAt(x).findViewById(R.id.imv_pro_horizon);
@@ -312,10 +325,11 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 TextView productDescription = gridLayout.getChildAt(x).findViewById(R.id.txt_descr_pro_horizon);
                 TextView productPrice = gridLayout.getChildAt(x).findViewById(R.id.txt_price_pro_horizon);
 
-                productImage.setImageResource(horizonModelList.get(x).getProductImv());
+                //productImage.setImageResource(horizonModelList.get(x).getProductImv());
+                Glide.with(itemView.getContext()).load(horizonModelList.get(x).getProductImv()).apply(new RequestOptions().placeholder(R.drawable.phone1)).into(productImage);
                 productName.setText(horizonModelList.get(x).getProductName());
                 productDescription.setText(horizonModelList.get(x).getProductDescription());
-                productPrice.setText(horizonModelList.get(x).getProductPrice());
+                productPrice.setText(horizonModelList.get(x).getProductPrice() + " Đ");
 
                 gridLayout.getChildAt(x).setBackgroundColor(Color.parseColor("#ffffff"));
                 gridLayout.getChildAt(x).setOnClickListener(new View.OnClickListener() {
@@ -333,8 +347,10 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             btn_viewall.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ViewAllActivity.productHorizonModelList = horizonModelList;
                     Intent intentViewAll = new Intent(itemView.getContext(), ViewAllActivity.class);
                     intentViewAll.putExtra("view_all_code", 1);
+                    intentViewAll.putExtra("group_product_title",title);
                     itemView.getContext().startActivity(intentViewAll);
 
                 }

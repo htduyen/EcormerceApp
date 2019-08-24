@@ -40,12 +40,12 @@ public class MyWishlistFragment extends Fragment {
         recyclerView_wishlist.setLayoutManager(linearLayoutManager);
 
         List<WishlistModel> wishlistModelList = new ArrayList<>();
-        wishlistModelList.add(new WishlistModel(R.drawable.phone1, "Iphone 1","4,000,000 Đ","5,000,000 Đ", 2,"Tiền mặt","4.5", 67));
-        wishlistModelList.add(new WishlistModel(R.drawable.phone2, "Iphone 2","4,000,000 Đ","5,000,000 Đ", 0,"Chuyển khoản","4.5", 27));
-        wishlistModelList.add(new WishlistModel(R.drawable.phone3, "Iphone 3","4,000,000 Đ","5,000,000 Đ", 2,"Tiền mặt","4.5", 27));
-        wishlistModelList.add(new WishlistModel(R.drawable.phone4, "Iphone 4","4,000,000 Đ","5,000,000 Đ", 3,"Trả góp","3.5", 32));
-        wishlistModelList.add(new WishlistModel(R.drawable.phone5, "Iphone 5","4,000,000 Đ","5,000,000 Đ", 1,"Tiền mặt","2.5", 34));
-        wishlistModelList.add(new WishlistModel(R.drawable.phone6, "Iphone 6","4,000,000 Đ","5,000,000 Đ", 5,"Chuyển khoản","4.0", 100));
+//        wishlistModelList.add(new WishlistModel(R.drawable.phone1, "Iphone 1","4,000,000 Đ","5,000,000 Đ", 2,"Tiền mặt","4.5", 67));
+//        wishlistModelList.add(new WishlistModel(R.drawable.phone2, "Iphone 2","4,000,000 Đ","5,000,000 Đ", 0,"Chuyển khoản","4.5", 27));
+//        wishlistModelList.add(new WishlistModel(R.drawable.phone3, "Iphone 3","4,000,000 Đ","5,000,000 Đ", 2,"Tiền mặt","4.5", 27));
+//        wishlistModelList.add(new WishlistModel(R.drawable.phone4, "Iphone 4","4,000,000 Đ","5,000,000 Đ", 3,"Trả góp","3.5", 32));
+//        wishlistModelList.add(new WishlistModel(R.drawable.phone5, "Iphone 5","4,000,000 Đ","5,000,000 Đ", 1,"Tiền mặt","2.5", 34));
+//        wishlistModelList.add(new WishlistModel(R.drawable.phone6, "Iphone 6","4,000,000 Đ","5,000,000 Đ", 5,"Chuyển khoản","4.0", 100));
 
         WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelList, true);
         recyclerView_wishlist.setAdapter(wishlistAdapter);
