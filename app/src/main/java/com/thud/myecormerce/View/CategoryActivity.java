@@ -19,9 +19,15 @@ import com.thud.myecormerce.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.thud.myecormerce.Presenter.DbQueries.listNameCategories;
+import static com.thud.myecormerce.Presenter.DbQueries.lists;
+import static com.thud.myecormerce.Presenter.DbQueries.setLayout;
+
 public class CategoryActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView_cate;
+    private HomePageAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +40,6 @@ public class CategoryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        recyclerView_cate = findViewById(R.id.recyclerview_cate_category);
 
         //Banner Slider
 //        List<SliderModel> sliderModelList = new ArrayList<SliderModel>();
@@ -72,19 +77,35 @@ public class CategoryActivity extends AppCompatActivity {
 
         //***************** Product Product ***********************
         //*****************RcuclerView Testing ********************
+        recyclerView_cate = findViewById(R.id.recyclerview_cate_category);
+
         LinearLayoutManager testingLinearlayout = new LinearLayoutManager(this);
+        testingLinearlayout.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView_cate.setLayoutManager(testingLinearlayout);
 
-        List<HomePageModel> homePageModelList = new ArrayList<>();
+ //       List<HomePageModel> homePageModelList = new ArrayList<>();
 //        homePageModelList.add(new HomePageModel(1, R.drawable.stript1,"#ffff00"));
 //        homePageModelList.add(new HomePageModel(0, sliderModelList));
 //        homePageModelList.add(new HomePageModel(2,"Sales Product", horizonModels));
 //        homePageModelList.add(new HomePageModel(3,"Phone Product", horizonModels));
 //        homePageModelList.add(new HomePageModel(3,"Shoes Product", horizonModels));
 //        homePageModelList.add(new HomePageModel(3,"Laptop Product", horizonModels));
+        int listposition = 0;
+        for (int x = 0; x < listNameCategories.size(); x++){
+            if(listNameCategories.get(x).equals(title.toUpperCase())){
+                listposition = x;
+            }
+        }
+        if (listposition == 0 ){
+            listNameCategories.add(title.toUpperCase());
+            lists.add(new ArrayList<HomePageModel>());
+            adapter = new HomePageAdapter(lists.get(listNameCategories.size() -1));
+            setLayout(adapter,this, listNameCategories.size() -1, title);
+        }
+        else {
+            adapter = new HomePageAdapter(lists.get(listposition));
+        }
 
-
-        HomePageAdapter adapter = new HomePageAdapter(homePageModelList);
         recyclerView_cate.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }

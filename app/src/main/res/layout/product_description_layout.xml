@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:elevation="3dp"
+    android:id="@+id/contrain_product_descriptions_tablayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:elevation="3dp">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_description_layoutout"
         android:layout_width="0dp"
-        android:background="@color/colorBlueDark"
-        app:tabTextColor="@color/colorWhiteplus"
-        app:tabSelectedTextColor="@color/colorWhite"
-        app:tabIndicatorColor="@color/colorRed"
         android:layout_height="wrap_content"
-        app:tabIndicatorHeight="2dp"
+        android:background="@color/colorBlueDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabIndicatorColor="@color/colorRed"
+        app:tabIndicatorHeight="2dp"
+        app:tabSelectedTextColor="@color/colorWhite"
+        app:tabTextColor="@color/colorWhiteplus">
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/content_viewpager_description_layout"
         android:layout_width="0dp"
-        android:layout_height="400dp"
+        android:layout_height="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"

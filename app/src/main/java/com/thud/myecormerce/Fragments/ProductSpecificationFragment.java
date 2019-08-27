@@ -14,9 +14,11 @@ import android.widget.Toast;
 import com.thud.myecormerce.Adapter.ProductSpecificationAdapter;
 import com.thud.myecormerce.Models.ProductSpecificationModel;
 import com.thud.myecormerce.R;
+import com.thud.myecormerce.View.ProductDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +32,8 @@ public class ProductSpecificationFragment extends Fragment {
         // Required empty public constructor
     }
     private RecyclerView productSpecification;
+    public List<ProductSpecificationModel> productSpecificationModelList;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,15 +48,15 @@ public class ProductSpecificationFragment extends Fragment {
 
         productSpecification.setLayoutManager(linearLayoutManager);
 
-        List<ProductSpecificationModel> productSpecificationModelList = new ArrayList<>();
-        productSpecificationModelList.add(new ProductSpecificationModel(0,"General"));
-        productSpecificationModelList.add(new ProductSpecificationModel(1,"ROM", "1T"));
-        productSpecificationModelList.add(new ProductSpecificationModel(1,"CPU", "8x"));
-        productSpecificationModelList.add(new ProductSpecificationModel(1,"Core", "i7"));
-        productSpecificationModelList.add(new ProductSpecificationModel(0,"Waranty"));
-        productSpecificationModelList.add(new ProductSpecificationModel(1,"ROM", "1T"));
-        productSpecificationModelList.add(new ProductSpecificationModel(1,"CPU", "8x"));
-        productSpecificationModelList.add(new ProductSpecificationModel(1,"Core", "i7"));
+        //productSpecificationModelList = new ArrayList<>();
+//        productSpecificationModelList.add(new ProductSpecificationModel(0,"General"));
+//        productSpecificationModelList.add(new ProductSpecificationModel(1,"ROM", "1T"));
+//        productSpecificationModelList.add(new ProductSpecificationModel(1,"CPU", "8x"));
+//        productSpecificationModelList.add(new ProductSpecificationModel(1,"Core", "i7"));
+//        productSpecificationModelList.add(new ProductSpecificationModel(0,"Waranty"));
+//        productSpecificationModelList.add(new ProductSpecificationModel(1,"ROM", "1T"));
+//        productSpecificationModelList.add(new ProductSpecificationModel(1,"CPU", "8x"));
+//        productSpecificationModelList.add(new ProductSpecificationModel(1,"Core", "i7"));
 
             ProductSpecificationAdapter adapter = new ProductSpecificationAdapter(productSpecificationModelList);
 

@@ -24,7 +24,9 @@ public class DbQueries {
 
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static List<CategoryModel> categoryModels = new ArrayList<>();
-    public static List<HomePageModel> homePageModelList = new ArrayList<>();
+
+    public static List<List<HomePageModel>> lists = new ArrayList<>();
+    public static List<String> listNameCategories = new ArrayList<>();
 
     public static void loadCategories(final CategoryAdapter categoryAdapter, final Context context){
 
@@ -47,27 +49,27 @@ public class DbQueries {
                 });
     }
 
-    public static void setLayout(final HomePageAdapter homePageAdapter, final Context context){
+    public static void setLayout(final HomePageAdapter homePageAdapter, final Context context, final int index, String cateName){
 
         firebaseFirestore.collection("CATEGORIES")
-                .document("HOME")
+                .document(cateName.toUpperCase())
                 .collection("TOP_DEALS").orderBy("index").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
                             for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                Toast.makeText(context, "Type: " + documentSnapshot.get("view_type"), Toast.LENGTH_SHORT).show();
                                 if((long)documentSnapshot.get("view_type") == 0){
                                     List<SliderModel> sliderModelList= new ArrayList<>();
                                     long num_slider =(long) documentSnapshot.get("no_of_banner");
                                     for(long x = 1; x < num_slider + 1; x++){
                                         sliderModelList.add(new SliderModel(documentSnapshot.get("banner"+ x).toString(),documentSnapshot.get("banner_bg_"+x).toString()));
                                     }
-                                    //Toast.makeText(getContext(), "Size: " + sliderModelList.size(), Toast.LENGTH_SHORT).show();
-                                    homePageModelList.add(new HomePageModel(0, sliderModelList));
+                                    lists.get(index).add(new HomePageModel(0, sliderModelList));
                                 }
                                 else if((long)documentSnapshot.get("view_type") == 1){
-                                    homePageModelList.add(new HomePageModel(1, documentSnapshot.get("strip_ads_img").toString(),documentSnapshot.get("background").toString()));
+                                    lists.get(index).add(new HomePageModel(1, documentSnapshot.get("strip_ads_img").toString(),documentSnapshot.get("background").toString()));
                                 }
                                 else if((long)documentSnapshot.get("view_type") == 2){
 
@@ -95,7 +97,7 @@ public class DbQueries {
                                                 (long)documentSnapshot.get("total_rating_" + x)));
                                     }
                                     //Toast.makeText(getContext(), "Size: " + sliderModelList.size(), Toast.LENGTH_SHORT).show();
-                                    homePageModelList.add(new HomePageModel(2, documentSnapshot.get("group_product_title").toString(),documentSnapshot.get("background_group_product").toString(), productHorizonModelList,wishlistViewAllModelList));
+                                    lists.get(index).add(new HomePageModel(2, documentSnapshot.get("group_product_title").toString(),documentSnapshot.get("background_group_product").toString(), productHorizonModelList,wishlistViewAllModelList));
 
                                 }
                                 else if((long)documentSnapshot.get("view_type") == 3){
@@ -111,7 +113,7 @@ public class DbQueries {
                                         ));
                                     }
                                     //Toast.makeText(getContext(), "Size: " + sliderModelList.size(), Toast.LENGTH_SHORT).show();
-                                    homePageModelList.add(new HomePageModel(3, documentSnapshot.get("group_product_title").toString(),documentSnapshot.get("background_group_product").toString(), gridProductList));
+                                    lists.get(index).add(new HomePageModel(3, documentSnapshot.get("group_product_title").toString(),documentSnapshot.get("background_group_product").toString(), gridProductList));
 
 
                                 }

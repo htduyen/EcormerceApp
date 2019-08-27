@@ -48,7 +48,8 @@ import java.util.TimerTask;
 
 import static com.thud.myecormerce.Presenter.DbQueries.categoryModels;
 import static com.thud.myecormerce.Presenter.DbQueries.firebaseFirestore;
-import static com.thud.myecormerce.Presenter.DbQueries.homePageModelList;
+import static com.thud.myecormerce.Presenter.DbQueries.listNameCategories;
+import static com.thud.myecormerce.Presenter.DbQueries.lists;
 import static com.thud.myecormerce.Presenter.DbQueries.loadCategories;
 import static com.thud.myecormerce.Presenter.DbQueries.setLayout;
 
@@ -101,16 +102,21 @@ public class HomeFragment extends Fragment {
 //        homePageModelList.add(new HomePageModel(3,"Phone Product", horizonModels));
 //        homePageModelList.add(new HomePageModel(3,"Shoes Product", horizonModels));
 //        homePageModelList.add(new HomePageModel(3,"Laptop Product", horizonModels));
-            homePageAdapter = new HomePageAdapter(homePageModelList);
-            recyclerViewHome.setAdapter(homePageAdapter);
 
-            if(homePageModelList.size() == 0){
-                setLayout(homePageAdapter,getContext());
+
+            if(lists.size() == 0){
+                listNameCategories.add("HOME");
+                lists.add(new ArrayList<HomePageModel>());
+                homePageAdapter = new HomePageAdapter(lists.get(0));
+                setLayout(homePageAdapter,getContext(), 0,"Home");
             }
             else {
                 //chu y
+                homePageAdapter = new HomePageAdapter(lists.get(0));
                 homePageAdapter.notifyDataSetChanged();
             }
+
+            recyclerViewHome.setAdapter(homePageAdapter);
         }
         else {
             Glide.with(this).load(R.drawable.no_wifi64).into(imv_noInternet);

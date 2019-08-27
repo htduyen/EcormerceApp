@@ -20,9 +20,9 @@
 
         <TextView
             android:id="@+id/txt_feature_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:text="Name filed"
             android:textColor="@color/colorBlack"
             android:textSize="13sp"
@@ -30,9 +30,9 @@
 
         <TextView
             android:id="@+id/txt_feature_value"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:text="500G RAM 16G"
             android:textColor="#494242"
             android:textSize="13sp" />
