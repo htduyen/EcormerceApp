@@ -44,11 +44,9 @@ public class ProductHorizonAdapter extends RecyclerView.Adapter<ProductHorizonAd
         String name = productHorizonModelList.get(i).getProductName();
         String descr = productHorizonModelList.get(i).getProductDescription();
         String price = productHorizonModelList.get(i).getProductPrice();
+        String product_id = productHorizonModelList.get(i).getProductID();
 
-        viewHolder.setImv_product(resource);
-        viewHolder.setTxt_descr(descr);
-        viewHolder.setTxt_name_pro(name);
-        viewHolder.setTxt_price(price);
+        viewHolder.setData(product_id, resource, name, descr, price);
     }
 
     @Override
@@ -77,28 +75,25 @@ public class ProductHorizonAdapter extends RecyclerView.Adapter<ProductHorizonAd
             txt_descr = itemView.findViewById(R.id.txt_descr_pro_horizon);
             txt_price = itemView.findViewById(R.id.txt_price_pro_horizon);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent_product_detail = new Intent(itemView.getContext(), ProductDetailActivity.class);
-    
-                    itemView.getContext().startActivity(intent_product_detail);
-                }
-            });
+
 
         }
-        private void setImv_product(String resource){
+        private void setData(final String product_id, String resource, String name, String descr, String price){
 //            imv_product.setImageResource(resource);
-            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.phone1)).into(imv_product);
-        }
-        private void setTxt_name_pro(String name){
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.image_place)).into(imv_product);
             txt_name_pro.setText(name);
-        }
-        private void setTxt_descr(String descr){
             txt_descr.setText(descr);
-        }
-        private void setTxt_price(String price){
             txt_price.setText(price+ " Đ");
+            if(!name.equals("")) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent_product_detail = new Intent(itemView.getContext(), ProductDetailActivity.class);
+                        intent_product_detail.putExtra("PRODUCT_ID", product_id);
+                        itemView.getContext().startActivity(intent_product_detail);
+                    }
+                });
+            }
         }
     }
 }

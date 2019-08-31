@@ -30,6 +30,8 @@ import com.thud.myecormerce.R;
 import com.thud.myecormerce.View.MainActivity;
 import com.thud.myecormerce.View.RegisterActivity;
 
+
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -47,6 +49,7 @@ public class SignInFragment extends Fragment {
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 
     private FirebaseAuth firebaseAuth;
+    public static boolean disibleCloseBtn = false;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -70,6 +73,13 @@ public class SignInFragment extends Fragment {
         btn_signin = view.findViewById(R.id.btn_signin_signin);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        if(disibleCloseBtn){
+            btn_close_signin.setVisibility(View.GONE);
+        }
+        else
+        {
+            btn_close_signin.setVisibility(View.VISIBLE);
+        }
         return  view;
     }
 
@@ -170,8 +180,13 @@ public class SignInFragment extends Fragment {
     }
 
     private void MainIntent() {
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
+        if (disibleCloseBtn){
+            disibleCloseBtn = false;
+        }
+        else {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+        }
         getActivity().finish();
     }
 

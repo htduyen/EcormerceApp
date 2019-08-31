@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -40,6 +42,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
     private List<HomePageModel> homePageModelList;
     private  RecyclerView.RecycledViewPool recycledViewPool;
+    private int lastposition = -1;
 
     //Tao constructor
     public HomePageAdapter(List<HomePageModel> homePageModelList) {
@@ -117,6 +120,11 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
             default:
                 return;
+        }
+        if(lastposition < i) {
+            Animation animation = AnimationUtils.loadAnimation(viewHolder.itemView.getContext(), R.anim.fade_in);
+            viewHolder.itemView.setAnimation(animation);
+            lastposition = i;
         }
     }
 
@@ -246,7 +254,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
         }
 
         private void setStripAds(String resource, String color){
-            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.home)).into(imv_strip_ads);
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.banner_place)).into(imv_strip_ads);
 //            imv_strip_ads.setImageResource(resource);
               strip_constrain.setBackgroundColor(Color.parseColor(color));
         }
@@ -326,35 +334,39 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 TextView productPrice = gridLayout.getChildAt(x).findViewById(R.id.txt_price_pro_horizon);
 
                 //productImage.setImageResource(horizonModelList.get(x).getProductImv());
-                Glide.with(itemView.getContext()).load(horizonModelList.get(x).getProductImv()).apply(new RequestOptions().placeholder(R.drawable.phone1)).into(productImage);
+                Glide.with(itemView.getContext()).load(horizonModelList.get(x).getProductImv()).apply(new RequestOptions().placeholder(R.drawable.image_place)).into(productImage);
                 productName.setText(horizonModelList.get(x).getProductName());
                 productDescription.setText(horizonModelList.get(x).getProductDescription());
                 productPrice.setText(horizonModelList.get(x).getProductPrice() + " Đ");
 
                 gridLayout.getChildAt(x).setBackgroundColor(Color.parseColor("#ffffff"));
-                gridLayout.getChildAt(x).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intentProductDetail = new Intent(itemView.getContext(), ProductDetailActivity.class);
-                        itemView.getContext().startActivity(intentProductDetail);
-                    }
-                });
-
+                if(!title.equals("")) {
+                    final int finalx = x;
+                    gridLayout.getChildAt(x).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intentProductDetail = new Intent(itemView.getContext(), ProductDetailActivity.class);
+                            intentProductDetail.putExtra("PRODUCT_ID", horizonModelList.get(finalx).getProductID());
+                            itemView.getContext().startActivity(intentProductDetail);
+                        }
+                    });
+                }
             }
             //GridProductAdapter gridProductAdapter = new GridProductAdapter(horizonModelList);
 
+            if(!title.equals("")) {
+                btn_viewall.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ViewAllActivity.productHorizonModelList = horizonModelList;
+                        Intent intentViewAll = new Intent(itemView.getContext(), ViewAllActivity.class);
+                        intentViewAll.putExtra("view_all_code", 1);
+                        intentViewAll.putExtra("group_product_title", title);
+                        itemView.getContext().startActivity(intentViewAll);
 
-            btn_viewall.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ViewAllActivity.productHorizonModelList = horizonModelList;
-                    Intent intentViewAll = new Intent(itemView.getContext(), ViewAllActivity.class);
-                    intentViewAll.putExtra("view_all_code", 1);
-                    intentViewAll.putExtra("group_product_title",title);
-                    itemView.getContext().startActivity(intentViewAll);
-
-                }
-            });
+                    }
+                });
+            }
         }
     }
 }

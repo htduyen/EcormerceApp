@@ -36,7 +36,7 @@ public class SliderAdapter extends PagerAdapter {
 
         ImageView imageView = view.findViewById(R.id.imv_slider_main_layout);
         //Sudung Glide
-        Glide.with(container.getContext()).load(sliderModelList.get(position).getBanner()).apply(new RequestOptions().placeholder(R.drawable.home)).into(imageView);
+        Glide.with(container.getContext()).load(sliderModelList.get(position).getBanner()).apply(new RequestOptions().placeholder(R.drawable.banner_place)).into(imageView);
         //Su setImageResource
         //imageView.setImageResource(sliderModelList.get(position).getBanner());
         container.addView(view,0);

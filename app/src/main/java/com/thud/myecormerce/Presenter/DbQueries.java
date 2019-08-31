@@ -1,16 +1,23 @@
 package com.thud.myecormerce.Presenter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.thud.myecormerce.Adapter.CategoryAdapter;
 import com.thud.myecormerce.Adapter.HomePageAdapter;
+import com.thud.myecormerce.Fragments.HomeFragment;
 import com.thud.myecormerce.Models.CategoryModel;
 import com.thud.myecormerce.Models.HomePageModel;
 import com.thud.myecormerce.Models.ProductHorizonModel;
@@ -22,13 +29,17 @@ import java.util.List;
 
 public class DbQueries {
 
+//    public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+//    public static FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static List<CategoryModel> categoryModels = new ArrayList<>();
 
     public static List<List<HomePageModel>> lists = new ArrayList<>();
     public static List<String> listNameCategories = new ArrayList<>();
+    public static List<String> id_wishlist = new ArrayList<>();
 
-    public static void loadCategories(final CategoryAdapter categoryAdapter, final Context context){
+    public static void loadCategories(final RecyclerView recyclerView_Cate, final Context context){
 
         firebaseFirestore.collection("CATEGORIES").orderBy("index").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -39,6 +50,8 @@ public class DbQueries {
                                 categoryModels.add(new CategoryModel(documentSnapshot.get("CateIcon").toString(),documentSnapshot.get("CateName").toString()));
                             }
                             //Luu vao adapter
+                            CategoryAdapter categoryAdapter = new CategoryAdapter(categoryModels);
+                            recyclerView_Cate.setAdapter(categoryAdapter);
                             categoryAdapter.notifyDataSetChanged();
                         }
                         else {
@@ -49,7 +62,7 @@ public class DbQueries {
                 });
     }
 
-    public static void setLayout(final HomePageAdapter homePageAdapter, final Context context, final int index, String cateName){
+    public static void setLayout(final RecyclerView recyclerViewHomePage, final Context context, final int index, String cateName){
 
         firebaseFirestore.collection("CATEGORIES")
                 .document(cateName.toUpperCase())
@@ -59,7 +72,7 @@ public class DbQueries {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
                             for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                                Toast.makeText(context, "Type: " + documentSnapshot.get("view_type"), Toast.LENGTH_SHORT).show();
+ //                               Toast.makeText(context, "Type: " + documentSnapshot.get("view_type"), Toast.LENGTH_SHORT).show();
                                 if((long)documentSnapshot.get("view_type") == 0){
                                     List<SliderModel> sliderModelList= new ArrayList<>();
                                     long num_slider =(long) documentSnapshot.get("no_of_banner");
@@ -119,7 +132,10 @@ public class DbQueries {
                                 }
                             }
                             //Luu vao adapter
+                            HomePageAdapter homePageAdapter = new HomePageAdapter(lists.get(index));
+                            recyclerViewHomePage.setAdapter(homePageAdapter);
                             homePageAdapter.notifyDataSetChanged();
+                            HomeFragment.swipeRefreshLayout.setRefreshing(false);
                         }
                         else {
                             String message = task.getException().getMessage();
@@ -128,5 +144,24 @@ public class DbQueries {
                     }
                 });
 
+    }
+
+    public static void loadWishlist(final Context context, final Dialog dialog){
+        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_WISHLIST")
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    for (long x = 0; x < (long)task.getResult().get("list_size"); x++){
+                        id_wishlist.add(task.getResult().get("product_id_"+ x).toString());
+                    }
+                }
+                else {
+                    String error = task.getException().getMessage();
+                    Toast.makeText(context, "Error: " + error, Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+            }
+        });
     }
 }

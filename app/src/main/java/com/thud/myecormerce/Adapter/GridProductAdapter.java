@@ -45,7 +45,7 @@ public class GridProductAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, final View convertView, final ViewGroup parent) {
+    public View getView(final int position, final View convertView, final ViewGroup parent) {
         View view;
         if(convertView == null ){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_horizon_item_layout, null);
@@ -54,6 +54,9 @@ public class GridProductAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     Intent productdetailintent = new Intent(parent.getContext(), ProductDetailActivity.class);
+                    productdetailintent.putExtra("PRODUCT_ID", productHorizonModelList.get(position).getProductID());
+                    String id = productHorizonModelList.get(position).getProductID();
+
                     parent.getContext().startActivity(productdetailintent);
                 }
             });
@@ -63,7 +66,7 @@ public class GridProductAdapter extends BaseAdapter {
             TextView txt_price = view.findViewById(R.id.txt_price_pro_horizon);
 
 //            imv_product.setImageResource(productHorizonModelList.get(position).getProductImv());
-            Glide.with(parent.getContext()).load(productHorizonModelList.get(position).getProductImv()).apply(new RequestOptions().placeholder(R.drawable.phone1)).into(imv_product);
+            Glide.with(parent.getContext()).load(productHorizonModelList.get(position).getProductImv()).apply(new RequestOptions().placeholder(R.drawable.image_place)).into(imv_product);
             txt_name.setText(productHorizonModelList.get(position).getProductName());
             txt_descr.setText(productHorizonModelList.get(position).getProductDescription());
             txt_price.setText(productHorizonModelList.get(position).getProductPrice()+" Đ");

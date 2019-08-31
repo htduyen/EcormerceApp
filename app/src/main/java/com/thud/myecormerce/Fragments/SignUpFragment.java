@@ -54,6 +54,7 @@ public class SignUpFragment extends Fragment {
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private String username, email, password, conform_pass;
 
+    public static boolean disableCloseBtn = false;
     //private Fibabase
 
     public SignUpFragment() {
@@ -92,6 +93,15 @@ public class SignUpFragment extends Fragment {
         email = edt_email.getText().toString();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
+
+        if(disableCloseBtn){
+            btn_close.setVisibility(View.GONE);
+        }
+        else
+        {
+            btn_close.setVisibility(View.VISIBLE);
+        }
+
         return  view;
     }
 
@@ -206,14 +216,31 @@ public class SignUpFragment extends Fragment {
                                             Map<Object, String> userData = new HashMap<>();
                                             userData.put("username", username);
                                             //Toast.makeText(getActivity(), "Username: " + username, Toast.LENGTH_SHORT).show();
-                                            firebaseFirestore.collection("USERS")
-                                                    .add(userData)
-                                                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                            firebaseFirestore.collection("USERS").document(firebaseAuth.getUid())
+                                                    .set(userData)
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
-                                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                        public void onComplete(@NonNull Task<Void> task) {
                                                             if (task.isSuccessful()){
+                                                                Map<String, Object> list_size = new HashMap<>();
+                                                                list_size.put("list_size", (long) 0);
+
+                                                                firebaseFirestore.collection("USERS").document(firebaseAuth.getUid()).collection("USER_DATA").document("MY_WISHLIST").set(list_size).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if(task.isSuccessful()){
+                                                                            MainIntent();
+                                                                        }
+                                                                        else {
+                                                                            process.setVisibility(View.INVISIBLE);
+                                                                            btn_signup.setEnabled(true);
+                                                                            String error = task.getException().getMessage();
+                                                                            Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                    }
+                                                                });
                                                                 Toast.makeText(getActivity(), "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                                                                MainIntent();
+
                                                             }
                                                             else
                                                             {
@@ -251,8 +278,13 @@ public class SignUpFragment extends Fragment {
     }
 
     private void MainIntent() {
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
+        if (disableCloseBtn){
+            disableCloseBtn = false;
+        }
+        else {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+        }
         getActivity().finish();
     }
 

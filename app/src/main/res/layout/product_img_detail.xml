@@ -161,38 +161,41 @@
         app:layout_constraintTop_toBottomOf="@+id/imv_cod_full_detail" />
 
     <LinearLayout
+        android:id="@+id/linear_check_discount"
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:layout_marginTop="8dp"
-        android:orientation="horizontal"
         android:background="#f73b3b"
+        android:gravity="right"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        android:gravity="right"
         app:layout_constraintTop_toBottomOf="@+id/txt_product_new_price_detail">
+
         <TextView
+            android:id="@+id/txt_redemption_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txt_redemption_detail"
             android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:gravity="left"
-            android:layout_marginLeft="20dp"
-            android:textColor="@color/colorWhite"
-            android:text="Check if if you have sale bill"/>
+            android:text="Check if if you have sale bill"
+            android:textColor="@color/colorWhite" />
+
         <Button
+            android:id="@+id/btn_redemption_detail"
             android:layout_width="85dp"
             android:layout_height="30dp"
-            android:id="@+id/btn_redemption_detail"
             android:layout_gravity="center"
-            android:textAllCaps="false"
             android:layout_marginRight="10dp"
-            android:padding="3dp"
-            android:textColor="@color/colorWhite"
             android:background="@drawable/button_radius_border"
+            android:padding="3dp"
+            android:text="Check price"
+            android:textAllCaps="false"
 
-            android:text="Check price"/>
+            android:textColor="@color/colorWhite" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
