@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.thud.myecormerce.Models.WishlistModel;
+import com.thud.myecormerce.Presenter.DbQueries;
 import com.thud.myecormerce.R;
 import com.thud.myecormerce.View.ProductDetailActivity;
 
@@ -22,6 +25,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
     private List<WishlistModel> wishlistModelList;
     private Boolean wishlist;
+    private int lastposition = -1;
 
     public WishlistAdapter(List<WishlistModel> wishlistModelList, Boolean wishlist) {
         this.wishlistModelList = wishlistModelList;
@@ -38,6 +42,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull WishlistAdapter.ViewHolder viewHolder, int i) {
+        String productID = wishlistModelList.get(i).getProduct_id();
         String resource = wishlistModelList.get(i).getProductImage();
         String name = wishlistModelList.get(i).getProductName();
         String price = wishlistModelList.get(i).getProductPrice();
@@ -47,7 +52,13 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         String rating = wishlistModelList.get(i).getRating();
         long totalRating = wishlistModelList.get(i).getTotalRating();
 
-        viewHolder.setData(resource,name,price,freeDiscount,rating, totalRating,cuttedPrice,payment);
+        viewHolder.setData(productID,resource,name,price,freeDiscount,rating, totalRating,cuttedPrice,payment,i);
+
+        if(lastposition < i) {
+            Animation animation = AnimationUtils.loadAnimation(viewHolder.itemView.getContext(), R.anim.fade_in);
+            viewHolder.itemView.setAnimation(animation);
+            lastposition = i;
+        }
     }
 
     @Override
@@ -84,13 +95,13 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             horizon_cutted = itemView.findViewById(R.id.horizon_cutted_price_wishlist);
 
         }
-        private  void setData(String resource, String name, String price, long discountNo, String averageRate, long totalRating, String cutted_price, boolean paymentMethod){
+        private  void setData(final String productID, String resource, String name, String price, long discountNo, String averageRate, long totalRating, String cutted_price, boolean paymentMethod, final int index){
 
 //            productImage.setImageResource(resource);
-            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.home)).into(productImage);
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.image_place)).into(productImage);
             productName.setText(name);
             productPrice.setText(price + " Đ");
-            productCuttedPrice.setText(cutted_price);
+            productCuttedPrice.setText(cutted_price + " Đ");
             if(discountNo != 0){
                 productIconDiscount.setVisibility(View.VISIBLE);
                 productDiscount.setText("Giảm " + discountNo + " %");
@@ -114,7 +125,10 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                 productDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(itemView.getContext(), "Delete", Toast.LENGTH_SHORT).show();
+                        if(!ProductDetailActivity.wishlist_running) {
+                            ProductDetailActivity.wishlist_running = true;
+                            DbQueries.removeFromWishList(index, itemView.getContext());
+                        }
                     }
                 });
             }
@@ -127,6 +141,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                 public void onClick(View v) {
                     Intent intentProduct = new Intent(itemView.getContext(), ProductDetailActivity.class);
                     //ma cua product
+                    intentProduct.putExtra("PRODUCT_ID", productID);
                     itemView.getContext().startActivity(intentProduct);
                 }
             });

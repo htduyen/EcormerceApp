@@ -37,6 +37,7 @@ import com.thud.myecormerce.Fragments.MyRewardFragment;
 import com.thud.myecormerce.Fragments.MyWishlistFragment;
 import com.thud.myecormerce.Fragments.SignInFragment;
 import com.thud.myecormerce.Fragments.SignUpFragment;
+import com.thud.myecormerce.Presenter.DbQueries;
 import com.thud.myecormerce.R;
 
 public class MainActivity extends AppCompatActivity
@@ -259,6 +260,7 @@ public class MainActivity extends AppCompatActivity
 
             } else if (id == R.id.nav_logout) {
                 FirebaseAuth.getInstance().signOut();
+                DbQueries.clearData();
                 Intent intentRegis = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(intentRegis);
                 finish();

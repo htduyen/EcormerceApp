@@ -26,12 +26,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.thud.myecormerce.R;
 import com.thud.myecormerce.View.MainActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -222,23 +225,44 @@ public class SignUpFragment extends Fragment {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if (task.isSuccessful()){
-                                                                Map<String, Object> list_size = new HashMap<>();
-                                                                list_size.put("list_size", (long) 0);
 
-                                                                firebaseFirestore.collection("USERS").document(firebaseAuth.getUid()).collection("USER_DATA").document("MY_WISHLIST").set(list_size).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                        if(task.isSuccessful()){
-                                                                            MainIntent();
+                                                                CollectionReference userDataReference =  firebaseFirestore.collection("USERS").document(firebaseAuth.getUid()).collection("USER_DATA");
+
+                                                                final List<String> documentName = new ArrayList<>();
+                                                                documentName.add("MY_WISHLIST");
+                                                                documentName.add("MY_RATTING");
+
+                                                                Map<String, Object> wislistMap = new HashMap<>();
+                                                                wislistMap.put("list_size", (long) 0);
+
+                                                                Map<String, Object> rattingMap = new HashMap<>();
+                                                                rattingMap.put("list_size", (long) 0);
+
+
+                                                                List<Map<String, Object>> documentField= new ArrayList<>();
+                                                                documentField.add(wislistMap);
+                                                                documentField.add(rattingMap);
+
+                                                                for(int x = 0; x <documentName.size(); x++){
+                                                                    final int finalX = x;
+                                                                    userDataReference.document(documentName.get(x)).set(documentField.get(x)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if(task.isSuccessful()){
+                                                                                if(finalX == documentName.size() -1) {
+                                                                                    MainIntent();
+                                                                                }
+                                                                            }
+                                                                            else {
+                                                                                process.setVisibility(View.INVISIBLE);
+                                                                                btn_signup.setEnabled(true);
+                                                                                String error = task.getException().getMessage();
+                                                                                Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
+                                                                            }
                                                                         }
-                                                                        else {
-                                                                            process.setVisibility(View.INVISIBLE);
-                                                                            btn_signup.setEnabled(true);
-                                                                            String error = task.getException().getMessage();
-                                                                            Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
-                                                                        }
-                                                                    }
-                                                                });
+                                                                    });
+                                                                }
+
                                                                 Toast.makeText(getActivity(), "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
 
                                                             }

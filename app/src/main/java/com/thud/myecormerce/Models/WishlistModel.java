@@ -10,8 +10,10 @@ public class WishlistModel {
     private boolean paymentMethod;
     private String rating;
     private long totalRating;
+    private String product_id;
 
-    public WishlistModel(String productImage, String productName, String productPrice, String productCuttedPrice, long freeDiscount, boolean paymentMethod, String rating, long totalRating) {
+    public WishlistModel(String product_id, String productImage, String productName, String productPrice, String productCuttedPrice, long freeDiscount, boolean paymentMethod, String rating, long totalRating) {
+       this.product_id = product_id;
         this.productImage = productImage;
         this.productName = productName;
         this.productPrice = productPrice;
@@ -20,6 +22,14 @@ public class WishlistModel {
         this.paymentMethod = paymentMethod;
         this.rating = rating;
         this.totalRating = totalRating;
+    }
+
+    public String getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(String product_id) {
+        this.product_id = product_id;
     }
 
     public String getProductImage() {
