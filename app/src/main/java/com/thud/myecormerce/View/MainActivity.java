@@ -1,5 +1,6 @@
 package com.thud.myecormerce.View;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -24,6 +26,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -50,6 +53,9 @@ public class MainActivity extends AppCompatActivity
     private static final int MYREWARD_FRAGMENT = 4;
     private static final int MYACCOUNT_FRAGMENT = 5;
     public static Boolean SHOW_CART = false;
+    public static Activity mainActivity;
+
+    private TextView badget_count;
 
     private int currentFragment = -1;
     private NavigationView navigationView;
@@ -58,6 +64,8 @@ public class MainActivity extends AppCompatActivity
     private Window window;
     private Toolbar toolbar;
     private Dialog signin_dialog;
+    private int scrollFlat;
+    private AppBarLayout.LayoutParams params;
     public static DrawerLayout drawer;
 
     private FirebaseUser currentUser;
@@ -69,6 +77,9 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         actionBar_logo = findViewById(R.id.actionbar_logo);
         setSupportActionBar(toolbar);
+
+        params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        scrollFlat = params.getScrollFlags();
 
         window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -82,6 +93,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.getMenu().getItem(0).setChecked(true);
 
         if(SHOW_CART){
+            mainActivity = this;
             drawer.setDrawerLockMode(1);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             toFragment("Giỏ Hàng", new CartFragment(), -2);
@@ -135,7 +147,7 @@ public class MainActivity extends AppCompatActivity
         else {
             navigationView.getMenu().getItem(navigationView.getMenu().size() -1).setEnabled(true);
         }
-
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -151,6 +163,7 @@ public class MainActivity extends AppCompatActivity
             else {
 
                     if(SHOW_CART){
+                        mainActivity = null;
                         SHOW_CART = false;
                         finish();
                     }
@@ -175,7 +188,39 @@ public class MainActivity extends AppCompatActivity
         if(currentFragment == HOME_FRAGMENT){
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getMenuInflater().inflate(R.menu.main, menu);
-        }
+
+            MenuItem cartItem = menu.findItem(R.id.icon_shopping_cart);
+
+                cartItem.setActionView(R.layout.badge_layout);
+                ImageView cart_icon = cartItem.getActionView().findViewById(R.id.imv_badge_icon_cart);
+                cart_icon.setImageResource(R.drawable.shopping_cart);
+                badget_count = cartItem.getActionView().findViewById(R.id.txt_badge_count);
+                if(currentUser != null) {
+                    if (DbQueries.cartlist.size() == 0) {
+                        DbQueries.loadCartList(MainActivity.this, new Dialog(MainActivity.this), false, badget_count, new TextView(MainActivity.this));
+                    }
+                    else {
+                        badget_count.setVisibility(View.VISIBLE);
+                        if(DbQueries.cartlist.size() < 99){
+                            badget_count.setText(String.valueOf(DbQueries.cartlist.size()));
+                        }
+                        else {
+                            badget_count.setText("99+");
+                        }
+                    }
+                }
+                cartItem.getActionView().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(currentUser == null) {
+                            signin_dialog.show();
+                        }
+                        else {
+                            toFragment("Giỏ hàng", new CartFragment(), CART_FRAGMENT);
+                        }
+                    }
+                });
+            }
         return true;
     }
 
@@ -204,6 +249,7 @@ public class MainActivity extends AppCompatActivity
             }
             return true;
         }else if(id == android.R.id.home){
+            mainActivity = null;
             SHOW_CART = false;
             finish();
             return true;
@@ -220,56 +266,59 @@ public class MainActivity extends AppCompatActivity
 
         invalidateOptionsMenu();
         setFragment(fragment, numFragment);
-        if(numFragment == CART_FRAGMENT){
+        if(numFragment == CART_FRAGMENT || SHOW_CART){
             navigationView.getMenu().getItem(3).setChecked(true);
-
+            params.setScrollFlags(0);
+        }
+        else {
+            params.setScrollFlags(scrollFlat);
         }
         if(numFragment == MYORDER_FRAGMENT) {
             navigationView.getMenu().getItem(1).setChecked(true);
         }
-        else
-         {
-
-         }
     }
 
+    MenuItem menuItem;
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(final MenuItem item) {
         // Handle navigation view item clicks here.
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        menuItem = item;
         if(currentUser != null) {
-            int id = item.getItemId();
+            drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                @Override
+                public void onDrawerClosed(View drawerView) {
+                    super.onDrawerClosed(drawerView);
+                    int id = menuItem.getItemId();
+                    if (id == R.id.nav_home) {
+                        actionBar_logo.setVisibility(View.VISIBLE);
+                        invalidateOptionsMenu();
+                        setFragment(new HomeFragment(), HOME_FRAGMENT);
+                    } else if (id == R.id.nav_my_order) {
+                        toFragment("Đơn mua", new MyOrderFragment(), MYORDER_FRAGMENT);
+                    } else if (id == R.id.nav_my_reward) {
+                        toFragment("Danh sách yêu thích", new MyRewardFragment(), MYREWARD_FRAGMENT);
+                    } else if (id == R.id.nav_my_cart) {
+                        toFragment("Giỏ hàng", new CartFragment(), CART_FRAGMENT);
+                    } else if (id == R.id.nav_my_account) {
+                        toFragment("Hồ Sơ", new MyAccountFragment(), MYACCOUNT_FRAGMENT);
+                    } else if (id == R.id.nav_my_wishlist) {
+                        toFragment("Danh sách mong muốn", new MyWishlistFragment(), MYWISHLIST_FRAGMENT);
+                    } else if (id == R.id.nav_setting) {
 
-            if (id == R.id.nav_home) {
-
-                actionBar_logo.setVisibility(View.VISIBLE);
-                invalidateOptionsMenu();
-                setFragment(new HomeFragment(), HOME_FRAGMENT);
-            } else if (id == R.id.nav_my_order) {
-                toFragment("Đơn mua", new MyOrderFragment(), MYORDER_FRAGMENT);
-            } else if (id == R.id.nav_my_reward) {
-                toFragment("Danh sách yêu thích", new MyRewardFragment(), MYREWARD_FRAGMENT);
-            } else if (id == R.id.nav_my_cart) {
-                toFragment("Giỏ hàng", new CartFragment(), CART_FRAGMENT);
-            } else if (id == R.id.nav_my_account) {
-                toFragment("Hồ Sơ", new MyAccountFragment(), MYACCOUNT_FRAGMENT);
-            } else if (id == R.id.nav_my_wishlist) {
-                toFragment("Danh sách mong muốn", new MyWishlistFragment(), MYWISHLIST_FRAGMENT);
-            } else if (id == R.id.nav_setting) {
-
-            } else if (id == R.id.nav_logout) {
-                FirebaseAuth.getInstance().signOut();
-                DbQueries.clearData();
-                Intent intentRegis = new Intent(MainActivity.this, RegisterActivity.class);
-                startActivity(intentRegis);
-                finish();
-            }
-            drawer.closeDrawer(GravityCompat.START);
+                    } else if (id == R.id.nav_logout) {
+                        FirebaseAuth.getInstance().signOut();
+                        DbQueries.clearData();
+                        Intent intentRegis = new Intent(MainActivity.this, RegisterActivity.class);
+                        startActivity(intentRegis);
+                        finish();
+                    }
+                }
+            });
             return true;
-        }
-        else {
-            drawer.closeDrawer(GravityCompat.START);
+        }else {
             signin_dialog.show();
             return false;
         }

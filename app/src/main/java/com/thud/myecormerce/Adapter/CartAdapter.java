@@ -1,27 +1,44 @@
 package com.thud.myecormerce.Adapter;
 
 import android.app.Dialog;
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.thud.myecormerce.Fragments.CartFragment;
 import com.thud.myecormerce.Models.CartItemModel;
+import com.thud.myecormerce.Presenter.DbQueries;
 import com.thud.myecormerce.R;
+import com.thud.myecormerce.View.ProductDetailActivity;
 
 import java.util.List;
 
 public class CartAdapter extends RecyclerView.Adapter {
 
     private List<CartItemModel> cartItemModelList;
+    private int lastposition = -1;
+    private TextView totalCartAmount;
+    private boolean showBtnDelete;
 
-    public CartAdapter(List<CartItemModel> cartItemModelList) {
+
+    public CartAdapter(List<CartItemModel> cartItemModelList, TextView totalCartAmount, boolean showBtnDelete) {
         this.cartItemModelList = cartItemModelList;
+        this.totalCartAmount = totalCartAmount;
+        this.showBtnDelete = showBtnDelete;
     }
 
     @Override
@@ -58,27 +75,51 @@ public class CartAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         switch (cartItemModelList.get(position).getType()){
             case CartItemModel.CART_ITEM:
-                int resource = cartItemModelList.get(position).getProductImage();
+                String product_id = cartItemModelList.get(position).getProduct_id();
+                String resource = cartItemModelList.get(position).getProductImage();
                 String name = cartItemModelList.get(position).getProductName();
                 String price = cartItemModelList.get(position).getProductPrice();
                 String cuttedprice = cartItemModelList.get(position).getCuttedProductPrice();
-                int freeDiscount = cartItemModelList.get(position).getFreeDiscount();
-                int offerAplied = cartItemModelList.get(position).getOfferAplied();
+                Long freeDiscount = cartItemModelList.get(position).getFreeDiscount();
+                Long offerAplied = cartItemModelList.get(position).getOfferAplied();
+                boolean instock = cartItemModelList.get(position).isInstock();
 
-                ((CartItemViewHolder) viewHolder).setCartDetail(resource,name,freeDiscount,price,cuttedprice,offerAplied);
+                ((CartItemViewHolder) viewHolder).setCartDetail(product_id,resource,name,freeDiscount,price,cuttedprice,offerAplied, position, instock);
                 break;
             case CartItemModel.TOTAL_AMOUNT:
-                String totalItems = cartItemModelList.get(position).getTotalItems();
-                String totalItemsPrice = cartItemModelList.get(position).getTotalItemsPrice();
-                String dilivery = cartItemModelList.get(position).getPhi_chuyen_hang();
-                String totalAmount = cartItemModelList.get(position).getTotalAmount();
-                String saveAmount = cartItemModelList.get(position).getTiet_kiem_duoc();
+
+                int totalItems = 0;
+                int totalItemsPrice = 0;
+                String dilivery;
+                int totalAmount;
+                int  saveAmount = 0;
+
+                for (int x = 0; x< cartItemModelList.size(); x++){
+                    if(cartItemModelList.get(x).getType() == CartItemModel.CART_ITEM && cartItemModelList.get(x).isInstock()){
+                        totalItems++;
+                        totalItemsPrice = totalItemsPrice + Integer.parseInt(cartItemModelList.get(x).getProductPrice());
+
+                    }
+                }
+                if(totalItemsPrice < 1000000){
+                    dilivery = "Free ship";
+                    totalAmount = totalItemsPrice;
+                }
+                else {
+                    dilivery = "40000";
+                    totalAmount = totalItemsPrice + 40000;
+                }
 
                 ((CartTotalAmountViewHolder) viewHolder).setTotalAmount(totalItems,totalItemsPrice,dilivery, totalAmount, saveAmount);
 
                 break;
             default:
                 return;
+        }
+        if(lastposition < position) {
+            Animation animation = AnimationUtils.loadAnimation(viewHolder.itemView.getContext(), R.anim.fade_in);
+            viewHolder.itemView.setAnimation(animation);
+            lastposition = position;
         }
     }
 
@@ -98,6 +139,9 @@ public class CartAdapter extends RecyclerView.Adapter {
         private TextView productOfferAplied;
         private TextView productDiscountAplied;
         private TextView productQuantity;
+        private LinearLayout remove_item_cart_btn;
+        private LinearLayout linear_discount_cart_item;
+
 
         public CartItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,64 +154,105 @@ public class CartAdapter extends RecyclerView.Adapter {
             productDiscountAplied = itemView.findViewById(R.id.txt_discounted_cart_item);
             productOfferAplied = itemView.findViewById(R.id.txt_offer_applied_cart_item);
             productQuantity = itemView.findViewById(R.id.txt_quantity_cart_item);
+            remove_item_cart_btn = itemView.findViewById(R.id.btn_remove_item_cart_item);
+            linear_discount_cart_item = itemView.findViewById(R.id.linear_discount_cart_item);
+
         }
-        private void setCartDetail(int resource, String name, int freeDiscount,String price, String cuttedprice, int offerAplied){
-            productImage.setImageResource(resource);
+        private void setCartDetail(String product_id, String resource, String name, Long freeDiscount, String price, String cuttedprice, Long offerAplied, final int position, boolean instock){
+            //productImage.setImageResource(resource);
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.image_place)).into(productImage);
             productName.setText(name);
-            if(freeDiscount > 0){
-                productIconDiscount.setVisibility(View.VISIBLE);
-                productfreeDiscount.setVisibility(View.VISIBLE);
-                if(freeDiscount == 1){
-                    productfreeDiscount.setText("giảm ít " + freeDiscount + " %");
+
+            if(instock){
+                if(freeDiscount > 0){
+                    productIconDiscount.setVisibility(View.VISIBLE);
+                    productfreeDiscount.setVisibility(View.VISIBLE);
+                    if(freeDiscount == 1){
+                        productfreeDiscount.setText(" giảm " + freeDiscount + " %");
+                    }
+                    else
+                    {
+                        productfreeDiscount.setText(" giảm " + freeDiscount + " %");
+                    }
                 }
-                else
-                {
-                    productfreeDiscount.setText("giảm nhiều" + freeDiscount + " %");
+                else {
+                    productIconDiscount.setVisibility(View.INVISIBLE);
+                    productfreeDiscount.setVisibility(View.INVISIBLE);
+                }
+                productPrice.setText(price + " Đ");
+                productPrice.setTextColor(itemView.getContext().getResources().getColor(R.color.colorBlack));
+                productCuttedPrice.setText(cuttedprice + " Đ");
+
+                linear_discount_cart_item.setVisibility(View.VISIBLE);
+                productQuantity.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final Dialog dialogQuantity = new Dialog(itemView.getContext());
+                        dialogQuantity.setContentView(R.layout.quantity_dialog);
+                        dialogQuantity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        dialogQuantity.setCancelable(false);
+
+                        final EditText edt_quantity = dialogQuantity.findViewById(R.id.edt_quantity_dialog);
+                        Button btn_cancel = dialogQuantity.findViewById(R.id.btn_cancel_dialog);
+                        Button btn_ok = dialogQuantity.findViewById(R.id.btn_okay_dialog);
+
+                        btn_cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogQuantity.dismiss();
+                            }
+                        });
+                        btn_ok.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                productQuantity.setText("Số lượng: " + edt_quantity.getText());
+                                dialogQuantity.dismiss();
+                            }
+                        });
+                        dialogQuantity.show();
+                    }
+                });
+                if(offerAplied > 0 ){
+                    productOfferAplied.setVisibility(View.VISIBLE);
+                    productOfferAplied.setText(offerAplied + " offers aplied");
+                }
+                else {
+                    productOfferAplied.setVisibility(View.INVISIBLE);
                 }
             }
             else {
+                productPrice.setText(price + " Đ");
+                productPrice.setTextColor(itemView.getContext().getResources().getColor(R.color.colorRed));
+                productCuttedPrice.setText("Hết hàng");
+                productCuttedPrice.setTextColor(itemView.getContext().getResources().getColor(R.color.colorRed));
+
+                linear_discount_cart_item.setVisibility(View.GONE);
+                productQuantity.setVisibility(View.GONE);
                 productIconDiscount.setVisibility(View.INVISIBLE);
                 productfreeDiscount.setVisibility(View.INVISIBLE);
+                productOfferAplied.setText("Sản phẩm sẽ sớm được nhập về");
+                productDiscountAplied.setVisibility(View.INVISIBLE);
+
             }
-            productPrice.setText(price);
-            productCuttedPrice.setText(cuttedprice);
-            if(offerAplied > 0 ){
-                productOfferAplied.setVisibility(View.VISIBLE);
-                productOfferAplied.setText(offerAplied + " offers aplied");
+//
+
+
+            if(showBtnDelete){
+                remove_item_cart_btn.setVisibility(View.VISIBLE);
             }
             else {
-                productOfferAplied.setVisibility(View.INVISIBLE);
+                remove_item_cart_btn.setVisibility(View.GONE);
             }
-            productQuantity.setOnClickListener(new View.OnClickListener() {
+            remove_item_cart_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final Dialog dialogQuantity = new Dialog(itemView.getContext());
-                    dialogQuantity.setContentView(R.layout.quantity_dialog);
-                    dialogQuantity.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    dialogQuantity.setCancelable(false);
-
-                    final EditText edt_quantity = dialogQuantity.findViewById(R.id.edt_quantity_dialog);
-                    Button btn_cancel = dialogQuantity.findViewById(R.id.btn_cancel_dialog);
-                    Button btn_ok = dialogQuantity.findViewById(R.id.btn_okay_dialog);
-
-                    btn_cancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialogQuantity.dismiss();
-                        }
-                    });
-                    btn_ok.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            productQuantity.setText("Số lượng: " + edt_quantity.getText());
-                            dialogQuantity.dismiss();
-                        }
-                    });
-                    dialogQuantity.show();
+                    if(!ProductDetailActivity.cart_running){
+                        ProductDetailActivity.cart_running = true;
+                        DbQueries.removeFromCart(position, itemView.getContext(), totalCartAmount);
+                    }
                 }
             });
         }
-
     }
     //Class cho hóa đơn
     public class CartTotalAmountViewHolder extends RecyclerView.ViewHolder {
@@ -188,13 +273,27 @@ public class CartAdapter extends RecyclerView.Adapter {
 
         }
 
-        private void setTotalAmount(String totalItemsText, String totalAmountText, String diliveryText, String totalallAmount, String savedAmount){
-            totalItems.setText(totalItemsText);
-            totalItemsPrice.setText(totalAmountText);
+        private void setTotalAmount(int totalItemsText, int totalAmountText, String diliveryText, int totalallAmount, int savedAmount){
+            totalItems.setText("Tổng tiền " + totalItemsText+" sản phẩm:" );
+            totalItemsPrice.setText(totalAmountText + " Đ");
+            if(diliveryText.equals("Free ship")){
+                dilivery.setText("Free ship");
+            }
+            else {
+                dilivery.setText(diliveryText + " Đ");
+            }
             dilivery.setText(diliveryText);
-            totalAmound.setText(totalallAmount);
-            saveAmount.setText(savedAmount);
+            totalAmound.setText(totalallAmount + " Đ");
+            totalCartAmount.setText(totalallAmount + " Đ");
+            saveAmount.setText("Bạn đã tiết kiệm được: " + savedAmount + " Đ");
 
+            LinearLayout parent = (LinearLayout) totalCartAmount.getParent().getParent();
+            if(totalAmountText == 0){
+                DbQueries.cartItemModelList.remove(DbQueries.cartItemModelList.size() -1);
+                parent.setVisibility(View.GONE);
+            }else {
+                parent.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

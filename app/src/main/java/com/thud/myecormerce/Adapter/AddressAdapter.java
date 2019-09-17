@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.thud.myecormerce.Fragments.MyAccountFragment;
 import com.thud.myecormerce.Models.AddressModel;
+import com.thud.myecormerce.Presenter.DbQueries;
 import com.thud.myecormerce.R;
 import com.thud.myecormerce.View.DeliveryActivity;
 import com.thud.myecormerce.View.MyAddressActivity;
@@ -21,11 +22,12 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
 
     private  List<AddressModel> addressModelList;
     private  int MODE;
-    private int preSelectedPosition = -1;
+    private int preSelectedPosition;
 
     public AddressAdapter(List<AddressModel> addressModelList, int MODE) {
         this.addressModelList = addressModelList;
         this.MODE = MODE;
+        preSelectedPosition = DbQueries.addressselected;
     }
 
     @NonNull
@@ -88,6 +90,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                             addressModelList.get(preSelectedPosition).setSelected(false);
                             MyAddressActivity.refeshItem(preSelectedPosition,position);
                             preSelectedPosition = position;
+                            DbQueries.addressselected  = position;
                         }
                     }
                 });

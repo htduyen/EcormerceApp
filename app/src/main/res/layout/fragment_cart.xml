@@ -14,6 +14,7 @@
         android:layout_height="60dp"
         android:background="@color/colorWhite"
         android:elevation="8dp"
+        android:visibility="gone"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

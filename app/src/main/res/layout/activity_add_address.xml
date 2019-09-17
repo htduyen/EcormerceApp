@@ -61,7 +61,7 @@
                     <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/ext_country_newaddress"
+                        android:id="@+id/edt_country_newaddress"
                         android:hint="Quốc gia"
                         android:textStyle="bold"
                         android:textColor="@color/colorBlack"
@@ -123,31 +123,29 @@
                         />
                 </android.support.design.widget.TextInputLayout>
 
-                <RadioGroup
-                        android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="3"
+                    android:orientation="horizontal"
+                    android:padding="4dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="7dp">
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/rdg_gender_newaddress"
-                        android:layout_marginBottom="4dp"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center">
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/rd_male_newaddress"
-                            android:textStyle="bold"
-                            android:checked="true"
-                            android:buttonTint="@color/colorBlueDark"
-                            android:textColor="@color/colorBlack"
-                            android:text="Nam"/>
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/rd_femail_newaddress"
-                            android:textStyle="bold"
-                            android:buttonTint="@color/colorBlueDark"
-                            android:textColor="@color/colorBlack"
-                            android:text="Nữ"/>
-                    </RadioGroup>
+                        android:layout_weight="2"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="18sp"
+                        android:text="Giới tính: "/>
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/spnGioiTinh"></android.support.v7.widget.AppCompatSpinner>
+                </LinearLayout>
+
+
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"

@@ -3,8 +3,10 @@
     package="com.thud.myecormerce">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:allowBackup="true"
@@ -39,7 +41,13 @@
             android:name=".View.AddAddressActivity"
             android:theme="@style/Dark" />
         <activity android:name=".View.MyAddressActivity" />
-        <activity android:name=".View.ViewAllActivity"></activity>
+        <activity android:name=".View.ViewAllActivity" />
+
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+
+        <activity android:name=".View.PaymentDetailsActivity"></activity>
     </application>
 
 </manifest>

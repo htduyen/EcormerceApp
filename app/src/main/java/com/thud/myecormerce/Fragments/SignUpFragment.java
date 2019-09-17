@@ -228,9 +228,6 @@ public class SignUpFragment extends Fragment {
 
                                                                 CollectionReference userDataReference =  firebaseFirestore.collection("USERS").document(firebaseAuth.getUid()).collection("USER_DATA");
 
-                                                                final List<String> documentName = new ArrayList<>();
-                                                                documentName.add("MY_WISHLIST");
-                                                                documentName.add("MY_RATTING");
 
                                                                 Map<String, Object> wislistMap = new HashMap<>();
                                                                 wislistMap.put("list_size", (long) 0);
@@ -238,10 +235,23 @@ public class SignUpFragment extends Fragment {
                                                                 Map<String, Object> rattingMap = new HashMap<>();
                                                                 rattingMap.put("list_size", (long) 0);
 
+                                                                Map<String, Object> cartMap = new HashMap<>();
+                                                                cartMap.put("list_size", (long) 0);
+
+                                                                Map<String, Object> addressMap = new HashMap<>();
+                                                                addressMap.put("list_size", (long) 0);
+
+                                                                final List<String> documentName = new ArrayList<>();
+                                                                documentName.add("MY_WISHLIST");
+                                                                documentName.add("MY_RATTING");
+                                                                documentName.add("MY_CART");
+                                                                documentName.add("MY_ADDRESS");
 
                                                                 List<Map<String, Object>> documentField= new ArrayList<>();
                                                                 documentField.add(wislistMap);
                                                                 documentField.add(rattingMap);
+                                                                documentField.add(cartMap);
+                                                                documentField.add(addressMap);
 
                                                                 for(int x = 0; x <documentName.size(); x++){
                                                                     final int finalX = x;

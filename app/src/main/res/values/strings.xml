@@ -10,4 +10,11 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="buy_with_googlepay_button_content_description">Buy with Google Pay</string>
+    <string name="googlepay_status_unavailable">Unfortunately, Google Pay is not available on this phone.</string>
+    <string name="payments_show_name">Successfully received payment data for %s!</string>
+    <string-array name="gioitinh">
+        <item>Nam</item>
+        <item>Nữ</item>
+    </string-array>
 </resources>

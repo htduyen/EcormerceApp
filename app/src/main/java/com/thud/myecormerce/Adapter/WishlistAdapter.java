@@ -1,6 +1,7 @@
 package com.thud.myecormerce.Adapter;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,8 +53,8 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         boolean payment = wishlistModelList.get(i).isPaymentMethod();
         String rating = wishlistModelList.get(i).getRating();
         long totalRating = wishlistModelList.get(i).getTotalRating();
-
-        viewHolder.setData(productID,resource,name,price,freeDiscount,rating, totalRating,cuttedPrice,payment,i);
+        boolean inStock = wishlistModelList.get(i).isInStock();
+        viewHolder.setData(productID,resource,name,price,freeDiscount,rating, totalRating,cuttedPrice,payment,i, inStock);
 
         if(lastposition < i) {
             Animation animation = AnimationUtils.loadAnimation(viewHolder.itemView.getContext(), R.anim.fade_in);
@@ -80,6 +82,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         private TextView productPaymentMethod;
         private ImageView productDelete;
 
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             productImage = itemView.findViewById(R.id.imv_product_wishlist);
@@ -95,31 +98,51 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             horizon_cutted = itemView.findViewById(R.id.horizon_cutted_price_wishlist);
 
         }
-        private  void setData(final String productID, String resource, String name, String price, long discountNo, String averageRate, long totalRating, String cutted_price, boolean paymentMethod, final int index){
+        private  void setData(final String productID, String resource, String name, String price, long discountNo, String averageRate, long totalRating, String cutted_price, boolean paymentMethod, final int index, boolean inStock){
 
 //            productImage.setImageResource(resource);
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.image_place)).into(productImage);
+            //productCuttedPrice.setText(cutted_price + " Đ");
             productName.setText(name);
-            productPrice.setText(price + " Đ");
-            productCuttedPrice.setText(cutted_price + " Đ");
-            if(discountNo != 0){
+            if(discountNo != 0 && inStock){
                 productIconDiscount.setVisibility(View.VISIBLE);
                 productDiscount.setText("Giảm " + discountNo + " %");
             }
             else {
-                productIconDiscount.setVisibility(View.GONE);
-                productDiscount.setVisibility(View.GONE);
+                productIconDiscount.setVisibility(View.VISIBLE);
+                productDiscount.setVisibility(View.VISIBLE);
             }
-            productRating.setText(averageRate);
-            productTotalRating.setText("(" + totalRating + ") người bình chọn" );
-            if(paymentMethod){
+            LinearLayout linearLayoutRating = (LinearLayout) productRating.getParent();
+            if(inStock){
+                linearLayoutRating.setVisibility(View.VISIBLE);
+                productTotalRating.setVisibility(View.VISIBLE);
                 productPaymentMethod.setVisibility(View.VISIBLE);
+                productCuttedPrice.setVisibility(View.VISIBLE);
+                productRating.setText(averageRate);
+                productTotalRating.setText("(" + totalRating + ") người bình chọn" );
+                productName.setText(name);
+                productPrice.setText(price + " Đ");
+                if(paymentMethod){
+                    productPaymentMethod.setVisibility(View.VISIBLE);
+                }
+                else {
+                    productPaymentMethod.setVisibility(View.INVISIBLE);
+                }
             }
             else {
+                linearLayoutRating.setVisibility(View.INVISIBLE);
                 productPaymentMethod.setVisibility(View.INVISIBLE);
+                productTotalRating.setVisibility(View.INVISIBLE);
+                productName.setText(name);
+                productPrice.setText("Hết hàng");
+                productPrice.setTextColor(Color.parseColor("#ff142b"));
+                productCuttedPrice.setVisibility(View.INVISIBLE);
+                //xxxxx.setTextColor(Color.parseColor("#ff142b"));
+                productDiscount.setVisibility(View.INVISIBLE);
+                productIconDiscount.setVisibility(View.INVISIBLE);
+
+
             }
-
-
             if (wishlist){
                 productDelete.setVisibility(View.VISIBLE);
                 productDelete.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +168,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                     itemView.getContext().startActivity(intentProduct);
                 }
             });
+
         }
     }
 }

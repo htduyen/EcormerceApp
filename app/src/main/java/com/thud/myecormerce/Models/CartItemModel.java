@@ -18,19 +18,23 @@ public class CartItemModel {
     }
 
     //********************** Cart item ****************************************
-    private int productImage;
+    private String product_id;
+    private String productImage;
     private String productName;
     private String productPrice;
     private String cuttedProductPrice;
-    private int freeDiscount;
-    private int productQuantity;
-    private int OfferAplied;
-    private int discountAplied;
+    private Long freeDiscount;
+    private Long productQuantity;
+    private Long maxQuantity;
+    private Long OfferAplied;
+    private Long discountAplied;
+    private boolean instock;
 
     //Hàm dựng
 
-    public CartItemModel(int type, int productImage, String productName, String productPrice, String cuttedProductPrice, int freeDiscount, int productQuantity, int offerAplied, int discountAplied) {
+    public CartItemModel(int type,String product_id, String productImage, String productName, String productPrice, String cuttedProductPrice, Long freeDiscount, Long productQuantity, Long offerAplied, Long discountAplied, boolean instock) {
         this.type = type;
+        this.product_id = product_id;
         this.productImage = productImage;
         this.productName = productName;
         this.productPrice = productPrice;
@@ -39,13 +43,30 @@ public class CartItemModel {
         this.productQuantity = productQuantity;
         OfferAplied = offerAplied;
         this.discountAplied = discountAplied;
+        this.instock = instock;
     }
 
-    public int getProductImage() {
+    public boolean isInstock() {
+        return instock;
+    }
+
+    public void setInstock(boolean instock) {
+        this.instock = instock;
+    }
+
+    public String getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(String product_id) {
+        this.product_id = product_id;
+    }
+
+    public String getProductImage() {
         return productImage;
     }
 
-    public void setProductImage(int productImage) {
+    public void setProductImage(String productImage) {
         this.productImage = productImage;
     }
 
@@ -73,97 +94,48 @@ public class CartItemModel {
         this.cuttedProductPrice = cuttedProductPrice;
     }
 
-    public int getFreeDiscount() {
+    public Long getFreeDiscount() {
         return freeDiscount;
     }
 
-    public void setFreeDiscount(int freeDiscount) {
+    public void setFreeDiscount(Long freeDiscount) {
         this.freeDiscount = freeDiscount;
     }
 
-    public int getProductQuantity() {
+    public Long getProductQuantity() {
         return productQuantity;
     }
 
-    public void setProductQuantity(int productQuantity) {
+    public void setProductQuantity(Long productQuantity) {
         this.productQuantity = productQuantity;
     }
 
-    public int getOfferAplied() {
+    public Long getOfferAplied() {
         return OfferAplied;
     }
 
-    public void setOfferAplied(int offerAplied) {
+    public void setOfferAplied(Long offerAplied) {
         OfferAplied = offerAplied;
     }
 
-    public int getDiscountAplied() {
+    public Long getDiscountAplied() {
         return discountAplied;
     }
 
-    public void setDiscountAplied(int discountAplied) {
+    public void setDiscountAplied(Long discountAplied) {
         this.discountAplied = discountAplied;
     }
-    //Hết getter setter
-
 
     //**********************End Cart item ****************************************
 
     //********************** Cart total (tính tien) ********************************************
-    private String totalItems;
-    private String totalItemsPrice;
-    private String phi_chuyen_hang;
-    private String tiet_kiem_duoc;
-    private String totalAmount;
 
-    public CartItemModel(int type, String totalItems, String totalItemsPrice, String phi_chuyen_hang, String tiet_kiem_duoc, String totalAmount) {
+    public CartItemModel(int type) {
         this.type = type;
-        this.totalItems = totalItems;
-        this.totalItemsPrice = totalItemsPrice;
-        this.phi_chuyen_hang = phi_chuyen_hang;
-        this.tiet_kiem_duoc = tiet_kiem_duoc;
-        this.totalAmount = totalAmount;
     }
 
-    public String getTotalItems() {
-        return totalItems;
-    }
 
-    public void setTotalItems(String totalItems) {
-        this.totalItems = totalItems;
-    }
 
-    public String getTotalItemsPrice() {
-        return totalItemsPrice;
-    }
-
-    public void setTotalItemsPrice(String totalItemsPrice) {
-        this.totalItemsPrice = totalItemsPrice;
-    }
-
-    public String getPhi_chuyen_hang() {
-        return phi_chuyen_hang;
-    }
-
-    public void setPhi_chuyen_hang(String phi_chuyen_hang) {
-        this.phi_chuyen_hang = phi_chuyen_hang;
-    }
-
-    public String getTiet_kiem_duoc() {
-        return tiet_kiem_duoc;
-    }
-
-    public void setTiet_kiem_duoc(String tiet_kiem_duoc) {
-        this.tiet_kiem_duoc = tiet_kiem_duoc;
-    }
-
-    public String getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(String totalAmount) {
-        this.totalAmount = totalAmount;
-    }
     //********************** End Cart total (tính tien) ****************************************
 
 

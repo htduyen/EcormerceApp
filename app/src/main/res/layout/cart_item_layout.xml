@@ -21,13 +21,16 @@
 
     <TextView
         android:id="@+id/txt_product_name_cart_item"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:text="Vivo 2010"
-        android:textColor="@color/colorBlackBlur"
-        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imv_product_cart_item"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -72,7 +75,8 @@
         android:text="5,000,000 Đ"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@+id/txt_product_price_cart_item"
-        app:layout_constraintEnd_toStartOf="@+id/txt_product_price_cart_item" />
+        app:layout_constraintEnd_toStartOf="@+id/txt_product_price_cart_item"
+        app:layout_constraintTop_toTopOf="@+id/txt_product_price_cart_item" />
 
     <View
         android:id="@+id/divider5"
@@ -111,19 +115,19 @@
         android:id="@+id/txt_quantity_cart_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/button_radius_border"
         android:backgroundTint="@color/colorGray"
         android:drawableEnd="@drawable/drop_down_arrow16"
         android:drawablePadding="4dp"
         android:padding="3dp"
-        android:text="Qty: "
+        android:text="Qty: 1"
         android:textColor="@color/colorBlack"
         app:layout_constraintBottom_toBottomOf="@+id/txt_discounted_cart_item"
         app:layout_constraintStart_toEndOf="@+id/imv_product_cart_item" />
 
     <LinearLayout
-        android:id="@+id/linearLayout5"
+        android:id="@+id/linear_discount_cart_item"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -169,7 +173,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+        app:layout_constraintTop_toBottomOf="@+id/linear_discount_cart_item">
 
         <TextView
             android:layout_width="wrap_content"
