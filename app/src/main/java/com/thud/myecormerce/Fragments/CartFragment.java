@@ -104,6 +104,7 @@ public class CartFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        cartlistAdapter.notifyDataSetChanged();
         if(DbQueries.cartItemModelList.size() == 0){
             DbQueries.cartlist.clear();
             DbQueries.loadCartList(getContext(), loadingDialog, true,new TextView(getContext()), txt_total_amount);

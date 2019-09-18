@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -23,6 +25,8 @@ import com.thud.myecormerce.Fragments.CartFragment;
 import com.thud.myecormerce.Models.CartItemModel;
 import com.thud.myecormerce.Presenter.DbQueries;
 import com.thud.myecormerce.R;
+import com.thud.myecormerce.View.DeliveryActivity;
+import com.thud.myecormerce.View.MainActivity;
 import com.thud.myecormerce.View.ProductDetailActivity;
 
 import java.util.List;
@@ -83,8 +87,9 @@ public class CartAdapter extends RecyclerView.Adapter {
                 Long freeDiscount = cartItemModelList.get(position).getFreeDiscount();
                 Long offerAplied = cartItemModelList.get(position).getOfferAplied();
                 boolean instock = cartItemModelList.get(position).isInstock();
-
-                ((CartItemViewHolder) viewHolder).setCartDetail(product_id,resource,name,freeDiscount,price,cuttedprice,offerAplied, position, instock);
+                Long quantity = cartItemModelList.get(position).getProductQuantity();
+                Long maxQuantity = cartItemModelList.get(position).getMaxQuantity();
+                ((CartItemViewHolder) viewHolder).setCartDetail(product_id,resource,name,freeDiscount,price,cuttedprice,offerAplied, position,instock, String.valueOf(quantity),maxQuantity);
                 break;
             case CartItemModel.TOTAL_AMOUNT:
 
@@ -158,7 +163,7 @@ public class CartAdapter extends RecyclerView.Adapter {
             linear_discount_cart_item = itemView.findViewById(R.id.linear_discount_cart_item);
 
         }
-        private void setCartDetail(String product_id, String resource, String name, Long freeDiscount, String price, String cuttedprice, Long offerAplied, final int position, boolean instock){
+        private void setCartDetail(String product_id, String resource, String name, Long freeDiscount, String price, String cuttedprice, Long offerAplied, final int position, boolean instock, String quantity, final Long maxQuanity){
             //productImage.setImageResource(resource);
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.image_place)).into(productImage);
             productName.setText(name);
@@ -184,6 +189,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                 productCuttedPrice.setText(cuttedprice + " Đ");
 
                 linear_discount_cart_item.setVisibility(View.VISIBLE);
+                productQuantity.setText("Số lượng: " + quantity);
                 productQuantity.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -193,6 +199,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                         dialogQuantity.setCancelable(false);
 
                         final EditText edt_quantity = dialogQuantity.findViewById(R.id.edt_quantity_dialog);
+                        edt_quantity.setHint("Số lượng tối đa là " + String.valueOf(maxQuanity));
                         Button btn_cancel = dialogQuantity.findViewById(R.id.btn_cancel_dialog);
                         Button btn_ok = dialogQuantity.findViewById(R.id.btn_okay_dialog);
 
@@ -205,8 +212,24 @@ public class CartAdapter extends RecyclerView.Adapter {
                         btn_ok.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                productQuantity.setText("Số lượng: " + edt_quantity.getText());
-                                dialogQuantity.dismiss();
+                                if(!TextUtils.isEmpty(edt_quantity.getText())) {
+                                    if (Long.parseLong(edt_quantity.getText().toString()) <= maxQuanity && Long.parseLong(edt_quantity.getText().toString()) != 0 ) {
+                                        if(itemView.getContext() instanceof MainActivity){
+                                            DbQueries.cartItemModelList.get(position).setProductQuantity(Long.valueOf(edt_quantity.getText().toString()));
+                                        }else {
+                                            if (DeliveryActivity.fromCart) {
+                                                DbQueries.cartItemModelList.get(position).setProductQuantity(Long.valueOf(edt_quantity.getText().toString()));
+                                            } else {
+                                                DeliveryActivity.cartItemModelList.get(position).setProductQuantity(Long.valueOf(edt_quantity.getText().toString()));
+                                            }
+                                        }
+                                        productQuantity.setText("Số lượng: " + edt_quantity.getText());
+                                    }
+                                    else {
+                                        Toast.makeText(itemView.getContext(), "So luong toi da la: " + maxQuanity.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                    dialogQuantity.dismiss();
                             }
                         });
                         dialogQuantity.show();

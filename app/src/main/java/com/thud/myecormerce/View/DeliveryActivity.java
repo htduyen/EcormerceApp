@@ -37,6 +37,9 @@ import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.gms.wallet.TransactionInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
@@ -94,9 +97,13 @@ public class DeliveryActivity extends AppCompatActivity {
             .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
             .clientId(Constants.CLIENT_ID);
     String total_amount;
-    private boolean successResponse;
+    private boolean successResponse = false;
     public static boolean fromCart;
     //private TextView mGooglePayStatusText;
+
+    private FirebaseFirestore firebaseFirestore;
+    private boolean allProductAvailable = true;
+    public static boolean getQuantityIDs = true;
     //Payment
 
 
@@ -105,6 +112,8 @@ public class DeliveryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery);
 
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        getQuantityIDs = true;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -153,6 +162,7 @@ public class DeliveryActivity extends AppCompatActivity {
         btn_changeOrAddAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getQuantityIDs = false;
                 Intent intentAddress = new Intent(DeliveryActivity.this, MyAddressActivity.class);
                 intentAddress.putExtra("Mode", SELECT_ADDRESS);
                 startActivity(intentAddress);
@@ -170,28 +180,35 @@ public class DeliveryActivity extends AppCompatActivity {
         btn_continute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                paymentDialog.show();
-                btn_cod_payment = paymentDialog.findViewById(R.id.imv_btn_cod_payment);
-                btn_google_payment = paymentDialog.findViewById(R.id.imv_btn_online_payment);
+                if(allProductAvailable){
+                    paymentDialog.show();
+                    btn_cod_payment = paymentDialog.findViewById(R.id.imv_btn_cod_payment);
+                    btn_google_payment = paymentDialog.findViewById(R.id.imv_btn_online_payment);
 
-                btn_cod_payment.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        paymentDialog.dismiss();
-//                        loadingDialog.show();
-                        if (ContextCompat.checkSelfPermission(DeliveryActivity.this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(DeliveryActivity.this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, 101);
+                    btn_cod_payment.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            paymentDialog.dismiss();
+                            loadingDialog.dismiss();
+                            getQuantityIDs = false;
+    //                        loadingDialog.show();
+                            if (ContextCompat.checkSelfPermission(DeliveryActivity.this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions(DeliveryActivity.this, new String[]{Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS}, 101);
+                            }
                         }
-                    }
-                });
+                    });
 
-                btn_google_payment.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //Toast.makeText(DeliveryActivity.this, "Total: " + totalAmount.getText().toString().substring(0,totalAmount.getText().length() -2), Toast.LENGTH_SHORT).show();
-                        progressPayment();
-                    }
-                });
+                    btn_google_payment.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //Toast.makeText(DeliveryActivity.this, "Total: " + totalAmount.getText().toString().substring(0,totalAmount.getText().length() -2), Toast.LENGTH_SHORT).show();
+                            getQuantityIDs = false;
+                            progressPayment();
+                        }
+                    });
+                }else {
+                    //khong
+                }
             }
 
 
@@ -223,12 +240,24 @@ public class DeliveryActivity extends AppCompatActivity {
             paymentDialog.dismiss();
             loadingDialog.show();
             successResponse = true;
+            getQuantityIDs = false;
             Toast.makeText(this, "Truong hop thanh toan thanh cong", Toast.LENGTH_SHORT).show();
+
+            //khi đã thanh toán thành công thì list giảm 1,set available = false, add user_id
+            for(int x = 0; x< cartItemModelList.size()-1; x++) {
+                for (String qtyID: cartItemModelList.get(x).getQuantityIDs()){
+                    firebaseFirestore.collection("PRODUCTS").document(cartItemModelList.get(x).getProduct_id()).collection("QUANTITY").document(qtyID).update("user_id", FirebaseAuth.getInstance().getUid());
+                }
+            }
+
             if(MainActivity.mainActivity != null){
                 MainActivity.mainActivity.finish();
                 MainActivity.mainActivity = null;
                 MainActivity.SHOW_CART = false;
-            }if(ProductDetailActivity.productDetailActivity != null){
+            }else {
+                MainActivity.resetMainActivity = true;
+            }
+            if(ProductDetailActivity.productDetailActivity != null){
                 ProductDetailActivity.productDetailActivity.finish();
                 ProductDetailActivity.productDetailActivity = null;
             }
@@ -320,6 +349,43 @@ public class DeliveryActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        if(getQuantityIDs) {
+            for (int x = 0; x < cartItemModelList.size() - 1; x++) {
+                final int finalX = x;
+                firebaseFirestore.collection("PRODUCTS").document(cartItemModelList.get(x).getProduct_id()).collection("QUANTITY").orderBy("available", Query.Direction.DESCENDING).limit(cartItemModelList.get(x).getProductQuantity()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (final QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                                if ((boolean) queryDocumentSnapshot.get("available")) {
+                                    firebaseFirestore.collection("PRODUCTS").document(cartItemModelList.get(finalX).getProduct_id()).collection("QUANTITY").document(queryDocumentSnapshot.getId()).update("available", false).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                cartItemModelList.get(finalX).getQuantityIDs().add(queryDocumentSnapshot.getId());
+                                            } else {
+                                                String error = task.getException().getMessage();
+                                                Toast.makeText(DeliveryActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
+                                } else {
+                                    allProductAvailable = false;
+                                    Toast.makeText(DeliveryActivity.this, "Tất cả sản phẩm không có sẵn", Toast.LENGTH_SHORT).show();
+                                    break;
+                                }
+                            }
+                        } else {
+                            String error = task.getException().getMessage();
+                            Toast.makeText(DeliveryActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        }else {
+            getQuantityIDs  = true;
+        }
         txt_fullname.setText("Họ & tên: " + DbQueries.addressModelList.get(DbQueries.addressselected).getFullname());
         txt_address.setText("Địa chỉ: " + DbQueries.addressModelList.get(DbQueries.addressselected).getAddress());
         txt_phonenumber.setText("SĐT: " + DbQueries.addressModelList.get(DbQueries.addressselected).getPhonenmuber());
@@ -330,6 +396,16 @@ public class DeliveryActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         loadingDialog.dismiss();
+        if(getQuantityIDs) {
+            for (int x = 0; x < cartItemModelList.size() - 1; x++) {
+                if(!successResponse) {
+                    for (String qtyID : cartItemModelList.get(x).getQuantityIDs()) {
+                        firebaseFirestore.collection("PRODUCTS").document(cartItemModelList.get(x).getProduct_id()).collection("QUANTITY").document(qtyID).update("available", true);
+                    }
+                }
+                cartItemModelList.get(x).getQuantityIDs().clear();
+            }
+        }
     }
 
     @Override

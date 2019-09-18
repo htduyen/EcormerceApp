@@ -365,7 +365,8 @@ public class DbQueries {
                                                 (long) 1,
                                                 (long)0,
                                                 (long) 0,
-                                                (boolean)task.getResult().get("in_stock")))
+                                                (boolean)task.getResult().get("in_stock"),
+                                                (long) task.getResult().get("max_quantity")))
                                                 ;
                                         if(cartlist.size() == 1){
                                             cartItemModelList.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));

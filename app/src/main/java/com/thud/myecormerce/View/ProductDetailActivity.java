@@ -334,7 +334,8 @@ public class ProductDetailActivity extends AppCompatActivity {
                                                                             (long) 1,
                                                                             (long)0,
                                                                             (long) 0,
-                                                                            (boolean)documentSnapshot.get("in_stock"))
+                                                                            (boolean)documentSnapshot.get("in_stock"),
+                                                                            (long) documentSnapshot.get("max_quantity"))
                                                                             );
                                                                 }
 
@@ -605,7 +606,8 @@ public class ProductDetailActivity extends AppCompatActivity {
                             (long) 1,
                             (long)0,
                             (long) 0,
-                            (boolean)documentSnapshot.get("in_stock"))
+                            (boolean)documentSnapshot.get("in_stock"),
+                            (long) documentSnapshot.get("max_quantity"))
                     );
                     DeliveryActivity.cartItemModelList.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
 

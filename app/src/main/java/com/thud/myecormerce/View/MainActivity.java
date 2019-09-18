@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     private static final int MYACCOUNT_FRAGMENT = 5;
     public static Boolean SHOW_CART = false;
     public static Activity mainActivity;
+    public static  boolean resetMainActivity = false;
 
     private TextView badget_count;
 
@@ -140,12 +141,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
+
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if(currentUser == null){
             navigationView.getMenu().getItem(navigationView.getMenu().size()-1).setEnabled(false);
         }
         else {
             navigationView.getMenu().getItem(navigationView.getMenu().size() -1).setEnabled(true);
+        }
+        if(resetMainActivity){
+            actionBar_logo.setVisibility(View.VISIBLE);
+            resetMainActivity = false;
+            setFragment(new HomeFragment(), HOME_FRAGMENT);
+            navigationView.getMenu().getItem(0).setChecked(true);
         }
         invalidateOptionsMenu();
     }

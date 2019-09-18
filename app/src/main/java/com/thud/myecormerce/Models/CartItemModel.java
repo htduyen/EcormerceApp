@@ -1,5 +1,8 @@
 package com.thud.myecormerce.Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CartItemModel {
 
     public static final int CART_ITEM = 0;
@@ -29,10 +32,10 @@ public class CartItemModel {
     private Long OfferAplied;
     private Long discountAplied;
     private boolean instock;
-
+    private List<String> quantityIDs;
     //Hàm dựng
 
-    public CartItemModel(int type,String product_id, String productImage, String productName, String productPrice, String cuttedProductPrice, Long freeDiscount, Long productQuantity, Long offerAplied, Long discountAplied, boolean instock) {
+    public CartItemModel(int type,String product_id, String productImage, String productName, String productPrice, String cuttedProductPrice, Long freeDiscount, Long productQuantity, Long offerAplied, Long discountAplied, boolean instock, Long maxQuantity) {
         this.type = type;
         this.product_id = product_id;
         this.productImage = productImage;
@@ -43,7 +46,25 @@ public class CartItemModel {
         this.productQuantity = productQuantity;
         OfferAplied = offerAplied;
         this.discountAplied = discountAplied;
+        this.maxQuantity = maxQuantity;
         this.instock = instock;
+        quantityIDs = new ArrayList<>();
+    }
+
+    public List<String> getQuantityIDs() {
+        return quantityIDs;
+    }
+
+    public void setQuantityIDs(List<String> quantityIDs) {
+        this.quantityIDs = quantityIDs;
+    }
+
+    public Long getMaxQuantity() {
+        return maxQuantity;
+    }
+
+    public void setMaxQuantity(Long maxQuantity) {
+        this.maxQuantity = maxQuantity;
     }
 
     public boolean isInstock() {
