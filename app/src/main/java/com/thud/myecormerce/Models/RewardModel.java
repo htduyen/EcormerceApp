@@ -1,38 +1,92 @@
 package com.thud.myecormerce.Models;
 
+import com.google.firebase.Timestamp;
+
+import java.util.Date;
+
 public class RewardModel {
 
-    private String reward_title;
-    private  String reward_time;
-    private String reward_content;
+    private String type;
+    private  String lowerLlimit;
+    private String upperLimit;
+    private String discount;
+    private String discountbBoby;
+    private Date timestamp;
+    private Boolean alreadlyUsed;
+    private String discountID;
 
-    public RewardModel(String reward_title, String reward_time, String reward_content) {
-        this.reward_title = reward_title;
-        this.reward_time = reward_time;
-        this.reward_content = reward_content;
+    public RewardModel(String discountID, String type, String lowerLlimit, String upperLimit, String discount, String discountbBoby, Date timestamp, Boolean alreadlyUsed) {
+        this.discountID = discountID;
+        this.type = type;
+        this.lowerLlimit = lowerLlimit;
+        this.upperLimit = upperLimit;
+        this.discount = discount;
+        this.discountbBoby = discountbBoby;
+        this.timestamp = timestamp;
+        this.alreadlyUsed = alreadlyUsed;
     }
 
-    public String getReward_title() {
-        return reward_title;
+    public String getDiscountID() {
+        return discountID;
     }
 
-    public void setReward_title(String reward_title) {
-        this.reward_title = reward_title;
+    public void setDiscountID(String discountID) {
+        this.discountID = discountID;
     }
 
-    public String getReward_time() {
-        return reward_time;
+    public Boolean getAlreadlyUsed() {
+        return alreadlyUsed;
     }
 
-    public void setReward_time(String reward_time) {
-        this.reward_time = reward_time;
+    public void setAlreadlyUsed(Boolean alreadlyUsed) {
+        this.alreadlyUsed = alreadlyUsed;
     }
 
-    public String getReward_content() {
-        return reward_content;
+    public String getType() {
+        return type;
     }
 
-    public void setReward_content(String reward_content) {
-        this.reward_content = reward_content;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getLowerLlimit() {
+        return lowerLlimit;
+    }
+
+    public void setLowerLlimit(String lowerLlimit) {
+        this.lowerLlimit = lowerLlimit;
+    }
+
+    public String getUpperLimit() {
+        return upperLimit;
+    }
+
+    public void setUpperLimit(String upperLimit) {
+        this.upperLimit = upperLimit;
+    }
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+
+    public String getDiscountbBoby() {
+        return discountbBoby;
+    }
+
+    public void setDiscountbBoby(String discountbBoby) {
+        this.discountbBoby = discountbBoby;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 }

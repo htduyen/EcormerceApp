@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -28,12 +29,14 @@ import com.thud.myecormerce.Adapter.CategoryAdapter;
 import com.thud.myecormerce.Adapter.HomePageAdapter;
 import com.thud.myecormerce.Fragments.CartFragment;
 import com.thud.myecormerce.Fragments.HomeFragment;
+import com.thud.myecormerce.Fragments.MyRewardFragment;
 import com.thud.myecormerce.Fragments.MyWishlistFragment;
 import com.thud.myecormerce.Models.AddressModel;
 import com.thud.myecormerce.Models.CartItemModel;
 import com.thud.myecormerce.Models.CategoryModel;
 import com.thud.myecormerce.Models.HomePageModel;
 import com.thud.myecormerce.Models.ProductHorizonModel;
+import com.thud.myecormerce.Models.RewardModel;
 import com.thud.myecormerce.Models.SliderModel;
 import com.thud.myecormerce.Models.WishlistModel;
 import com.thud.myecormerce.R;
@@ -42,6 +45,7 @@ import com.thud.myecormerce.View.DeliveryActivity;
 import com.thud.myecormerce.View.ProductDetailActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +75,8 @@ public class DbQueries {
 
     public static int addressselected = -1;
     public static List<AddressModel> addressModelList = new ArrayList<>();
+
+    public static List<RewardModel> rewardModelList = new ArrayList<>();
 
     //Categories
     public static void loadCategories(final RecyclerView recyclerView_Cate, final Context context){
@@ -402,7 +408,7 @@ public class DbQueries {
                                                                                 documentSnapshot.get("product_cutted_price").toString(),
                                                                                 (long) documentSnapshot.get("free_discount"),
                                                                                 (long) 1,
-                                                                                (long)0,
+                                                                                (long) documentSnapshot.get("offers_applied"),
                                                                                 (long) 0,
                                                                                 true,
                                                                                 (long) documentSnapshot.get("max_quantity"),
@@ -417,7 +423,7 @@ public class DbQueries {
                                                                                 documentSnapshot.get("product_cutted_price").toString(),
                                                                                 (long) documentSnapshot.get("free_discount"),
                                                                                 (long) 1,
-                                                                                (long)0,
+                                                                                (long)documentSnapshot.get("offers_applied"),
                                                                                 (long) 0,
                                                                                 false,
                                                                                 (long) documentSnapshot.get("max_quantity"),
@@ -548,6 +554,67 @@ public class DbQueries {
         });
 
     }
+
+    public static void loadReward(final Context context, final Dialog loadingDialog, final Boolean onRewardFragment){
+
+        rewardModelList.clear();
+        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            final Date lastSeenDate = task.getResult().getDate("Last seen");
+
+                            firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_REWARDS").get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if(task.isSuccessful()){
+
+                                                for(DocumentSnapshot documentSnapshot: task.getResult()){
+                                                    if(documentSnapshot.get("type").toString().equals("Discount") && lastSeenDate.before(documentSnapshot.getDate("validity"))){
+                                                        rewardModelList.add(new RewardModel(
+                                                                documentSnapshot.getId(),
+                                                                documentSnapshot.get("type").toString(),
+                                                                documentSnapshot.get("lower_limit").toString(),
+                                                                documentSnapshot.get("upper_limit").toString(),
+                                                                documentSnapshot.get("percent").toString(),
+                                                                documentSnapshot.get("body").toString(),
+                                                                (Date)documentSnapshot.get("validity"),
+                                                                (boolean)documentSnapshot.get("alreadlyUse")
+                                                        ));
+                                                    }else if(documentSnapshot.get("type").toString().equals("Flat") && lastSeenDate.before(documentSnapshot.getDate("validity"))) {
+                                                        rewardModelList.add(new RewardModel(
+                                                                documentSnapshot.getId(),
+                                                                documentSnapshot.get("type").toString(),
+                                                                documentSnapshot.get("lower_limit").toString(),
+                                                                documentSnapshot.get("upper_limit").toString(),
+                                                                documentSnapshot.get("amount").toString(),
+                                                                documentSnapshot.get("body").toString(),
+                                                                (Date)documentSnapshot.get("validity"),
+                                                                (boolean)documentSnapshot.get("alreadlyUse")
+                                                        ));
+                                                    }
+                                                }
+                                                if(onRewardFragment) {
+                                                    MyRewardFragment.rewardAdapter.notifyDataSetChanged();
+                                                }
+                                            }else {
+                                                String error = task.getException().getMessage();
+                                                Toast.makeText(context, "Error: " + error, Toast.LENGTH_SHORT).show();
+
+                                            }
+                                            loadingDialog.dismiss();
+                                        }
+                                    });
+                        }else {
+                            loadingDialog.dismiss();
+                            String error = task.getException().getMessage();
+                            Toast.makeText(context, "Error: " + error, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
     public static void clearData(){
         categoryModels.clear();
         lists.clear();
@@ -559,6 +626,7 @@ public class DbQueries {
         myratting_ids.clear();
         myRatting.clear();
         addressModelList.clear();
+        rewardModelList.clear();
     }
 
 

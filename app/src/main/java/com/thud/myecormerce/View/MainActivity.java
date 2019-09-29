@@ -204,6 +204,7 @@ public class MainActivity extends AppCompatActivity
                 cart_icon.setImageResource(R.drawable.shopping_cart);
                 badget_count = cartItem.getActionView().findViewById(R.id.txt_badge_count);
                 if(currentUser != null) {
+
                     if (DbQueries.cartlist.size() == 0) {
                         DbQueries.loadCartList(MainActivity.this, new Dialog(MainActivity.this), false, badget_count, new TextView(MainActivity.this));
                     }

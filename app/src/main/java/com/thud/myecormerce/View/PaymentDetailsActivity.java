@@ -3,6 +3,7 @@ package com.thud.myecormerce.View;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,7 +15,7 @@ import org.json.JSONObject;
 
 public class PaymentDetailsActivity extends AppCompatActivity {
 
-    private TextView txtID, txtAmount, txtStatus;
+    private EditText txtID, txtAmount, txtStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,7 @@ public class PaymentDetailsActivity extends AppCompatActivity {
         try {
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("PaymentDetail"));
             showDetail(jsonObject.getJSONObject("response"), totalAmount);
+            Toast.makeText(this, "Total amount recieve: " + totalAmount, Toast.LENGTH_SHORT).show();
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -39,12 +41,13 @@ public class PaymentDetailsActivity extends AppCompatActivity {
 
     private void showDetail(JSONObject response, String paymentAmount) {
         try {
-            txtID.setText("id");
-            txtAmount.setText(response.getString(paymentAmount));
-            txtStatus.setText(response.getString("state"));
+            txtID.setText(response.getString("id"));
+            txtAmount.setText(response.getString(String.format("$%s") + paymentAmount));
+            txtStatus.setText(response.getString("status"));
         }
         catch (Exception ex){
-            Toast.makeText(this, "Error: e" + ex.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Lỗi phản hồi: " + ex.getMessage().toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Id: "+ txtID.getText().toString() + "\n Toatal amount: " + txtAmount.getText().toString() + "\n Status: " + txtStatus.getText().toString() , Toast.LENGTH_SHORT).show();
         }
     }
 }

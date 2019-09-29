@@ -76,6 +76,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private TextView product_average_rating_star;
     private TextView product_total_rating;
     private TextView product_price;
+    private String productOriginPrice;
     private TextView product_cutted_price;
     private ImageView cod;
     private TextView txt_cod;
@@ -97,12 +98,13 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     //Dialog discount layout
 
-    public static TextView discountTitle;
-    public static TextView discountTime;
-    public static TextView discountContent;
-    private static RecyclerView recyclerViewDiscount;
-    private static LinearLayout linearLayoutDiscount;
-
+    private TextView discountTitle;
+    private TextView discountTime;
+    private TextView discountContent;
+    private RecyclerView recyclerViewDiscount;
+    private LinearLayout selectedDiscount;
+    private TextView txt_discounted_price;
+    private TextView txt_origin_price;
     //Dialog discount layout
 
     //Description
@@ -132,7 +134,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private LinearLayout linearLayout_check_discount;
     private Button btn_check_discount;
-    private boolean inStock;
+    private boolean inStock= false;
 
     private FirebaseUser currentUser;
     @Override
@@ -190,6 +192,47 @@ public class ProductDetailActivity extends AppCompatActivity {
         loadingDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         loadingDialog.show();
 
+
+        final Dialog dialogDiscount = new Dialog(ProductDetailActivity.this);
+        dialogDiscount.setContentView(R.layout.discount_dialog);
+        dialogDiscount.setCancelable(true);
+        dialogDiscount.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        ImageView imv_togle_recycler = dialogDiscount.findViewById(R.id.imv_togle_discount_dialog);
+        recyclerViewDiscount =  dialogDiscount.findViewById(R.id.recyclerView_discount_dialog);
+        selectedDiscount = dialogDiscount.findViewById(R.id.linea_selected_discount_dialog);
+        //Luu Y
+        discountTitle = dialogDiscount.findViewById(R.id.txt_name_reward_reward);
+        discountTime = dialogDiscount.findViewById(R.id.txt_time_reward);
+        discountContent = dialogDiscount.findViewById(R.id.txt_content_reward);
+
+        txt_origin_price = dialogDiscount.findViewById(R.id.txt_origin_price_dialog);
+        txt_discounted_price = dialogDiscount.findViewById(R.id.txt_discounted_price_dialog);
+
+
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ProductDetailActivity.this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerViewDiscount.setLayoutManager(linearLayoutManager);
+
+        ///Dialog discount
+        btn_discount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialogDiscount.show();
+            }
+        });
+        /// End Dialog discount
+
+        imv_togle_recycler.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogDisCount();
+            }
+        });
+
+
         final List<String> productImages = new ArrayList<>();
         product_id = getIntent().getStringExtra("PRODUCT_ID");
 
@@ -217,6 +260,14 @@ public class ProductDetailActivity extends AppCompatActivity {
                                                 product_average_rating_star.setText(documentSnapshot.get("average_rating").toString());
                                                 product_total_rating.setText("(" + documentSnapshot.get("total_rating").toString()  + ") người bình chọn");
                                                 product_price.setText(documentSnapshot.get("product_price").toString() + " Đ");
+
+                                                //Discount dialog
+                                                txt_origin_price.setText(product_price.getText());
+                                                productOriginPrice = documentSnapshot.get("product_price").toString();
+                                                RewardAdapter discountAdapter = new RewardAdapter(DbQueries.rewardModelList, true, recyclerViewDiscount,selectedDiscount, productOriginPrice, discountTitle, discountTime, discountContent,txt_discounted_price);
+                                                recyclerViewDiscount.setAdapter(discountAdapter);
+                                                discountAdapter.notifyDataSetChanged();
+                                                //
                                                 product_cutted_price.setText(documentSnapshot.get("product_cutted_price").toString() + " Đ");
 
                                                 reward_title.setText(documentSnapshot.get("free_discount_title").toString());
@@ -280,10 +331,12 @@ public class ProductDetailActivity extends AppCompatActivity {
                                                     if (DbQueries.id_wishlist.size() == 0) {
                                                         DbQueries.loadWishlist(ProductDetailActivity.this, loadingDialog, false);
                                                     }
-                                                    else {
+                                                    if (DbQueries.rewardModelList.size() == 0) {
+                                                        DbQueries.loadReward(ProductDetailActivity.this, loadingDialog, false);
+                                                    }
+                                                    if(DbQueries.cartlist.size() != 0 && DbQueries.id_wishlist.size() != 0 && DbQueries.rewardModelList.size() != 0){
                                                         loadingDialog.dismiss();
                                                     }
-
                                                 }
                                                 else {
                                                     loadingDialog.dismiss();
@@ -310,6 +363,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                                                 }
                                                 if(task.getResult().getDocuments().size() <(long) documentSnapshot.get("stock_quantity")){
                                                     inStock = true;
+                                                    btn_buy_now.setVisibility(View.VISIBLE);
                                                     //firebaseFirestore.collection("PRODUCTS").document(cartItemModelList.get(finalX).getProduct_id()).update("in_stock", true);
                                                     btn_add_to_cart.setOnClickListener(new View.OnClickListener() {
                                                         @Override
@@ -344,7 +398,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                                                                                                 documentSnapshot.get("product_cutted_price").toString(),
                                                                                                 (long) documentSnapshot.get("free_discount"),
                                                                                                 (long) 1,
-                                                                                                (long)0,
+                                                                                                (long) documentSnapshot.get("offers_applied"),
                                                                                                 (long) 0,
                                                                                                 inStock,
                                                                                                 (long) documentSnapshot.get("max_quantity"),
@@ -619,7 +673,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                             documentSnapshot.get("product_cutted_price").toString(),
                             (long) documentSnapshot.get("free_discount"),
                             (long) 1,
-                            (long)0,
+                            (long) documentSnapshot.get("offers_applied"),
                             (long) 0,
                             inStock,
                             (long) documentSnapshot.get("max_quantity"),
@@ -638,56 +692,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-        ///Dialog discount
-        final Dialog dialogDiscount = new Dialog(ProductDetailActivity.this);
-        dialogDiscount.setContentView(R.layout.discount_dialog);
-        dialogDiscount.setCancelable(true);
-        dialogDiscount.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        ImageView imv_togle_recycler = dialogDiscount.findViewById(R.id.imv_togle_discount_dialog);
-        recyclerViewDiscount =  dialogDiscount.findViewById(R.id.recyclerView_discount_dialog);
-        linearLayoutDiscount = dialogDiscount.findViewById(R.id.linea_selected_discount_dialog);
-        //Luu Y
-        discountTitle = dialogDiscount.findViewById(R.id.txt_name_reward_reward);
-        discountTime = dialogDiscount.findViewById(R.id.txt_time_reward);
-        discountContent = dialogDiscount.findViewById(R.id.txt_content_reward);
-
-        TextView txt_origin_price = dialogDiscount.findViewById(R.id.txt_origin_price_dialog);
-        TextView txt_discounted_price = dialogDiscount.findViewById(R.id.txt_discounted_price_dialog);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ProductDetailActivity.this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerViewDiscount.setLayoutManager(linearLayoutManager);
-
-        List<RewardModel> rewardModelList = new ArrayList<>();
-        rewardModelList.add(new RewardModel("Lễ 30/4 - 1/5", "Từ 29-2/5/2019","Giảm 20% tất cả các sản phẩm."));
-        rewardModelList.add(new RewardModel("Lễ Tình Nhân", "Từ 12-14/2/2019","Giảm 30% tất cả các sản phẩm cho các cặp tình nhân."));
-        rewardModelList.add(new RewardModel("Lễ Quốc Tế Thiếu Nhi", "Từ 30-1/6/2019","Giảm 10% tất cả các sản phẩm."));
-        rewardModelList.add(new RewardModel("Ngày Thương Binh Liệt Sĩ", "Từ 26-28/7/2019","Giảm 50% tất cả các sản phẩm đối với người có công với đất nước, CBNV nhà nước."));
-        rewardModelList.add(new RewardModel("Lễ Quốc Khánh", "Từ 1-3/9/2019","Giảm 30% tất cả các sản phẩm."));
-        rewardModelList.add(new RewardModel("Ngày Nhà Giáo Việt Nam", "Từ 19-21/11/2019","Giảm 50% tất cả các sản phẩm cho CBNV giáo viên trên cả nước."));
-
-        RewardAdapter discountAdapter = new RewardAdapter(rewardModelList, true);
-        recyclerViewDiscount.setAdapter(discountAdapter);
-        discountAdapter.notifyDataSetChanged();
-
-        imv_togle_recycler.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialogDisCount();
-            }
-        });
-
-
-
-        btn_discount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                dialogDiscount.show();
-            }
-        });
-        /// End Dialog discount
 
         /// Dialog sign
 
@@ -743,10 +748,13 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
             if (DbQueries.id_wishlist.size() == 0) {
                 DbQueries.loadWishlist(ProductDetailActivity.this, loadingDialog, false);
-            } else {
+            }
+            if (DbQueries.rewardModelList.size() == 0) {
+                DbQueries.loadReward(ProductDetailActivity.this, loadingDialog, false);
+            }
+            if(DbQueries.cartlist.size() != 0 && DbQueries.id_wishlist.size() != 0 && DbQueries.rewardModelList.size() != 0){
                 loadingDialog.dismiss();
             }
-
         }
         else {
             loadingDialog.dismiss();
@@ -789,14 +797,14 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
     }
 
-    public static void showDialogDisCount(){
+    private void showDialogDisCount(){
         if(recyclerViewDiscount.getVisibility() == View.GONE){
             recyclerViewDiscount.setVisibility(View.VISIBLE);
-            linearLayoutDiscount.setVisibility(View.GONE);
+            selectedDiscount.setVisibility(View.GONE);
         }
         else {
             recyclerViewDiscount.setVisibility(View.GONE);
-            linearLayoutDiscount.setVisibility(View.VISIBLE);
+            selectedDiscount.setVisibility(View.VISIBLE);
         }
     }
 

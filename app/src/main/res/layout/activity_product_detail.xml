@@ -78,15 +78,17 @@
                 android:textColor="@color/colorWhite"
                 android:drawableTop="@drawable/shopping_cart32px"></TextView>
         </LinearLayout>
+
         <Button
+            android:id="@+id/btn_buy_now"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/btn_buy_now"
             android:layout_weight="1"
-            android:text="Buy Now"
-            android:stateListAnimator="@null"
-            android:gravity="center"
             android:background="@color/colorRed"
-            android:textColor="@color/colorWhite"/>
+            android:gravity="center"
+            android:stateListAnimator="@null"
+            android:text="Buy Now"
+            android:textColor="@color/colorWhite"
+            android:visibility="gone" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

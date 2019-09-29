@@ -35,6 +35,8 @@ public class CartItemModel {
     private boolean instock;
     private List<String> quantityIDs;
     private boolean qtyError;
+    private String selectedDiscountID;
+    private String discountPrice;
     //Hàm dựng
 
     public CartItemModel(int type,String product_id, String productImage, String productName, String productPrice, String cuttedProductPrice, Long freeDiscount, Long productQuantity, Long offerAplied, Long discountAplied, boolean instock, Long maxQuantity, Long stockQuantity) {
@@ -53,6 +55,22 @@ public class CartItemModel {
         this.instock = instock;
         quantityIDs = new ArrayList<>();
         qtyError = false;
+    }
+
+    public String getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(String discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
+    public String getSelectedDiscountID() {
+        return selectedDiscountID;
+    }
+
+    public void setSelectedDiscountID(String selectedDiscountID) {
+        this.selectedDiscountID = selectedDiscountID;
     }
 
     public boolean isQtyError() {
@@ -170,6 +188,48 @@ public class CartItemModel {
     //**********************End Cart item ****************************************
 
     //********************** Cart total (tính tien) ********************************************
+    private int totalItems, totalItemsPrice, totalAmount, saveAmount;
+    private  String deliveryPrice;
+
+    public int getTotalItems() {
+        return totalItems;
+    }
+
+    public void setTotalItems(int totalItems) {
+        this.totalItems = totalItems;
+    }
+
+    public int getTotalItemsPrice() {
+        return totalItemsPrice;
+    }
+
+    public void setTotalItemsPrice(int totalItemsPrice) {
+        this.totalItemsPrice = totalItemsPrice;
+    }
+
+    public int getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(int totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public int getSaveAmount() {
+        return saveAmount;
+    }
+
+    public void setSaveAmount(int saveAmount) {
+        this.saveAmount = saveAmount;
+    }
+
+    public String getDeliveryPrice() {
+        return deliveryPrice;
+    }
+
+    public void setDeliveryPrice(String deliveryPrice) {
+        this.deliveryPrice = deliveryPrice;
+    }
 
     public CartItemModel(int type) {
         this.type = type;

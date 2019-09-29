@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.thud.myecormerce.Adapter.CartAdapter;
 import com.thud.myecormerce.Adapter.WishlistAdapter;
 import com.thud.myecormerce.Models.CartItemModel;
+import com.thud.myecormerce.Models.RewardModel;
 import com.thud.myecormerce.Presenter.DbQueries;
 import com.thud.myecormerce.R;
 import com.thud.myecormerce.View.AddAddressActivity;
@@ -105,6 +107,10 @@ public class CartFragment extends Fragment {
     public void onStart() {
         super.onStart();
         cartlistAdapter.notifyDataSetChanged();
+        if(DbQueries.rewardModelList.size() == 0){
+            loadingDialog.show();
+            DbQueries.loadReward(getContext(), loadingDialog, false);
+        }
         if(DbQueries.cartItemModelList.size() == 0){
             DbQueries.cartlist.clear();
             DbQueries.loadCartList(getContext(), loadingDialog, true,new TextView(getContext()), txt_total_amount);
@@ -114,9 +120,26 @@ public class CartFragment extends Fragment {
             {
                 LinearLayout parent = (LinearLayout) txt_total_amount.getParent().getParent();
                 parent.setVisibility(View.VISIBLE);
-
             }
             loadingDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        for (CartItemModel cartItemModel: DbQueries.cartItemModelList){
+            if(!TextUtils.isEmpty(cartItemModel.getSelectedDiscountID())){
+                for(RewardModel rewardModel: DbQueries.rewardModelList){
+                    if(rewardModel.getDiscountID().equals(cartItemModel.getSelectedDiscountID())){
+                        rewardModel.setAlreadlyUsed(false);
+                    }
+                }
+                cartItemModel.setSelectedDiscountID(null);
+                if(MyRewardFragment.rewardAdapter != null) {
+                    MyRewardFragment.rewardAdapter.notifyDataSetChanged();
+                }
+            }
         }
     }
 }
