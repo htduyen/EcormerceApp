@@ -37,9 +37,19 @@ public class CartItemModel {
     private boolean qtyError;
     private String selectedDiscountID;
     private String discountPrice;
+
+    private boolean COD;
+
+    public boolean isCOD() {
+        return COD;
+    }
+
+    public void setCOD(boolean COD) {
+        this.COD = COD;
+    }
     //Hàm dựng
 
-    public CartItemModel(int type,String product_id, String productImage, String productName, String productPrice, String cuttedProductPrice, Long freeDiscount, Long productQuantity, Long offerAplied, Long discountAplied, boolean instock, Long maxQuantity, Long stockQuantity) {
+    public CartItemModel(boolean COD, int type,String product_id, String productImage, String productName, String productPrice, String cuttedProductPrice, Long freeDiscount, Long productQuantity, Long offerAplied, Long discountAplied, boolean instock, Long maxQuantity, Long stockQuantity) {
         this.type = type;
         this.product_id = product_id;
         this.productImage = productImage;
@@ -55,6 +65,7 @@ public class CartItemModel {
         this.instock = instock;
         quantityIDs = new ArrayList<>();
         qtyError = false;
+        this.COD = COD;
     }
 
     public String getDiscountPrice() {

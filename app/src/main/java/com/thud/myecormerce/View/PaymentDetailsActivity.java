@@ -7,15 +7,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.FieldValue;
 import com.thud.myecormerce.Presenter.Constants;
 import com.thud.myecormerce.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+import java.util.UUID;
+
 public class PaymentDetailsActivity extends AppCompatActivity {
 
-    private EditText txtID, txtAmount, txtStatus;
+    private EditText txtID;
+    private  EditText txtAmount;
+    private EditText txtStatus;
+    int totalAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,23 +34,24 @@ public class PaymentDetailsActivity extends AppCompatActivity {
         txtStatus = findViewById(R.id.txt_status);
 
         Intent intent = getIntent();
-        String totalAmount = intent.getStringExtra("PaymentAmount");
+        totalAmount = intent.getIntExtra("PaymentAmount", 0);
 
         try {
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("PaymentDetail"));
             showDetail(jsonObject.getJSONObject("response"), totalAmount);
-            Toast.makeText(this, "Total amount recieve: " + totalAmount, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Total amount recieve: " + totalAmount, Toast.LENGTH_SHORT).show();
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void showDetail(JSONObject response, String paymentAmount) {
+    private void showDetail(JSONObject response, int paymentAmount) {
         try {
-            txtID.setText(response.getString("id"));
-            txtAmount.setText(response.getString(String.format("$%s") + paymentAmount));
-            txtStatus.setText(response.getString("status"));
+            txtID.setText("ID: " + response.getString("id"));
+            txtAmount.setText("Total Amount: " + totalAmount*22000 + "đ");
+            txtStatus.setText("Time: " +  Calendar.getInstance().getTime());
+
         }
         catch (Exception ex){
             Toast.makeText(this, "Lỗi phản hồi: " + ex.getMessage().toString(), Toast.LENGTH_SHORT).show();

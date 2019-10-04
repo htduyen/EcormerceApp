@@ -390,6 +390,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                                                                                 if (task.isSuccessful()) {
                                                                                     if (DbQueries.cartItemModelList.size() != 0) {
                                                                                         DbQueries.cartItemModelList.add(0,new CartItemModel(
+                                                                                                documentSnapshot.getBoolean("cod"),
                                                                                                 CartItemModel.CART_ITEM,
                                                                                                 product_id,
                                                                                                 documentSnapshot.get("product_image_1").toString(),
@@ -554,11 +555,10 @@ public class ProductDetailActivity extends AppCompatActivity {
                                     updateRatting.put(initialRatting + 1 + "_star", Long.parseLong(oldrating.getText().toString()) - 1);
                                     updateRatting.put(startPosition + 1 + "_star", Long.parseLong(finalrating.getText().toString()) + 1);
                                     updateRatting.put("average_rating", calculateAverageRating(startPosition - initialRatting, true));
-                                    updateRatting.put("total_rating", (long) documentSnapshot.get("total_rating") + 1);
+                                    updateRatting.put("total_rating", (long) documentSnapshot.get("total_rating"));
 
                                 } else {
                                     //Chưa ratting
-
                                     updateRatting.put(startPosition + 1 + "_star", (long) documentSnapshot.get(startPosition + 1 + "_star") + 1);
                                     updateRatting.put("average_rating", calculateAverageRating(startPosition + 1, false));
                                     updateRatting.put("total_rating", (long) documentSnapshot.get("total_rating") + 1);
@@ -665,6 +665,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     productDetailActivity =ProductDetailActivity.this;
                     DeliveryActivity.cartItemModelList = new ArrayList<>();
                     DeliveryActivity.cartItemModelList.add(new CartItemModel(
+                            documentSnapshot.getBoolean("cod"),
                             CartItemModel.CART_ITEM,
                             product_id,
                             documentSnapshot.get("product_image_1").toString(),

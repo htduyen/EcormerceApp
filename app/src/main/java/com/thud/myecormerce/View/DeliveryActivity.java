@@ -78,6 +78,8 @@ public class DeliveryActivity extends AppCompatActivity {
     private Button btn_continute;
     private TextView totalAmount;
     private Dialog paymentDialog;
+    private TextView txt_cod_payment;
+    private View deliver19;
     public static Dialog loadingDialog;
     public static final int SELECT_ADDRESS = 0;
 
@@ -136,6 +138,11 @@ public class DeliveryActivity extends AppCompatActivity {
         paymentDialog.setCancelable(true);
         paymentDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.slider_main));
         paymentDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        btn_cod_payment = paymentDialog.findViewById(R.id.imv_btn_cod_payment);
+        btn_google_payment = paymentDialog.findViewById(R.id.imv_btn_online_payment);
+        txt_cod_payment = paymentDialog.findViewById(R.id.txt_cod_payment);
+        deliver19 = paymentDialog.findViewById(R.id.divider19);
+
 
         loadingDialog = new Dialog(DeliveryActivity.this);
         loadingDialog.setContentView(R.layout.loading_dialog);
@@ -197,15 +204,26 @@ public class DeliveryActivity extends AppCompatActivity {
                 for (CartItemModel cartItemModel: cartItemModelList){
                     if(cartItemModel.isQtyError()){
                         allProductAvailable = false;
+                        break;
+                    }
+                    if(cartItemModel.getType() == CartItemModel.CART_ITEM) {
+                        if (!cartItemModel.isCOD()) {
+                            btn_cod_payment.setEnabled(false);
+                            btn_cod_payment.setAlpha(0.5f);
+                            txt_cod_payment.setAlpha(0.5f);
+                            deliver19.setVisibility(View.VISIBLE);
+                            break;
+                        } else {
+                            btn_cod_payment.setEnabled(true);
+                            btn_cod_payment.setAlpha(1f);
+                            txt_cod_payment.setAlpha(1f);
+                            deliver19.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
-                Toast.makeText(DeliveryActivity.this, "btn continute" + allProductAvailable, Toast.LENGTH_SHORT).show();
-
                 if(allProductAvailable){
-                    Toast.makeText(DeliveryActivity.this, "aaaaa", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(DeliveryActivity.this, "aaaaa", Toast.LENGTH_SHORT).show();
                     paymentDialog.show();
-                    btn_cod_payment = paymentDialog.findViewById(R.id.imv_btn_cod_payment);
-                    btn_google_payment = paymentDialog.findViewById(R.id.imv_btn_online_payment);
 
                     btn_cod_payment.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -262,68 +280,11 @@ public class DeliveryActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == PAYMENT_DATA_REQUEST_CODE){
             //Neu Thanh cong
-            paymentDialog.dismiss();
-            loadingDialog.show();
-            successResponse = true;
-            getQuantityIDs = false;
-            Toast.makeText(this, "Truong hop thanh toan thanh cong", Toast.LENGTH_SHORT).show();
-
-            //khi đã thanh toán thành công thì list giảm 1,set available = false, add user_id
-            for(int x = 0; x< cartItemModelList.size()-1; x++) {
-                for (String qtyID: cartItemModelList.get(x).getQuantityIDs()){
-                    firebaseFirestore.collection("PRODUCTS").document(cartItemModelList.get(x).getProduct_id()).collection("QUANTITY").document(qtyID).update("user_id", FirebaseAuth.getInstance().getUid());
-                }
-            }
-
-            if(MainActivity.mainActivity != null){
-                MainActivity.mainActivity.finish();
-                MainActivity.mainActivity = null;
-                MainActivity.SHOW_CART = false;
-            }else {
-                MainActivity.resetMainActivity = true;
-            }
-            if(ProductDetailActivity.productDetailActivity != null){
-                ProductDetailActivity.productDetailActivity.finish();
-                ProductDetailActivity.productDetailActivity = null;
-            }
-            if(fromCart){
-                loadingDialog.show();
-                Map<String,Object> updateCartlist = new HashMap<>();
-                long cartListSize = 0;
-                final List<Integer> indexList = new ArrayList<>();
-                for(int x = 0; x < DbQueries.cartlist.size(); x++){
-                    if(!cartItemModelList.get(x).isInstock()) {
-                        updateCartlist.put("product_id_" + cartListSize, DbQueries.cartItemModelList.get(x).getProduct_id());
-                        cartListSize++;
-                    }
-                    else {
-                        indexList.add(x);
-                    }
-                }
-                updateCartlist.put("list_size", (long)cartListSize);
-                FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_CART")
-                        .set(updateCartlist).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            for(int x =0; x < indexList.size(); x++){
-                                DbQueries.cartlist.remove(indexList.get(x).intValue());
-                                DbQueries.cartItemModelList.remove(indexList.get(x).intValue());
-                                DbQueries.cartItemModelList.remove(DbQueries.cartItemModelList.size() -1);
-                            }
-                        }
-                        else {
-                            String ex = task.getException().getMessage();
-                            Toast.makeText(DeliveryActivity.this, "Error: " + ex, Toast.LENGTH_SHORT).show();
-                        }
-                        loadingDialog.dismiss();
-                    }
-                });
-            }
+            loadingDialog.dismiss();
             btn_continute.setEnabled(false);
             btn_changeOrAddAddress.setEnabled(false);
             constraint_order_confirm_layout.setVisibility(View.VISIBLE);
-            txt_order_id_confirm.setText("Your order id: " + "1234567");
+            txt_order_id_confirm.setText("Your order id: " + order_id);
             btn_continute_shopping_confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -341,16 +302,108 @@ public class DeliveryActivity extends AppCompatActivity {
             if(resultCode == RESULT_OK){
                 PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
                 if(confirmation != null){
-                    try {
-                        String paymentDetail = confirmation.toJSONObject().toString(4);
-                        startActivity(new Intent(this, PaymentDetailsActivity.class)
-                                        .putExtra("PaymentDetail", paymentDetail)
-                                        .putExtra("PaymentAmount", Integer.parseInt(total_amount)/22000));
+//                    try {
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(this, "Loi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+ //                       String paymentDetail = confirmation.toJSONObject().toString();
+                        //Toast.makeText(this, "paymentDetail: " + paymentDetail, Toast.LENGTH_SHORT).show();
+                        //Log.d("PaymentDetail", paymentDetail);
+//                        startActivity(new Intent(this, PaymentDetailsActivity.class)
+//                                        .putExtra("PaymentDetail", paymentDetail)
+//                                        .putExtra("PaymentAmount", Integer.parseInt(total_amount)/22000));
+
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                        Toast.makeText(this, "Loi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+                    paymentDialog.dismiss();
+                    loadingDialog.show();
+                    successResponse = true;
+                    getQuantityIDs = false;
+                    //Toast.makeText(this, "Truong hop thanh toan thanh cong", Toast.LENGTH_SHORT).show();
+
+                    //khi đã thanh toán thành công thì list giảm 1,set available = false, add user_id
+                    for(int x = 0; x< cartItemModelList.size()-1; x++) {
+                        for (String qtyID: cartItemModelList.get(x).getQuantityIDs()){
+                            firebaseFirestore.collection("PRODUCTS").document(cartItemModelList.get(x).getProduct_id()).collection("QUANTITY").document(qtyID).update("user_id", FirebaseAuth.getInstance().getUid());
+                        }
                     }
+
+                    if(MainActivity.mainActivity != null){
+                        MainActivity.mainActivity.finish();
+                        MainActivity.mainActivity = null;
+                        MainActivity.SHOW_CART = false;
+                    }else {
+                        MainActivity.resetMainActivity = true;
+                    }
+                    if(ProductDetailActivity.productDetailActivity != null){
+                        ProductDetailActivity.productDetailActivity.finish();
+                        ProductDetailActivity.productDetailActivity = null;
+                    }
+                    if(fromCart){
+                        loadingDialog.show();
+                        Map<String,Object> updateCartlist = new HashMap<>();
+                        long cartListSize = 0;
+                        final List<Integer> indexList = new ArrayList<>();
+                        for(int x = 0; x < DbQueries.cartlist.size(); x++){
+                            if(!cartItemModelList.get(x).isInstock()) {
+                                updateCartlist.put("product_id_" + cartListSize, DbQueries.cartItemModelList.get(x).getProduct_id());
+                                cartListSize++;
+                            }
+                            else {
+                                indexList.add(x);
+                            }
+                        }
+                        updateCartlist.put("list_size", (long)cartListSize);
+                        FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_CART")
+                                .set(updateCartlist).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    for(int x =0; x < indexList.size(); x++){
+                                        DbQueries.cartlist.remove(indexList.get(x).intValue());
+                                        DbQueries.cartItemModelList.remove(indexList.get(x).intValue());
+                                        DbQueries.cartItemModelList.remove(DbQueries.cartItemModelList.size() -1);
+                                    }
+                                }
+                                else {
+                                    String ex = task.getException().getMessage();
+                                    Toast.makeText(DeliveryActivity.this, "Error: " + ex, Toast.LENGTH_SHORT).show();
+                                }
+                                loadingDialog.dismiss();
+                            }
+                        });
+                    }
+                    Map<String, Object> update_OrderDetails = new HashMap<>();
+                    update_OrderDetails.put("Payment Status", "Đã thanh toán");
+                    update_OrderDetails.put("Order Status", "Ordered");
+                    firebaseFirestore.collection("ORDERS").document(order_id).update(update_OrderDetails)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        //show confirm
+                                        Map<String, Object> userOrder = new HashMap<>();
+                                        userOrder.put("order_id", order_id);
+                                        userOrder.put("time order", FieldValue.serverTimestamp());
+                                        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_ORDERS").document(order_id).set(userOrder)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if(task.isSuccessful()){
+
+                                                        }
+                                                        else {
+
+                                                            Toast.makeText(DeliveryActivity.this, "Lỗi update order của bạn: ", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+                                    }else {
+                                        Toast.makeText(DeliveryActivity.this, "Lỗi update payment: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                    loadingDialog.dismiss();
+                                }
+                            });
                 }
             }else if(requestCode == Activity.RESULT_CANCELED){
                 Toast.makeText(this, "Cancel payment", Toast.LENGTH_SHORT).show();
@@ -493,6 +546,8 @@ public class DeliveryActivity extends AppCompatActivity {
                 Map<String, Object> orderDetails = new HashMap<>();
                 orderDetails.put("Order ID", order_id);
                 orderDetails.put("Product ID", cartItemModel.getProduct_id());
+                orderDetails.put("Product Image", cartItemModel.getProductImage());
+                orderDetails.put("Product Name", cartItemModel.getProductName());
                 orderDetails.put("User ID", user_id);
                 orderDetails.put("Product Quantity", cartItemModel.getProductQuantity());
                 orderDetails.put("Product Price", cartItemModel.getProductPrice());
@@ -523,19 +578,22 @@ public class DeliveryActivity extends AppCompatActivity {
                 orderDetails.put("FullName", txt_fullname.getText());
                 orderDetails.put("PhoneNumber", txt_phonenumber.getText());
                 orderDetails.put("Free Discount", cartItemModel.getFreeDiscount());
-
+                orderDetails.put("Delivery Price", cartItemModelList.get(cartItemModelList.size() -1).getDeliveryPrice());
+                orderDetails.put("Cancellation Requested", false);
                 firebaseFirestore.collection("ORDERS").document(order_id).collection("OrderItems").document(cartItemModel.getProduct_id())
                         .set(orderDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                        if(task.isSuccessful()){
-
-                        }
-                        else {
+                        if(!task.isSuccessful()){
                             String error = task.getException().getMessage();
                             Toast.makeText(DeliveryActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+
                         }
+//                        else {
+//                            String error = task.getException().getMessage();
+//                            Toast.makeText(DeliveryActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+//                        }
                     }
                 });
             }else {
@@ -546,32 +604,21 @@ public class DeliveryActivity extends AppCompatActivity {
                 orderDetails.put("Save Amount", cartItemModel.getSaveAmount());
                 orderDetails.put("Delivery Price", cartItemModel.getDeliveryPrice());
                 //Chua xu ly Payment and Order status
-                orderDetails.put("Payment Status", "Paid");
-                orderDetails.put("Order Status", "Ordered");
-
-                //Khi thanh toan "reponse success" ==> Update sau khi đã confirm v91-32
-//                if(x == cartItemModelList.size() -2){
-//                    Map<String, Object> update_OrderDetails = new HashMap<>();
-//                    orderDetails.put("Payment Status", "Đã thanh toán");
-//                    orderDetails.put("Order Status", "Ordered");
-//                    firebaseFirestore.collection("ORDERS").document(order_id).update(update_OrderDetails)
-//                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task) {
-//                                    if(task.isSuccessful()){
-//                                            //show confirm
-//                                    }else {
-//
-//                                    }
-//                                }
-//                            });
-//                }
+                orderDetails.put("Payment Status", "Chưa thanh toán");
+                orderDetails.put("Order Status", "Cancelled");
 
                 firebaseFirestore.collection("ORDERS").document(order_id)
                         .set(orderDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(!task.isSuccessful()){
+                        if(task.isSuccessful()){
+//                            if(paymentMethod.equals("Paypal")){
+//                                paypal();
+//                            }
+//                            else {
+//                                cod();
+//                            }
+                        }else {
                             String error = task.getException().getMessage();
                             Toast.makeText(DeliveryActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
 

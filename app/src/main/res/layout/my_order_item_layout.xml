@@ -20,11 +20,11 @@
 
     <TextView
         android:id="@+id/txt_product_name_myorder"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="201dp"
+        android:layout_marginEnd="8dp"
         android:text="Iphone X"
         android:textColor="@color/colorBlack"
         android:textSize="20sp"
@@ -46,11 +46,14 @@
 
     <TextView
         android:id="@+id/txt_time_dilivered"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Được giao ngày 10/8/2019"
         app:layout_constraintBottom_toBottomOf="@+id/imv_order_status"
+        app:layout_constraintEnd_toStartOf="@+id/imv_product_myorder"
         app:layout_constraintStart_toEndOf="@+id/imv_order_status"
         app:layout_constraintTop_toTopOf="@+id/imv_order_status" />
 
@@ -59,12 +62,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="Đánh giá của bạn"
         android:textColor="@color/colorBlack"
         android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imv_product_myorder"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_time_dilivered" />
 
     <View
         android:id="@+id/divider_rating_myorder"
@@ -76,7 +80,7 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imv_product_myorder" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_title_your_rating_myorder" />
 
     <LinearLayout
         android:id="@+id/linear_rating_now"

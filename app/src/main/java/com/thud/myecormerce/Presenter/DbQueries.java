@@ -27,14 +27,17 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.thud.myecormerce.Adapter.CategoryAdapter;
 import com.thud.myecormerce.Adapter.HomePageAdapter;
+import com.thud.myecormerce.Adapter.MyOrderAdapter;
 import com.thud.myecormerce.Fragments.CartFragment;
 import com.thud.myecormerce.Fragments.HomeFragment;
+import com.thud.myecormerce.Fragments.MyOrderFragment;
 import com.thud.myecormerce.Fragments.MyRewardFragment;
 import com.thud.myecormerce.Fragments.MyWishlistFragment;
 import com.thud.myecormerce.Models.AddressModel;
 import com.thud.myecormerce.Models.CartItemModel;
 import com.thud.myecormerce.Models.CategoryModel;
 import com.thud.myecormerce.Models.HomePageModel;
+import com.thud.myecormerce.Models.MyOrderItemModel;
 import com.thud.myecormerce.Models.ProductHorizonModel;
 import com.thud.myecormerce.Models.RewardModel;
 import com.thud.myecormerce.Models.SliderModel;
@@ -77,6 +80,8 @@ public class DbQueries {
     public static List<AddressModel> addressModelList = new ArrayList<>();
 
     public static List<RewardModel> rewardModelList = new ArrayList<>();
+
+    public static List<MyOrderItemModel> myOrderItemModelList = new ArrayList<>();
 
     //Categories
     public static void loadCategories(final RecyclerView recyclerView_Cate, final Context context){
@@ -338,6 +343,11 @@ public class DbQueries {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
+                        List<String> orderProductIds = new ArrayList<>();
+                        for(int x =0; x < myOrderItemModelList.size(); x++){
+                            orderProductIds.add(myOrderItemModelList.get(x).getProduct_id());
+                        }
+
                         for (long x = 0; x < (long) task.getResult().get("list_size"); x++) {
                             myratting_ids.add(task.getResult().get("product_id_" + x).toString());
                             myRatting.add((long) task.getResult().get("ratting_" + x));
@@ -349,6 +359,12 @@ public class DbQueries {
                                     ProductDetailActivity.setRating(ProductDetailActivity.initialRatting);
                                 }
                             }
+                            if(orderProductIds.contains(task.getResult().get("product_id_" + x).toString())){
+                                myOrderItemModelList.get(orderProductIds.indexOf(task.getResult().get("product_id_" + x).toString())).setNumRating(Integer.parseInt(String.valueOf((long) task.getResult().get("ratting_" + x))) - 1);
+                            }
+                        }
+                        if(MyOrderFragment.myOrderAdapter != null){
+                            MyOrderFragment.myOrderAdapter.notifyDataSetChanged();
                         }
                     } else {
                         String error = task.getException().getMessage();
@@ -400,6 +416,7 @@ public class DbQueries {
                                                                     }
                                                                     if(task.getResult().getDocuments().size() < (long)documentSnapshot.get("stock_quantity")){
                                                                         cartItemModelList.add(index,new CartItemModel(
+                                                                                documentSnapshot.getBoolean("cod"),
                                                                                 CartItemModel.CART_ITEM,
                                                                                 product_id,
                                                                                 documentSnapshot.get("product_image_1").toString(),
@@ -415,6 +432,7 @@ public class DbQueries {
                                                                                 (long) documentSnapshot.get("stock_quantity")));
                                                                     }else {
                                                                         cartItemModelList.add(index,new CartItemModel(
+                                                                                documentSnapshot.getBoolean("cod"),
                                                                                 CartItemModel.CART_ITEM,
                                                                                 product_id,
                                                                                 documentSnapshot.get("product_image_1").toString(),
@@ -615,6 +633,69 @@ public class DbQueries {
                     }
                 });
     }
+
+    public static void loadOrders(final Context context, final MyOrderAdapter myOrderAdapter, final Dialog loadingDialog){
+        myOrderItemModelList.clear();
+        firebaseFirestore.collection("USERS").document(firebaseAuth.getUid()).collection("USER_ORDERS").orderBy("time order", Query.Direction.DESCENDING).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(DocumentSnapshot documentSnapshot: task.getResult().getDocuments()){
+
+                                firebaseFirestore.collection("ORDERS").document(documentSnapshot.getString("order_id")).collection("OrderItems").get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (DocumentSnapshot orderItems : task.getResult().getDocuments()) {
+                                                    final MyOrderItemModel myOrderItemModel = new MyOrderItemModel(
+                                                            orderItems.getString("Product ID"),
+                                                            orderItems.getString("Order Status"),
+                                                            orderItems.getString("Address"),
+                                                            orderItems.getString("Discounted Price"),
+                                                            orderItems.getString("Product Cutted Price"),
+                                                            orderItems.getDate("Ordered date"),
+                                                            orderItems.getDate("Packed date"),
+                                                            orderItems.getDate("Shipped date"),
+                                                            orderItems.getDate("Delivered date"),
+                                                            orderItems.getDate("Cancelled date"),
+                                                            orderItems.getString("Discounted Price"),
+                                                            orderItems.getLong("Free Discount"),
+                                                            orderItems.getString("FullName"),
+                                                            orderItems.getString("Order ID"),
+                                                            orderItems.getString("Payment Method"),
+                                                            orderItems.getString("PhoneNumber"),
+                                                            orderItems.getString("Product Price"),
+                                                            orderItems.getLong("Product Quantity"),
+                                                            orderItems.getString("User ID"),
+                                                            orderItems.getString("Product Image"),
+                                                            orderItems.getString("Product Name"),
+                                                            orderItems.getString("Delivery Price"),
+                                                            orderItems.getBoolean("Cancellation Requested")
+
+                                                    );
+                                                    myOrderItemModelList.add(myOrderItemModel);
+                                                }
+                                                DbQueries.loadRatting(context);
+                                                myOrderAdapter.notifyDataSetChanged();
+                                            } else {
+                                                String ex = task.getException().getMessage();
+                                                Toast.makeText(context, "Error: " + ex, Toast.LENGTH_SHORT).show();
+                                            }
+                                            loadingDialog.dismiss();
+                                        }
+                                    });
+                            }
+                        }else {
+                            loadingDialog.dismiss();
+                            String ex = task.getException().getMessage();
+                            Toast.makeText(context, "Error: " + ex, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
     public static void clearData(){
         categoryModels.clear();
         lists.clear();
@@ -627,6 +708,7 @@ public class DbQueries {
         myRatting.clear();
         addressModelList.clear();
         rewardModelList.clear();
+        myOrderItemModelList.clear();
     }
 
 

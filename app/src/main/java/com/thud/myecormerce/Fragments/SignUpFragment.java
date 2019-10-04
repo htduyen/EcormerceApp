@@ -218,6 +218,8 @@ public class SignUpFragment extends Fragment {
 
                                             Map<Object, String> userData = new HashMap<>();
                                             userData.put("username", username);
+                                            userData.put("email", edt_email.getText().toString());
+                                            userData.put("profile", edt_email.getText().toString());
                                             //Toast.makeText(getActivity(), "Username: " + username, Toast.LENGTH_SHORT).show();
                                             firebaseFirestore.collection("USERS").document(firebaseAuth.getUid())
                                                     .set(userData)

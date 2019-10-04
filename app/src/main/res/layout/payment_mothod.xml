@@ -59,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/divider19"
         app:layout_constraintTop_toTopOf="@+id/divider19"
-        app:srcCompat="@drawable/google_pay" />
+        app:srcCompat="@drawable/paypal"/>
 
     <TextView
         android:id="@+id/txt_cod_payment"
