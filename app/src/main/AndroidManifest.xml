@@ -48,6 +48,7 @@
             android:value="true" />
 
         <activity android:name=".View.PaymentDetailsActivity" />
+        <activity android:name=".View.UpdateUserInforActivity"></activity>
     </application>
 
 </manifest>

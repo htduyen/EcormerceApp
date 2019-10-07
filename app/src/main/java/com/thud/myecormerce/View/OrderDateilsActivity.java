@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -212,6 +213,30 @@ public class OrderDateilsActivity extends AppCompatActivity {
                 deliveriedDate.setVisibility(View.GONE);
                 deliveriedBody.setVisibility(View.GONE);
                 break;
+            case "Out for delivery":
+                orderedTitle.setText("Ordered");
+                orderedIndicator.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorGreenDark)));
+                orderedDate.setText(String.valueOf(simpleDateFormat.format(myOrderItemModel.getOrderdDate())));
+                orderedBody.setText("Hàng đã được đặt");
+
+                packedTitle.setText("Packed");
+                packedIndicator.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorGreenDark)));
+                packedDate.setText(String.valueOf(simpleDateFormat.format(myOrderItemModel.getPackedDate())));
+                packedBody.setText("Hàng đã đóng gói");
+
+                shippedTitle.setText("Shipped");
+                shippedIndicator.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorGreenDark)));
+                shippedDate.setText(String.valueOf(simpleDateFormat.format(myOrderItemModel.getShipedDate())));
+                shippedBody.setText("Hàng đã vận chuyển");
+
+                deliveriedTitle.setText("Out for Delivery");
+                deliveriedIndicator.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorGreenDark)));
+                deliveriedDate.setText(String.valueOf(simpleDateFormat.format(myOrderItemModel.getDeliveriedDate())));
+                deliveriedBody.setText("Hàng đã chuyển giao đến nơi");
+
+                orderedProgress.setProgress(100);
+                packedProgress.setProgress(100);
+                shippedProgress.setProgress(100);
             case "Delivered":
                 orderedTitle.setText("Ordered");
                 orderedIndicator.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorGreenDark)));
@@ -459,20 +484,22 @@ public class OrderDateilsActivity extends AppCompatActivity {
             totalItemsPriceValue = myOrderItemModel.getProductQuantity()*Long.valueOf(myOrderItemModel.getDiscountedPrice());
             totalItemsPrice.setText(totalItemsPriceValue + " đ");
         }
-//        if(Integer.parseInt(myOrderItemModel.getProductPrice()) > 1000000){
-//            deliveryPrice.setText("Miễn phí giao hàng");
-//            totalAmount.setText(totalItemsPrice.getText());
-//        }else {
-//            deliveriedBody.setText("40000đ");
-//            totalAmount.setText(Long.valueOf(40000) + totalItemsPriceValue + " đ");
-//        }
-        if(myOrderItemModel.getProductPrice().equals("Free")){
+        if(Integer.parseInt(myOrderItemModel.getProductPrice()) > 1000000){
             deliveryPrice.setText("Miễn phí giao hàng");
             totalAmount.setText(totalItemsPrice.getText());
         }else {
-            deliveryPrice.setText(myOrderItemModel.getDeliveryPrice()+"đ");
-            totalAmount.setText((myOrderItemModel.getDeliveryPrice() + totalItemsPriceValue) + " đ");
+            deliveryPrice.setText("40000đ");
+            totalAmount.setText(Long.valueOf(40000) + totalItemsPriceValue + " đ");
         }
+//        String delivry = myOrderItemModel.getDeliveryPrice();
+//        Log.d("delivery", delivry);
+//        if(myOrderItemModel.getDeliveryPrice().equals("Free")){
+//            deliveryPrice.setText("Miễn phí giao hàng");
+//            totalAmount.setText(totalItemsPrice.getText() + "đ");
+//        }else {
+//            deliveryPrice.setText(myOrderItemModel.getDeliveryPrice()+"đ");
+//            totalAmount.setText((myOrderItemModel.getDeliveryPrice() + totalItemsPriceValue) + " đ");
+//        }
         if(!myOrderItemModel.getCuttedPrice().equals("")){
             if(!myOrderItemModel.getDiscountedPrice().equals("")){
                 savedAmount.setText("Bạn đã tiết kiệm được " + myOrderItemModel.getProductQuantity() *(Long.valueOf(myOrderItemModel.getCuttedPrice()) - Long.valueOf(myOrderItemModel.getDiscountedPrice())) + "đ");

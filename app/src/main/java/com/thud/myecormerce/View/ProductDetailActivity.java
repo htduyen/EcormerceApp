@@ -683,7 +683,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     DeliveryActivity.cartItemModelList.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
 
                     if(DbQueries.addressModelList.size() == 0) {
-                        DbQueries.loadAddress(ProductDetailActivity.this, loadingDialog);
+                        DbQueries.loadAddress(ProductDetailActivity.this, loadingDialog, true);
                     }else {
                         loadingDialog.dismiss();
                         Intent intentDelivery = new Intent(ProductDetailActivity.this, DeliveryActivity.class );

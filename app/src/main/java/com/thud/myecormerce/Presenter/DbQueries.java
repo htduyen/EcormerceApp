@@ -61,6 +61,9 @@ public class DbQueries {
 
     public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
+    public static String fullname, email, profile;
+
+
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static List<CategoryModel> categoryModels = new ArrayList<>();
 
@@ -536,32 +539,42 @@ public class DbQueries {
         });
     }
 
-    public static void loadAddress(final Context context, final Dialog dialog){
+    public static void loadAddress(final Context context, final Dialog dialog, final boolean gotoDeliveryActivity){
         addressModelList.clear();
         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_ADDRESS")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
-                    Intent deliveryIntent;
+                    Intent deliveryIntent = null;
                     if((long)task.getResult().get("list_size") == 0){
                         deliveryIntent = new Intent(context, AddAddressActivity.class);
                         deliveryIntent.putExtra("INTENT", "deliveryIntent");
                     }
                     else {
                         for(long x =1;x < (long)task.getResult().get("list_size") +1; x++){
-                            addressModelList.add(new AddressModel(task.getResult().get("full_name_"+ x).toString(),
-                                    task.getResult().get("address_"+ x).toString(),
-                                    task.getResult().get("phone_number_"+ x).toString(),
-                                    (boolean)task.getResult().get("selected_"+ x)));
+                            addressModelList.add(new AddressModel(
+                                    task.getResult().getString("province_"+ x),
+                                    task.getResult().getString("country_"+ x),
+                                    task.getResult().getString("locationDetail_"+ x),
+                                    task.getResult().getString("full_name_"+ x),
+                                    task.getResult().getString("gender_"+ x),
+                                    task.getResult().getString("email_"+ x),
+                                    task.getResult().getString("phone_number_"+ x),
+                                    task.getResult().getBoolean("selected_"+ x)));
+
                             if((boolean)task.getResult().get("selected_"+ x)){
                                 addressselected = Integer.parseInt(String.valueOf(x -1));
                             }
                         }
-                        deliveryIntent = new Intent(context, DeliveryActivity.class);
+                        if(gotoDeliveryActivity) {
+                            deliveryIntent = new Intent(context, DeliveryActivity.class);
+                        }
 
                     }
-                    context.startActivity(deliveryIntent);
+                    if(gotoDeliveryActivity) {
+                        context.startActivity(deliveryIntent);
+                    }
                 }
                 else {
                     String error = task.getException().getMessage();
@@ -634,7 +647,7 @@ public class DbQueries {
                 });
     }
 
-    public static void loadOrders(final Context context, final MyOrderAdapter myOrderAdapter, final Dialog loadingDialog){
+    public static void loadOrders(final Context context,@NonNull final MyOrderAdapter myOrderAdapter, final Dialog loadingDialog){
         myOrderItemModelList.clear();
         firebaseFirestore.collection("USERS").document(firebaseAuth.getUid()).collection("USER_ORDERS").orderBy("time order", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -678,7 +691,9 @@ public class DbQueries {
                                                     myOrderItemModelList.add(myOrderItemModel);
                                                 }
                                                 DbQueries.loadRatting(context);
-                                                myOrderAdapter.notifyDataSetChanged();
+                                                if(myOrderAdapter != null) {
+                                                    myOrderAdapter.notifyDataSetChanged();
+                                                }
                                             } else {
                                                 String ex = task.getException().getMessage();
                                                 Toast.makeText(context, "Error: " + ex, Toast.LENGTH_SHORT).show();

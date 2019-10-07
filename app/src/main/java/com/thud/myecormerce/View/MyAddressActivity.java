@@ -1,6 +1,7 @@
 package com.thud.myecormerce.View;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -59,7 +60,12 @@ public class MyAddressActivity extends AppCompatActivity {
         loadingDialog.setCancelable(false);
         loadingDialog.getWindow().setBackgroundDrawable(this.getDrawable(R.drawable.slider_main));
         loadingDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
+        loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                num_address.setText(String.valueOf(DbQueries.addressModelList.size()) + " địa chỉ đã được lưu");
+            }
+        });
 
         previousAddress =DbQueries.addressselected;
 
@@ -79,7 +85,7 @@ public class MyAddressActivity extends AppCompatActivity {
         else {
             btn_delivery_here.setVisibility(View.GONE);
         }
-        addressAdapter = new AddressAdapter(DbQueries.addressModelList, mode_intent);
+        addressAdapter = new AddressAdapter(DbQueries.addressModelList, mode_intent, loadingDialog);
         recyclerViewAddress.setAdapter(addressAdapter);
         ((SimpleItemAnimator)recyclerViewAddress.getItemAnimator()).setSupportsChangeAnimations(false);
         addressAdapter.notifyDataSetChanged();
@@ -88,7 +94,11 @@ public class MyAddressActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intentAddNew = new Intent(MyAddressActivity.this, AddAddressActivity.class);
-                intentAddNew.putExtra("INTENT", "null");
+                if(mode_intent != DeliveryActivity.SELECT_ADDRESS){
+                    intentAddNew.putExtra("INTENT", "mamage");
+                }else {
+                    intentAddNew.putExtra("INTENT", "null");
+                }
                 startActivity(intentAddNew);
             }
         });
@@ -134,10 +144,12 @@ public class MyAddressActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == android.R.id.home){
-            if(DbQueries.addressselected != previousAddress){
-                DbQueries.addressModelList.get(DbQueries.addressselected).setSelected(false);
-                DbQueries.addressModelList.get(previousAddress).setSelected(true);
-                DbQueries.addressselected = previousAddress;
+            if(mode_intent == DeliveryActivity.SELECT_ADDRESS) {
+                if (DbQueries.addressselected != previousAddress) {
+                    DbQueries.addressModelList.get(DbQueries.addressselected).setSelected(false);
+                    DbQueries.addressModelList.get(previousAddress).setSelected(true);
+                    DbQueries.addressselected = previousAddress;
+                }
             }
             finish();
             return true;
@@ -148,16 +160,19 @@ public class MyAddressActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(DbQueries.addressselected != previousAddress){
-            DbQueries.addressModelList.get(DbQueries.addressselected).setSelected(false);
-            DbQueries.addressModelList.get(previousAddress).setSelected(true);
-            DbQueries.addressselected = previousAddress;
+        if(mode_intent == DeliveryActivity.SELECT_ADDRESS) {
+            if (DbQueries.addressselected != previousAddress) {
+                DbQueries.addressModelList.get(DbQueries.addressselected).setSelected(false);
+                DbQueries.addressModelList.get(previousAddress).setSelected(true);
+                DbQueries.addressselected = previousAddress;
+            }
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
         num_address.setText(String.valueOf(DbQueries.addressModelList.size()) + " địa chỉ đã được lưu");
     }
 }

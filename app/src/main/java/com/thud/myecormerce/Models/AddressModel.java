@@ -1,17 +1,52 @@
 package com.thud.myecormerce.Models;
 
+import android.support.v7.widget.AppCompatSpinner;
+import android.widget.EditText;
+
 public class AddressModel {
 
+    private String province;
+    private String country;
+    private String locationDetail;
     private String fullname;
-    private String address;
-    private String phonenmuber;
+    private String gioiTinh;
+    private String email;
+    private String phone;
     private Boolean selected;
 
-    public AddressModel(String fullname, String address, String phonenmuber, Boolean selected) {
+    public AddressModel(String province, String country, String locationDetail, String fullname, String gioiTinh, String email, String phone, Boolean selected) {
+        this.province = province;
+        this.country = country;
+        this.locationDetail = locationDetail;
         this.fullname = fullname;
-        this.address = address;
-        this.phonenmuber = phonenmuber;
+        this.gioiTinh = gioiTinh;
+        this.email = email;
+        this.phone = phone;
         this.selected = selected;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getLocationDetail() {
+        return locationDetail;
+    }
+
+    public void setLocationDetail(String locationDetail) {
+        this.locationDetail = locationDetail;
     }
 
     public String getFullname() {
@@ -22,20 +57,28 @@ public class AddressModel {
         this.fullname = fullname;
     }
 
-    public String getAddress() {
-        return address;
+    public String getGioiTinh() {
+        return gioiTinh;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setGioiTinh(String gioiTinh) {
+        this.gioiTinh = gioiTinh;
     }
 
-    public String getPhonenmuber() {
-        return phonenmuber;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPhonenmuber(String phonenmuber) {
-        this.phonenmuber = phonenmuber;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Boolean getSelected() {

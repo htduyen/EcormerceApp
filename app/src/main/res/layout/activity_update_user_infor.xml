@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".View.UpdateUserInforActivity">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout_updateuserinfor"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:tabIndicatorColor="@color/colorRed"
+        android:background="@color/colorBlueDark"
+        app:tabIndicatorHeight="2dp"
+        app:tabTextColor="@color/colorWhiteplus"
+        app:tabSelectedTextColor="@color/white">
+
+        <android.support.design.widget.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thông Tin Cá Nhân" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thay Đổi Mật Khẩu" />
+    </android.support.design.widget.TabLayout>
+
+    <FrameLayout
+        android:id="@+id/framelayout_infor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+</LinearLayout>

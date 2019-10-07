@@ -91,7 +91,7 @@ public class CartFragment extends Fragment {
 //               startActivity(intent);
 //               loadingDialog.dismiss();
                 if(DbQueries.addressModelList.size() == 0) {
-                    DbQueries.loadAddress(getContext(), loadingDialog);
+                    DbQueries.loadAddress(getContext(), loadingDialog, true);
                 }else {
                     loadingDialog.dismiss();
                     Intent intentDelivery = new Intent(getContext(), DeliveryActivity.class );

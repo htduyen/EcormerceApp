@@ -188,9 +188,9 @@ public class DeliveryActivity extends AppCompatActivity {
             }
         });
 
-        txt_fullname.setText("Họ & tên: " + DbQueries.addressModelList.get(DbQueries.addressselected).getFullname());
-        txt_address.setText("Địa chỉ: " + DbQueries.addressModelList.get(DbQueries.addressselected).getAddress());
-        txt_phonenumber.setText("SĐT: " + DbQueries.addressModelList.get(DbQueries.addressselected).getPhonenmuber());
+        txt_fullname.setText(DbQueries.addressModelList.get(DbQueries.addressselected).getFullname());
+        txt_address.setText(DbQueries.addressModelList.get(DbQueries.addressselected).getLocationDetail() + ", " + DbQueries.addressModelList.get(DbQueries.addressselected).getProvince() + ", " + DbQueries.addressModelList.get(DbQueries.addressselected).getCountry());
+        txt_phonenumber.setText(DbQueries.addressModelList.get(DbQueries.addressselected).getPhone());
 
         Intent startServiceIntent = new Intent(this, PayPalService.class);
         startServiceIntent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, configuration);
@@ -491,10 +491,9 @@ public class DeliveryActivity extends AppCompatActivity {
         }else {
             getQuantityIDs  = true;
         }
-        txt_fullname.setText("Họ & tên: " + DbQueries.addressModelList.get(DbQueries.addressselected).getFullname());
-        txt_address.setText("Địa chỉ: " + DbQueries.addressModelList.get(DbQueries.addressselected).getAddress());
-        txt_phonenumber.setText("SĐT: " + DbQueries.addressModelList.get(DbQueries.addressselected).getPhonenmuber());
-
+        txt_fullname.setText(DbQueries.addressModelList.get(DbQueries.addressselected).getFullname());
+        txt_address.setText(DbQueries.addressModelList.get(DbQueries.addressselected).getLocationDetail() + DbQueries.addressModelList.get(DbQueries.addressselected).getProvince() + " " + DbQueries.addressModelList.get(DbQueries.addressselected).getCountry());
+        txt_phonenumber.setText(DbQueries.addressModelList.get(DbQueries.addressselected).getPhone());
     }
 
     @Override

@@ -2,15 +2,14 @@ package com.thud.myecormerce.View;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,8 +29,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.thud.myecormerce.Fragments.CartFragment;
 import com.thud.myecormerce.Fragments.HomeFragment;
 import com.thud.myecormerce.Fragments.MyAccountFragment;
@@ -42,6 +46,8 @@ import com.thud.myecormerce.Fragments.SignInFragment;
 import com.thud.myecormerce.Fragments.SignUpFragment;
 import com.thud.myecormerce.Presenter.DbQueries;
 import com.thud.myecormerce.R;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -70,6 +76,10 @@ public class MainActivity extends AppCompatActivity
     public static DrawerLayout drawer;
 
     private FirebaseUser currentUser;
+    private CircleImageView imv_profile_nav;
+    private TextView fullname_nav, email_nav;
+    private ImageView icon_add_profile_nav;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +102,12 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
+
+        imv_profile_nav = navigationView.getHeaderView(0).findViewById(R.id.imv_circle_user_profile_navdrawer);
+        icon_add_profile_nav = navigationView.getHeaderView(0).findViewById(R.id.imv_add_profile_icon_navdrawer);
+        fullname_nav = navigationView.getHeaderView(0).findViewById(R.id.txt_username_navdrawer);
+        email_nav = navigationView.getHeaderView(0).findViewById(R.id.txt_email_navdrawer);
+
 
         if(SHOW_CART){
             mainActivity = this;
@@ -141,12 +157,37 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if(currentUser == null){
             navigationView.getMenu().getItem(navigationView.getMenu().size()-1).setEnabled(false);
         }
         else {
+            FirebaseFirestore.getInstance().collection("USERS").document(currentUser.getUid())
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        DbQueries.fullname = task.getResult().getString("username");
+                        DbQueries.email = task.getResult().getString("email");
+                        DbQueries.profile = task.getResult().getString("profile");
+
+                       // Log.d("fullname:", DbQueries.fullname + " - " + DbQueries.email+ " - " + DbQueries.profile);
+
+                        fullname_nav.setText(DbQueries.fullname);
+                        email_nav.setText(DbQueries.email);
+                        if(DbQueries.profile.equals("")){
+                            icon_add_profile_nav.setVisibility(View.VISIBLE);
+                        }else {
+                            icon_add_profile_nav.setVisibility(View.INVISIBLE);
+                            Glide.with(MainActivity.this).load(DbQueries.profile).apply(new RequestOptions().placeholder(R.drawable.ic_launcher_foreground)).into(imv_profile_nav);
+                        }
+
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, "Loi", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
             navigationView.getMenu().getItem(navigationView.getMenu().size() -1).setEnabled(true);
         }
         if(resetMainActivity){
