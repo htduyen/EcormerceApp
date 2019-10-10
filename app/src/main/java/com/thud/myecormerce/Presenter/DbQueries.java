@@ -21,13 +21,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.thud.myecormerce.Adapter.CategoryAdapter;
 import com.thud.myecormerce.Adapter.HomePageAdapter;
 import com.thud.myecormerce.Adapter.MyOrderAdapter;
+import com.thud.myecormerce.Adapter.NotificationAdapter;
 import com.thud.myecormerce.Fragments.CartFragment;
 import com.thud.myecormerce.Fragments.HomeFragment;
 import com.thud.myecormerce.Fragments.MyOrderFragment;
@@ -38,6 +42,7 @@ import com.thud.myecormerce.Models.CartItemModel;
 import com.thud.myecormerce.Models.CategoryModel;
 import com.thud.myecormerce.Models.HomePageModel;
 import com.thud.myecormerce.Models.MyOrderItemModel;
+import com.thud.myecormerce.Models.NotificationModel;
 import com.thud.myecormerce.Models.ProductHorizonModel;
 import com.thud.myecormerce.Models.RewardModel;
 import com.thud.myecormerce.Models.SliderModel;
@@ -45,6 +50,7 @@ import com.thud.myecormerce.Models.WishlistModel;
 import com.thud.myecormerce.R;
 import com.thud.myecormerce.View.AddAddressActivity;
 import com.thud.myecormerce.View.DeliveryActivity;
+import com.thud.myecormerce.View.NotificationActivity;
 import com.thud.myecormerce.View.ProductDetailActivity;
 
 import java.util.ArrayList;
@@ -52,6 +58,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 import static com.thud.myecormerce.View.ProductDetailActivity.cartItem;
 import static com.thud.myecormerce.View.ProductDetailActivity.product_id;
@@ -86,6 +94,8 @@ public class DbQueries {
 
     public static List<MyOrderItemModel> myOrderItemModelList = new ArrayList<>();
 
+    public static List<NotificationModel> notificationModelList = new ArrayList<>();
+    private static ListenerRegistration registration;
     //Categories
     public static void loadCategories(final RecyclerView recyclerView_Cate, final Context context){
         categoryModels.clear();
@@ -711,6 +721,49 @@ public class DbQueries {
                 });
     }
 
+    public static void checkNotification(boolean remove,@Nullable final TextView count){
+        if(remove){
+            registration.remove();
+        }else {
+            registration = firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_NOTIFICATIONS")
+                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                            if(documentSnapshot != null && documentSnapshot.exists()){
+                                notificationModelList.clear();
+                                int unread = 0;
+                                for(long x =0;x < (long) documentSnapshot.get("list_size");x++){
+                                    notificationModelList.add(0,new NotificationModel(
+                                            documentSnapshot.get("Image_" + x).toString(),
+                                            documentSnapshot.get("Body_" + x).toString(),
+                                            documentSnapshot.getBoolean("Readed_" + x)));
+                                    if(!documentSnapshot.getBoolean("Readed_" + x)){
+                                        unread++;
+                                        if(count != null){
+                                            if(unread > 0) {
+                                                count.setVisibility(View.VISIBLE);
+                                                if (unread < 99) {
+                                                        count.setText(String.valueOf(unread));
+                                                } else {
+                                                    count.setText("99+");
+                                                }
+                                            }else {
+                                                count.setVisibility(View.INVISIBLE);
+                                            }
+                                        }
+                                    }
+
+                                }
+                                if(NotificationActivity.adapter != null){
+                                    NotificationActivity.adapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                    });
+        }
+
+
+    }
     public static void clearData(){
         categoryModels.clear();
         lists.clear();

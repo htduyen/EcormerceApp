@@ -270,6 +270,7 @@ public class UserInforFragment extends Fragment {
                     }else {
                         DbQueries.fullname = edt_username.getText().toString().trim();
                     }
+                    getActivity().finish();
                     Toast.makeText(getContext() , "Đã update thành công", Toast.LENGTH_SHORT).show();
                 }else {
                     String error = task.getException().getMessage();

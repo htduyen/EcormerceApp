@@ -48,7 +48,9 @@
             android:value="true" />
 
         <activity android:name=".View.PaymentDetailsActivity" />
-        <activity android:name=".View.UpdateUserInforActivity"></activity>
+        <activity android:name=".View.UpdateUserInforActivity" />
+        <activity android:name=".View.SearchActivity" />
+        <activity android:name=".View.NotificationActivity"></activity>
     </application>
 
 </manifest>

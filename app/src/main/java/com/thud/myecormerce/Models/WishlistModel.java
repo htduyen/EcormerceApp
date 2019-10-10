@@ -1,5 +1,8 @@
 package com.thud.myecormerce.Models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WishlistModel {
 
     private String productImage;
@@ -12,6 +15,7 @@ public class WishlistModel {
     private long totalRating;
     private String product_id;
     private boolean inStock;
+    private ArrayList<String> tags;
 
     public WishlistModel(String product_id, String productImage, String productName, String productPrice, String productCuttedPrice, long freeDiscount, boolean paymentMethod, String rating, long totalRating, boolean inStock) {
        this.product_id = product_id;
@@ -24,6 +28,14 @@ public class WishlistModel {
         this.rating = rating;
         this.totalRating = totalRating;
         this.inStock = inStock;
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
     }
 
     public boolean isInStock() {

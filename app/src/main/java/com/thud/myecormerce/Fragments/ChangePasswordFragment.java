@@ -155,8 +155,10 @@ public class ChangePasswordFragment extends Fragment {
                                     edt_old_password.setText(null);
                                     edt_new_pass.setText(null);
                                     edt_pass_cofirm.setText(null);
+                                    getActivity().finish();
                                     Toast.makeText(getContext(), "Đã update mật khẩu mới", Toast.LENGTH_SHORT).show();
                                 }else {
+
                                     String error = task.getException().getMessage();
                                     Toast.makeText(getContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
                                 }

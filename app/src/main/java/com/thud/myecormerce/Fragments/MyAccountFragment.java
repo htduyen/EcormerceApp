@@ -100,11 +100,7 @@ public class MyAccountFragment extends Fragment {
         loadingDialog.show();
 
 
-        fulname.setText(DbQueries.fullname);
-        email.setText(DbQueries.email);
-        if(!DbQueries.profile.equals("")){
-            Glide.with(getContext()).load(DbQueries.profile).apply(new RequestOptions().placeholder(R.drawable.ic_launcher_foreground)).into(profile_image);
-        }
+
         layoutContainer.getChildAt(1).setVisibility(View.GONE);
 
         loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -219,6 +215,15 @@ public class MyAccountFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        fulname.setText(DbQueries.fullname);
+        email.setText(DbQueries.email);
+        if(!DbQueries.profile.equals("")){
+            Glide.with(getContext()).load(DbQueries.profile).apply(new RequestOptions().placeholder(R.drawable.ic_launcher_foreground)).into(profile_image);
+        }else {
+            profile_image.setImageResource(R.drawable.ic_launcher_foreground);
+        }
+
         if(!loadingDialog.isShowing()){
             if(DbQueries.addressModelList.size() == 0 ){
                 address.setText("Address: ----");

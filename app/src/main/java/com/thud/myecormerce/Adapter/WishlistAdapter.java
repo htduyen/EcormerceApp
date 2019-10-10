@@ -25,9 +25,26 @@ import java.util.List;
 
 public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHolder> {
 
+    private boolean fromSearch;
     private List<WishlistModel> wishlistModelList;
     private Boolean wishlist;
     private int lastposition = -1;
+
+    public boolean isFromSearch() {
+        return fromSearch;
+    }
+
+    public void setFromSearch(boolean fromSearch) {
+        this.fromSearch = fromSearch;
+    }
+
+    public List<WishlistModel> getWishlistModelList() {
+        return wishlistModelList;
+    }
+
+    public void setWishlistModelList(List<WishlistModel> wishlistModelList) {
+        this.wishlistModelList = wishlistModelList;
+    }
 
     public WishlistAdapter(List<WishlistModel> wishlistModelList, Boolean wishlist) {
         this.wishlistModelList = wishlistModelList;
@@ -162,6 +179,9 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(fromSearch){
+                        ProductDetailActivity.fromSearch = true;
+                    }
                     Intent intentProduct = new Intent(itemView.getContext(), ProductDetailActivity.class);
                     //ma cua product
                     intentProduct.putExtra("PRODUCT_ID", productID);

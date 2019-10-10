@@ -152,6 +152,9 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+        String product = FirebaseFirestore.getInstance().collection("PRODUCTS").document().get().toString();
+        Log.d("product", product);
+        Toast.makeText(MainActivity.this , "product: " +product, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -162,32 +165,44 @@ public class MainActivity extends AppCompatActivity
             navigationView.getMenu().getItem(navigationView.getMenu().size()-1).setEnabled(false);
         }
         else {
-            FirebaseFirestore.getInstance().collection("USERS").document(currentUser.getUid())
-                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if(task.isSuccessful()){
-                        DbQueries.fullname = task.getResult().getString("username");
-                        DbQueries.email = task.getResult().getString("email");
-                        DbQueries.profile = task.getResult().getString("profile");
 
-                       // Log.d("fullname:", DbQueries.fullname + " - " + DbQueries.email+ " - " + DbQueries.profile);
+            if(DbQueries.email == null) {
+                FirebaseFirestore.getInstance().collection("USERS").document(currentUser.getUid())
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DbQueries.fullname = task.getResult().getString("username");
+                            DbQueries.email = task.getResult().getString("email");
+                            DbQueries.profile = task.getResult().getString("profile");
 
-                        fullname_nav.setText(DbQueries.fullname);
-                        email_nav.setText(DbQueries.email);
-                        if(DbQueries.profile.equals("")){
-                            icon_add_profile_nav.setVisibility(View.VISIBLE);
-                        }else {
-                            icon_add_profile_nav.setVisibility(View.INVISIBLE);
-                            Glide.with(MainActivity.this).load(DbQueries.profile).apply(new RequestOptions().placeholder(R.drawable.ic_launcher_foreground)).into(imv_profile_nav);
+                            // Log.d("fullname:", DbQueries.fullname + " - " + DbQueries.email+ " - " + DbQueries.profile);
+
+                            fullname_nav.setText(DbQueries.fullname);
+                            email_nav.setText(DbQueries.email);
+                            if (DbQueries.profile.equals("")) {
+                                icon_add_profile_nav.setVisibility(View.VISIBLE);
+                            } else {
+                                icon_add_profile_nav.setVisibility(View.INVISIBLE);
+                                Glide.with(MainActivity.this).load(DbQueries.profile).apply(new RequestOptions().placeholder(R.drawable.ic_launcher_foreground)).into(imv_profile_nav);
+                            }
+
+                        } else {
+                            Toast.makeText(MainActivity.this, "Loi", Toast.LENGTH_SHORT).show();
                         }
-
                     }
-                    else {
-                        Toast.makeText(MainActivity.this, "Loi", Toast.LENGTH_SHORT).show();
-                    }
+                });
+            }else {
+                fullname_nav.setText(DbQueries.fullname);
+                email_nav.setText(DbQueries.email);
+                if (DbQueries.profile.equals("")) {
+                    icon_add_profile_nav.setVisibility(View.VISIBLE);
+                    imv_profile_nav.setImageResource(R.drawable.ic_launcher_foreground);
+                } else {
+                    icon_add_profile_nav.setVisibility(View.INVISIBLE);
+                    Glide.with(MainActivity.this).load(DbQueries.profile).apply(new RequestOptions().placeholder(R.drawable.ic_launcher_foreground)).into(imv_profile_nav);
                 }
-            });
+            }
             navigationView.getMenu().getItem(navigationView.getMenu().size() -1).setEnabled(true);
         }
         if(resetMainActivity){
@@ -197,6 +212,12 @@ public class MainActivity extends AppCompatActivity
             navigationView.getMenu().getItem(0).setChecked(true);
         }
         invalidateOptionsMenu();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        DbQueries.checkNotification(true, null);
     }
 
     @Override
@@ -240,10 +261,10 @@ public class MainActivity extends AppCompatActivity
 
             MenuItem cartItem = menu.findItem(R.id.icon_shopping_cart);
 
-                cartItem.setActionView(R.layout.badge_layout);
-                ImageView cart_icon = cartItem.getActionView().findViewById(R.id.imv_badge_icon_cart);
-                cart_icon.setImageResource(R.drawable.shopping_cart);
-                badget_count = cartItem.getActionView().findViewById(R.id.txt_badge_count);
+            cartItem.setActionView(R.layout.badge_layout);
+            ImageView cart_icon = cartItem.getActionView().findViewById(R.id.imv_badge_icon_cart);
+            cart_icon.setImageResource(R.drawable.shopping_cart);
+            badget_count = cartItem.getActionView().findViewById(R.id.txt_badge_count);
                 if(currentUser != null) {
 
                     if (DbQueries.cartlist.size() == 0) {
@@ -270,6 +291,21 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 });
+            MenuItem notificationItem = menu.findItem(R.id.icon_notification);
+            notificationItem.setActionView(R.layout.badge_layout);
+            ImageView notification_icon = notificationItem.getActionView().findViewById(R.id.imv_badge_icon_cart);
+            notification_icon.setImageResource(R.drawable.notification_bell_main);
+            TextView notify_count = notificationItem.getActionView().findViewById(R.id.txt_badge_count);
+            if(currentUser != null){
+                DbQueries.checkNotification(false,notify_count);
+            }
+            notificationItem.getActionView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intentNotification = new Intent(MainActivity.this, NotificationActivity.class);
+                    startActivity(intentNotification);
+                }
+            });
             }
         return true;
     }
@@ -283,11 +319,13 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.icon_search) {
-
+            Intent intentSearch =new Intent(MainActivity.this, SearchActivity.class);
+            startActivity(intentSearch);
             return true;
         }
         else if (id == R.id.icon_notification) {
-
+            Intent intentNotification = new Intent(MainActivity.this, NotificationActivity.class);
+            startActivity(intentNotification);
             return true;
         }
         else if (id == R.id.icon_shopping_cart) {
@@ -333,7 +371,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(final MenuItem item) {
         // Handle navigation view item clicks here.
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         menuItem = item;
         if(currentUser != null) {
@@ -365,6 +403,7 @@ public class MainActivity extends AppCompatActivity
                         startActivity(intentRegis);
                         finish();
                     }
+                    drawer.removeDrawerListener(this);
                 }
             });
             return true;

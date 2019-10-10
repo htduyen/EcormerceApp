@@ -61,6 +61,7 @@ import java.util.Map;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
+    public static boolean fromSearch = false;
     public static boolean wishlist_running = false;
     public static boolean ratting_running = false;
     public static boolean cart_running = false;
@@ -145,6 +146,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
 
         productImageViewPager = findViewById(R.id.product_img_viewpapeger);
         viewPagerIndicator = findViewById(R.id.view_pager_indicator);
@@ -869,7 +872,12 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.icon_search) {
-
+            if(fromSearch){
+                finish();
+            }else {
+                Intent intentSearch = new Intent(ProductDetailActivity.this, SearchActivity.class);
+                startActivity(intentSearch);
+            }
             return true;
         }else if(id == R.id.icon_shopping_cart){
 
@@ -890,5 +898,11 @@ public class ProductDetailActivity extends AppCompatActivity {
        productDetailActivity = null;
         super.onBackPressed();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        fromSearch = false;
     }
 }

@@ -1,5 +1,6 @@
 package com.thud.myecormerce.View;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -118,7 +119,8 @@ public class CategoryActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Intent intentSearch =new Intent(CategoryActivity.this, SearchActivity.class);
+        startActivity(intentSearch);
         //noinspection SimplifiableIfStatement
         if (id == R.id.icon_search) {
 
