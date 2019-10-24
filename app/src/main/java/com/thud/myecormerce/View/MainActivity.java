@@ -152,9 +152,6 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-        String product = FirebaseFirestore.getInstance().collection("PRODUCTS").document().get().toString();
-        Log.d("product", product);
-        Toast.makeText(MainActivity.this , "product: " +product, Toast.LENGTH_SHORT).show();
     }
 
     @Override

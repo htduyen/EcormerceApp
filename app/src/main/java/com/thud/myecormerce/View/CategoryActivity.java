@@ -79,14 +79,6 @@ public class CategoryActivity extends AppCompatActivity {
 
         adapter = new HomePageAdapter(homePageModePlacelList);
 
-
-        //       List<HomePageModel> homePageModelList = new ArrayList<>();
-//        homePageModelList.add(new HomePageModel(1, R.drawable.stript1,"#ffff00"));
-//        homePageModelList.add(new HomePageModel(0, sliderModelList));
-//        homePageModelList.add(new HomePageModel(2,"Sales Product", horizonModels));
-//        homePageModelList.add(new HomePageModel(3,"Phone Product", horizonModels));
-//        homePageModelList.add(new HomePageModel(3,"Shoes Product", horizonModels));
-//        homePageModelList.add(new HomePageModel(3,"Laptop Product", horizonModels));
         int listposition = 0;
         for (int x = 0; x < listNameCategories.size(); x++){
             if(listNameCategories.get(x).equals(title.toUpperCase())){

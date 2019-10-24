@@ -41,8 +41,8 @@ public class MyAccountFragment extends Fragment {
     public MyAccountFragment() {
         // Required empty public constructor
     }
-    public static final int MANAGE_ADDRESS = 1;
     private Button btn_viewall_address, btn_sign_out;
+    public static final int MANAGE_ADDRESS = 1;
     private Dialog loadingDialog;
 
     private CircleImageView profile_image, curent_order_image;
@@ -97,7 +97,7 @@ public class MyAccountFragment extends Fragment {
         loadingDialog.setCancelable(false);
         loadingDialog.getWindow().setBackgroundDrawable(getContext().getDrawable(R.drawable.slider_main));
         loadingDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        loadingDialog.show();
+        //loadingDialog.show();
 
 
 

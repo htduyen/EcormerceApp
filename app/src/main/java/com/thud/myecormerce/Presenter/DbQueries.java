@@ -145,8 +145,6 @@ public class DbQueries {
                                 else if((long)documentSnapshot.get("view_type") == 2){
 
                                     List<WishlistModel> wishlistViewAllModelList  = new ArrayList<>();
-
-
                                     List<ProductHorizonModel> productHorizonModelList = new ArrayList<>();
                                     long num_products =(long) documentSnapshot.get("num_products");
                                     for(long x = 1; x < num_products + 1; x++){
@@ -203,7 +201,6 @@ public class DbQueries {
                         }
                     }
                 });
-
     }
     //Categories
 
@@ -534,7 +531,9 @@ public class DbQueries {
                         parent.setVisibility(View.GONE);
                         Toast.makeText(context, "Giỏ hàng rỗng!", Toast.LENGTH_SHORT).show();
                         cartItemModelList.clear();
-
+                    }else {
+                        LinearLayout parent = (LinearLayout) totalAmount.getParent().getParent();
+                        parent.setVisibility(View.VISIBLE);
                     }
                     Toast.makeText(context, "Sản phẩm đã được xóa khỏi giỏ hàng", Toast.LENGTH_SHORT).show();
                 }
@@ -659,7 +658,7 @@ public class DbQueries {
 
     public static void loadOrders(final Context context,@NonNull final MyOrderAdapter myOrderAdapter, final Dialog loadingDialog){
         myOrderItemModelList.clear();
-        firebaseFirestore.collection("USERS").document(firebaseAuth.getUid()).collection("USER_ORDERS").orderBy("time order", Query.Direction.DESCENDING).get()
+        firebaseFirestore.collection("USERS").document(firebaseAuth.getUid()).collection("USER_ORDERS").orderBy("time_order", Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -673,29 +672,29 @@ public class DbQueries {
                                             if (task.isSuccessful()) {
                                                 for (DocumentSnapshot orderItems : task.getResult().getDocuments()) {
                                                     final MyOrderItemModel myOrderItemModel = new MyOrderItemModel(
-                                                            orderItems.getString("Product ID"),
-                                                            orderItems.getString("Order Status"),
+                                                            orderItems.getString("Product_ID"),
+                                                            orderItems.getString("Order_Status"),
                                                             orderItems.getString("Address"),
-                                                            orderItems.getString("Discounted Price"),
-                                                            orderItems.getString("Product Cutted Price"),
-                                                            orderItems.getDate("Ordered date"),
-                                                            orderItems.getDate("Packed date"),
-                                                            orderItems.getDate("Shipped date"),
-                                                            orderItems.getDate("Delivered date"),
-                                                            orderItems.getDate("Cancelled date"),
-                                                            orderItems.getString("Discounted Price"),
-                                                            orderItems.getLong("Free Discount"),
+                                                            orderItems.getString("Discounted_Price"),
+                                                            orderItems.getString("Product_Cutted_Price"),
+                                                            orderItems.getDate("Ordered_date"),
+                                                            orderItems.getDate("Packed_date"),
+                                                            orderItems.getDate("Shipped_date"),
+                                                            orderItems.getDate("Delivered_date"),
+                                                            orderItems.getDate("Cancelled_date"),
+                                                            orderItems.getString("Discounted_Price"),
+                                                            orderItems.getLong("Free_Discount"),
                                                             orderItems.getString("FullName"),
-                                                            orderItems.getString("Order ID"),
-                                                            orderItems.getString("Payment Method"),
+                                                            orderItems.getString("Order_ID"),
+                                                            orderItems.getString("Payment_Method"),
                                                             orderItems.getString("PhoneNumber"),
-                                                            orderItems.getString("Product Price"),
-                                                            orderItems.getLong("Product Quantity"),
-                                                            orderItems.getString("User ID"),
-                                                            orderItems.getString("Product Image"),
-                                                            orderItems.getString("Product Name"),
-                                                            orderItems.getString("Delivery Price"),
-                                                            orderItems.getBoolean("Cancellation Requested")
+                                                            orderItems.getString("Product_Price"),
+                                                            orderItems.getLong("Product_Quantity"),
+                                                            orderItems.getString("User_ID"),
+                                                            orderItems.getString("Product_Image"),
+                                                            orderItems.getString("Product_Name"),
+                                                            orderItems.getString("Delivery_Price"),
+                                                            orderItems.getBoolean("Cancellation_Requested")
 
                                                     );
                                                     myOrderItemModelList.add(myOrderItemModel);
@@ -778,6 +777,4 @@ public class DbQueries {
         rewardModelList.clear();
         myOrderItemModelList.clear();
     }
-
-
 }

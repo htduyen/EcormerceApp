@@ -29,6 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.thud.myecormerce.Models.NotificationModel;
+import com.thud.myecormerce.Presenter.DbQueries;
 import com.thud.myecormerce.R;
 import com.thud.myecormerce.View.MainActivity;
 
@@ -279,6 +281,16 @@ public class SignUpFragment extends Fragment {
                                                                         }
                                                                     });
                                                                 }
+                                                                String imgSuccess = "https://firebasestorage.googleapis.com/v0/b/ecormerceapp.appspot.com/o/Notifications%2Fkey-of-success.png?alt=media&token=27b10480-0946-43d3-a7be-1010bc3d641e";
+                                                                String body_success = "Bạn đã đăng ký thành công, thỏa sức mua sắm";
+                                                                Boolean readed_success =false;
+
+                                                                Map<String, Object> notify_signipsuccessMap = new HashMap<>();
+                                                                notify_signipsuccessMap.put("list_size", 1);
+                                                                notify_signipsuccessMap.put("Body_0", body_success);
+                                                                notify_signipsuccessMap.put("Image_0",imgSuccess);
+                                                                notify_signipsuccessMap.put("Readed_0", readed_success);
+                                                                FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_NOTIFICATIONS").set(notify_signipsuccessMap);
 
                                                                 Toast.makeText(getActivity(), "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
 

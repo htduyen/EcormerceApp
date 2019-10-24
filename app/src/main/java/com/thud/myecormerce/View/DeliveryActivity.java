@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -360,9 +361,13 @@ public class DeliveryActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     for(int x =0; x < indexList.size(); x++){
-                                        DbQueries.cartlist.remove(indexList.get(x).intValue());
-                                        DbQueries.cartItemModelList.remove(indexList.get(x).intValue());
-                                        DbQueries.cartItemModelList.remove(DbQueries.cartItemModelList.size() -1);
+                                        try{
+                                            DbQueries.cartlist.remove(indexList.get(x).intValue());
+                                            DbQueries.cartItemModelList.remove(indexList.get(x).intValue());
+                                            DbQueries.cartItemModelList.remove(DbQueries.cartItemModelList.size() -1);
+                                        }catch (Exception e){
+                                            //Toast.makeText(DeliveryActivity.this, "Try", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 }
                                 else {
@@ -374,8 +379,8 @@ public class DeliveryActivity extends AppCompatActivity {
                         });
                     }
                     Map<String, Object> update_OrderDetails = new HashMap<>();
-                    update_OrderDetails.put("Payment Status", "Đã thanh toán");
-                    update_OrderDetails.put("Order Status", "Ordered");
+                    update_OrderDetails.put("Payment_Status", "Đã thanh toán");
+                    update_OrderDetails.put("Order_Status", "Ordered");
                     firebaseFirestore.collection("ORDERS").document(order_id).update(update_OrderDetails)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -384,7 +389,7 @@ public class DeliveryActivity extends AppCompatActivity {
                                         //show confirm
                                         Map<String, Object> userOrder = new HashMap<>();
                                         userOrder.put("order_id", order_id);
-                                        userOrder.put("time order", FieldValue.serverTimestamp());
+                                        userOrder.put("time_order", FieldValue.serverTimestamp());
                                         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_ORDERS").document(order_id).set(userOrder)
                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
@@ -540,45 +545,53 @@ public class DeliveryActivity extends AppCompatActivity {
     private  void  placeOrderDetail(){
         loadingDialog.show();
         String user_id = FirebaseAuth.getInstance().getUid();
+
+        ArrayList<String> product_order_ids = new ArrayList<>();
+
         for(CartItemModel cartItemModel: cartItemModelList) {
             if(cartItemModel.getType() == cartItemModel.CART_ITEM) {
+                product_order_ids.add(cartItemModel.getProduct_id());
                 Map<String, Object> orderDetails = new HashMap<>();
-                orderDetails.put("Order ID", order_id);
-                orderDetails.put("Product ID", cartItemModel.getProduct_id());
-                orderDetails.put("Product Image", cartItemModel.getProductImage());
-                orderDetails.put("Product Name", cartItemModel.getProductName());
-                orderDetails.put("User ID", user_id);
-                orderDetails.put("Product Quantity", cartItemModel.getProductQuantity());
-                orderDetails.put("Product Price", cartItemModel.getProductPrice());
+                orderDetails.put("Order_ID", order_id);
+                orderDetails.put("Products", product_order_ids);
+                orderDetails.put("Product_ID", cartItemModel.getProduct_id());
+                orderDetails.put("Product_Image", cartItemModel.getProductImage());
+                orderDetails.put("Product_Name", cartItemModel.getProductName());
+                orderDetails.put("User_ID", user_id);
+                orderDetails.put("Product_Quantity", cartItemModel.getProductQuantity());
+                orderDetails.put("Product_Price", cartItemModel.getProductPrice());
                 if(cartItemModel.getCuttedProductPrice() != null) {
-                    orderDetails.put("Product Cutted Price", cartItemModel.getCuttedProductPrice());
+                    orderDetails.put("Product_Cutted_Price", cartItemModel.getCuttedProductPrice());
                 }else {
-                    orderDetails.put("Product Cutted Price", "");
+                    orderDetails.put("Product_Cutted_Price", "");
                 }
                 if(cartItemModel.getSelectedDiscountID() != null) {
-                    orderDetails.put("Discount ID", cartItemModel.getSelectedDiscountID());
+                    orderDetails.put("Discount_ID", cartItemModel.getSelectedDiscountID());
                 }else {
-                    orderDetails.put("Discount ID", "");
-
+                    orderDetails.put("Discount_ID", "");
                 }
                 if(cartItemModel.getDiscountPrice() != null) {
-                    orderDetails.put("Discounted Price", cartItemModel.getDiscountPrice());
+                    orderDetails.put("Discounted_Price", cartItemModel.getDiscountPrice());
                 }else {
-                    orderDetails.put("Discounted Price", "");
+                    orderDetails.put("Discounted_Price", "");
                 }
-                orderDetails.put("Ordered date", FieldValue.serverTimestamp());
-                orderDetails.put("Packed date", FieldValue.serverTimestamp());
-                orderDetails.put("Shipped date", FieldValue.serverTimestamp());
-                orderDetails.put("Delivered date", FieldValue.serverTimestamp());
-                orderDetails.put("Cancelled date", FieldValue.serverTimestamp());
-                orderDetails.put("Order Status", "Ordered");
-                orderDetails.put("Payment Method", paymentMethod);
+                orderDetails.put("Ordered_date", FieldValue.serverTimestamp());
+                orderDetails.put("Packed_date", FieldValue.serverTimestamp());
+                orderDetails.put("Shipped_date", FieldValue.serverTimestamp());
+                orderDetails.put("Delivered_date", FieldValue.serverTimestamp());
+                orderDetails.put("Cancelled_date", FieldValue.serverTimestamp());
+                orderDetails.put("Order_Status", "Ordered");
+                orderDetails.put("Payment_Method", paymentMethod);
                 orderDetails.put("Address", txt_address.getText());
                 orderDetails.put("FullName", txt_fullname.getText());
                 orderDetails.put("PhoneNumber", txt_phonenumber.getText());
-                orderDetails.put("Free Discount", cartItemModel.getFreeDiscount());
-                orderDetails.put("Delivery Price", cartItemModelList.get(cartItemModelList.size() -1).getDeliveryPrice());
-                orderDetails.put("Cancellation Requested", false);
+                orderDetails.put("Free_Discount", cartItemModel.getFreeDiscount());
+                if(cartItemModelList.get(cartItemModelList.size() -1).getDeliveryPrice() == null){
+                    orderDetails.put("Delivery_Price", "");
+                }else {
+                    orderDetails.put("Delivery_Price", cartItemModelList.get(cartItemModelList.size() -1).getDeliveryPrice());
+                }
+                orderDetails.put("Cancellation_Requested", false);
                 firebaseFirestore.collection("ORDERS").document(order_id).collection("OrderItems").document(cartItemModel.getProduct_id())
                         .set(orderDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -597,14 +610,56 @@ public class DeliveryActivity extends AppCompatActivity {
                 });
             }else {
                 Map<String, Object> orderDetails = new HashMap<>();
-                orderDetails.put("Total Items", cartItemModel.getTotalItems());
-                orderDetails.put("Total Items Price", cartItemModel.getTotalItemsPrice());
-                orderDetails.put("Total Amount", cartItemModel.getTotalAmount());
-                orderDetails.put("Save Amount", cartItemModel.getSaveAmount());
-                orderDetails.put("Delivery Price", cartItemModel.getDeliveryPrice());
+
+                //
+                int totalItemss = 0;
+                int totalItemsPrice = 0;
+                String dilivery;
+                int totalAmount;
+                int  saveAmount = 0;
+
+                for (int x = 0; x< cartItemModelList.size(); x++){
+                    if(cartItemModelList.get(x).getType() == CartItemModel.CART_ITEM && cartItemModelList.get(x).isInstock()){
+                        int quantity_pro = Integer.parseInt(String.valueOf(cartItemModelList.get(x).getProductQuantity()));
+                        totalItemss = totalItemss + quantity_pro;
+                        if(TextUtils.isEmpty(cartItemModelList.get(x).getSelectedDiscountID())) {
+                            totalItemsPrice = totalItemsPrice + Integer.parseInt(cartItemModelList.get(x).getProductPrice())*quantity_pro;
+                        }else {
+                            totalItemsPrice = totalItemsPrice + Integer.parseInt(cartItemModelList.get(x).getDiscountPrice())*quantity_pro;
+                        }
+                        if(!TextUtils.isEmpty(cartItemModelList.get(x).getCuttedProductPrice())){
+                            saveAmount = saveAmount + (Integer.parseInt(cartItemModelList.get(x).getCuttedProductPrice()) - Integer.parseInt(cartItemModelList.get(x).getProductPrice()))*quantity_pro;
+                            if(!TextUtils.isEmpty(cartItemModelList.get(x).getSelectedDiscountID())) {
+                                saveAmount = saveAmount + (Integer.parseInt(cartItemModelList.get(x).getProductPrice()) - Integer.parseInt(cartItemModelList.get(x).getDiscountPrice()))*quantity_pro;
+
+                            }
+                        }else {
+                            if(!TextUtils.isEmpty(cartItemModelList.get(x).getSelectedDiscountID())) {
+                                saveAmount = saveAmount + (Integer.parseInt(cartItemModelList.get(x).getProductPrice()) - Integer.parseInt(cartItemModelList.get(x).getDiscountPrice()))*quantity_pro;
+
+                            }
+                        }
+
+                    }
+                }
+                if(totalItemsPrice > 1000000){
+                    dilivery = "Free";
+                    totalAmount = totalItemsPrice;
+                }
+                else {
+                    dilivery = "40000";
+                    totalAmount = totalItemsPrice + 40000;
+                }
+                //
+                //orderDetails.put("Total_Items", cartItemModelList.size());
+                orderDetails.put("Total_Items", totalItemss);
+                orderDetails.put("Total_Items_Price",totalItemsPrice);
+                orderDetails.put("Total_Amount", totalAmount);
+                //orderDetails.put("Save_Amount", cartItemModel.getSaveAmount());
+                orderDetails.put("Delivery_Price", dilivery);
                 //Chua xu ly Payment and Order status
-                orderDetails.put("Payment Status", "Chưa thanh toán");
-                orderDetails.put("Order Status", "Cancelled");
+                orderDetails.put("Payment_Status", "Chưa thanh toán");
+                orderDetails.put("Order_Status", "Cancelled");
 
                 firebaseFirestore.collection("ORDERS").document(order_id)
                         .set(orderDetails).addOnCompleteListener(new OnCompleteListener<Void>() {

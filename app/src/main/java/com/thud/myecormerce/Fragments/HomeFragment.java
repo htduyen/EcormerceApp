@@ -64,9 +64,11 @@ public class HomeFragment extends Fragment {
     //RecyclerView
     private RecyclerView recycler_Category;
     private CategoryAdapter categoryAdapter;
+
     private RecyclerView recyclerViewHome;
     private List<HomePageModel> homePageModePlacelList = new ArrayList<>();
     private HomePageAdapter homePageAdapter;
+
     private Button btn_retry;
 
     public static SwipeRefreshLayout swipeRefreshLayout;

@@ -69,6 +69,11 @@ public class CartAdapter extends RecyclerView.Adapter {
     private Button btn_apply_discount;
     private LinearLayout linearLayout_apply_discount;
 
+//    public static int totalItemss = 0;
+//    public static int totalItemsPrice = 0;
+//    public static String dilivery;
+//    public static int totalAmount;
+//    public static int  saveAmount = 0;
 
     public CartAdapter(List<CartItemModel> cartItemModelList, TextView totalCartAmount, boolean showBtnDelete) {
         this.cartItemModelList = cartItemModelList;
@@ -128,16 +133,16 @@ public class CartAdapter extends RecyclerView.Adapter {
                 break;
             case CartItemModel.TOTAL_AMOUNT:
 
-                int totalItems = 0;
+                int totalItemss = 0;
                 int totalItemsPrice = 0;
-                String dilivery = "Free";
+                String dilivery;
                 int totalAmount;
                 int  saveAmount = 0;
 
                 for (int x = 0; x< cartItemModelList.size(); x++){
                     if(cartItemModelList.get(x).getType() == CartItemModel.CART_ITEM && cartItemModelList.get(x).isInstock()){
                         int quantity_pro = Integer.parseInt(String.valueOf(cartItemModelList.get(x).getProductQuantity()));
-                        totalItems = totalItems + quantity_pro;
+                        totalItemss = totalItemss + quantity_pro;
                         if(TextUtils.isEmpty(cartItemModelList.get(x).getSelectedDiscountID())) {
                             totalItemsPrice = totalItemsPrice + Integer.parseInt(cartItemModelList.get(x).getProductPrice())*quantity_pro;
                         }else {
@@ -166,12 +171,12 @@ public class CartAdapter extends RecyclerView.Adapter {
                     dilivery = "40000";
                     totalAmount = totalItemsPrice + 40000;
                 }
-                cartItemModelList.get(position).setTotalItems(totalItems);
+                cartItemModelList.get(position).setTotalItems(totalItemss);
                 cartItemModelList.get(position).setTotalItemsPrice(totalItemsPrice);
                 cartItemModelList.get(position).setTotalAmount(totalAmount);
                 cartItemModelList.get(position).setSaveAmount(saveAmount);
                 cartItemModelList.get(position).setDeliveryPrice(dilivery);
-                ((CartTotalAmountViewHolder) viewHolder).setTotalAmount(totalItems,totalItemsPrice,dilivery, totalAmount, saveAmount);
+                ((CartTotalAmountViewHolder) viewHolder).setTotalAmount(totalItemss,totalItemsPrice,dilivery, totalAmount, saveAmount);
 
                 break;
             default:
@@ -615,7 +620,8 @@ public class CartAdapter extends RecyclerView.Adapter {
             saveAmount.setText("Bạn đã tiết kiệm được: " + savedAmount + " Đ");
 
             LinearLayout parent = (LinearLayout) totalCartAmount.getParent().getParent();
-            if(totalAmountText == 0){
+            //update
+            if(totalallAmount == 0){
                 if (DeliveryActivity.fromCart) {
                     cartItemModelList.remove(cartItemModelList.size() - 1);
                     cartItemModelList.remove(DeliveryActivity.cartItemModelList.size() - 1);

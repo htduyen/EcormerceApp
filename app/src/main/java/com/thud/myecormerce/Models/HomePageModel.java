@@ -41,7 +41,7 @@ public class HomePageModel {
     //***************** Strip Ads ****************
     private String resource;
 
-
+    //Banner
     public HomePageModel(int type, String resource, String backgroundColor) {
         this.type = type;
         this.resource = resource;

@@ -310,12 +310,12 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                                                 for(int x = 0; x < 5; x++){
                                                     TextView rating = (TextView) linear_rating.getChildAt(x);
-                                                    rating.setText(String.valueOf((long)documentSnapshot.get((5-x) +"_star")));
+                                                    rating.setText(String.valueOf((long)documentSnapshot.get("star_" + (5-x))));
 
                                                     ProgressBar progressBar= (ProgressBar) linear_progressbar_rating.getChildAt(x);
                                                     int maxProgress = Integer.parseInt(String.valueOf((long)documentSnapshot.get("total_rating")));
                                                     progressBar.setMax(maxProgress);
-                                                    progressBar.setProgress(Integer.parseInt(String.valueOf((long)documentSnapshot.get((5-x) +"_star"))));
+                                                    progressBar.setProgress(Integer.parseInt(String.valueOf((long)documentSnapshot.get("star_" + (5-x)))));
 
                                                 }
                                                 total_rating_sum_linear.setText(String.valueOf((long)documentSnapshot.get("total_rating")));
@@ -555,14 +555,14 @@ public class ProductDetailActivity extends AppCompatActivity {
                                     TextView oldrating = (TextView) linear_rating.getChildAt(5 - initialRatting - 1);
                                     TextView finalrating = (TextView) linear_rating.getChildAt(5 - startPosition - 1);
 
-                                    updateRatting.put(initialRatting + 1 + "_star", Long.parseLong(oldrating.getText().toString()) - 1);
-                                    updateRatting.put(startPosition + 1 + "_star", Long.parseLong(finalrating.getText().toString()) + 1);
+                                    updateRatting.put("star_" + initialRatting + 1, Long.parseLong(oldrating.getText().toString()) - 1);
+                                    updateRatting.put("star_" +startPosition + 1, Long.parseLong(finalrating.getText().toString()) + 1);
                                     updateRatting.put("average_rating", calculateAverageRating(startPosition - initialRatting, true));
                                     updateRatting.put("total_rating", (long) documentSnapshot.get("total_rating"));
 
                                 } else {
                                     //Chưa ratting
-                                    updateRatting.put(startPosition + 1 + "_star", (long) documentSnapshot.get(startPosition + 1 + "_star") + 1);
+                                    updateRatting.put("star_" + startPosition + 1,(long) documentSnapshot.get("star_" + startPosition + 1) + 1);
                                     updateRatting.put("average_rating", calculateAverageRating(startPosition + 1, false));
                                     updateRatting.put("total_rating", (long) documentSnapshot.get("total_rating") + 1);
                                 }
