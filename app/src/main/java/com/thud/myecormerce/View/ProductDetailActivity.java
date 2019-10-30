@@ -555,14 +555,14 @@ public class ProductDetailActivity extends AppCompatActivity {
                                     TextView oldrating = (TextView) linear_rating.getChildAt(5 - initialRatting - 1);
                                     TextView finalrating = (TextView) linear_rating.getChildAt(5 - startPosition - 1);
 
-                                    updateRatting.put("star_" + initialRatting + 1, Long.parseLong(oldrating.getText().toString()) - 1);
-                                    updateRatting.put("star_" +startPosition + 1, Long.parseLong(finalrating.getText().toString()) + 1);
+                                    updateRatting.put("star_" + (initialRatting + 1), Long.parseLong(oldrating.getText().toString()) - 1);
+                                    updateRatting.put("star_" +(startPosition + 1), Long.parseLong(finalrating.getText().toString()) + 1);
                                     updateRatting.put("average_rating", calculateAverageRating(startPosition - initialRatting, true));
                                     updateRatting.put("total_rating", (long) documentSnapshot.get("total_rating"));
 
                                 } else {
                                     //Chưa ratting
-                                    updateRatting.put("star_" + startPosition + 1,(long) documentSnapshot.get("star_" + startPosition + 1) + 1);
+                                    updateRatting.put("star_" + (startPosition + 1),(long) documentSnapshot.get("star_" + (startPosition + 1)) + 1);
                                     updateRatting.put("average_rating", calculateAverageRating(startPosition + 1, false));
                                     updateRatting.put("total_rating", (long) documentSnapshot.get("total_rating") + 1);
                                 }
