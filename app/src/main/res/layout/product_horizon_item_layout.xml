@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:background="@drawable/slider_main"
     android:elevation="3dp">
 
     <ImageView
         android:id="@+id/imv_pro_horizon"
-        android:layout_width="70dp"
+        android:layout_width="80dp"
         android:layout_height="70dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,12 +26,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
         android:text="Name product"
         android:textAlignment="center"
         android:textColor="@color/colorBlack"
-        android:textSize="12sp"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_descr_pro_horizon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imv_pro_horizon" />
@@ -41,7 +43,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
         android:text="Description"
@@ -50,8 +51,7 @@
         android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@+id/txt_price_pro_horizon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_name_pro_horizon" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/txt_price_pro_horizon"
@@ -63,7 +63,7 @@
         android:text="Price"
         android:textAlignment="center"
         android:textColor="@color/colorRed"
-        android:textSize="10sp"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -2,9 +2,9 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:elevation="3dp"
-    android:layout_width="75dp"
-    android:layout_height="65dp">
+    android:layout_width="80dp"
+    android:layout_height="65dp"
+    android:elevation="3dp">
 
     <ImageView
         android:id="@+id/imv_cate"
@@ -25,8 +25,6 @@
         android:id="@+id/txt_name_cate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
         android:layout_marginBottom="2dp"
         android:text="Home"
         android:textAlignment="center"

@@ -155,6 +155,9 @@ public class HomeFragment extends Fragment {
         categoryAdapter = new CategoryAdapter(categoryModePlacelList);
         homePageAdapter = new HomePageAdapter(homePageModePlacelList);
 
+        //homePageAdapter = new HomePageAdapter(lists.get(0));
+
+
         if(networkInfo != null && networkInfo.isConnected() == true){
             MainActivity.drawer.setDrawerLockMode(0);
             btn_retry.setVisibility(View.GONE);
@@ -174,6 +177,7 @@ public class HomeFragment extends Fragment {
             if(lists.size() == 0){
                 listNameCategories.add("HOME");
                 lists.add(new ArrayList<HomePageModel>());
+                //homePageAdapter = new HomePageAdapter(lists.get(0)); // nho xoa
                 setLayout(recyclerViewHome,getContext(), 0,"Home");
             }
             else {
@@ -197,6 +201,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
+                //swipeRefreshLayout.setColorSchemeColors(getContext().getResources().getColor(R.color.colorPrimary), getContext().getResources().getColor(R.color.colorPrimary));
                 reloadPage();
             }
         });

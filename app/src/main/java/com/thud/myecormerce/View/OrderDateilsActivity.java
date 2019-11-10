@@ -429,16 +429,16 @@ public class OrderDateilsActivity extends AppCompatActivity {
                                 cancelDialog.dismiss();
                                 loadingDialog.show();
                                 Map<String, Object> map = new HashMap<>();
-                                map.put("Order ID", myOrderItemModel.getOrderID());
-                                map.put("Product ID", myOrderItemModel.getProduct_id());
-                                map.put("Order Cancelled", false);
+                                map.put("Order_ID", myOrderItemModel.getOrderID());
+                                map.put("Product_ID", myOrderItemModel.getProduct_id());
+                                map.put("Order_Cancelled", false);
 
                                 FirebaseFirestore.getInstance().collection("CANCELLED ORDERS").document().set(map)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
-                                                    FirebaseFirestore.getInstance().collection("ORDERS").document(myOrderItemModel.getOrderID()).collection("OrderItems").document(myOrderItemModel.getProduct_id()).update("Cancellation Requested", true)
+                                                    FirebaseFirestore.getInstance().collection("ORDERS").document(myOrderItemModel.getOrderID()).collection("OrderItems").document(myOrderItemModel.getProduct_id()).update("Cancellation_Requested", true)
                                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {

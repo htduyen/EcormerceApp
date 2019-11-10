@@ -84,7 +84,7 @@
             android:layout_weight="1"
             android:background="@drawable/slider_main"
             android:backgroundTint="@color/colorRed"
-            android:text="Tiếp Tục Mua"
+            android:text="Thanh Toán"
             android:textAllCaps="true"
             android:textColor="@color/colorWhite" />
     </LinearLayout>

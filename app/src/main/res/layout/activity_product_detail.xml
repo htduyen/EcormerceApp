@@ -87,7 +87,7 @@
             android:background="@color/colorRed"
             android:gravity="center"
             android:stateListAnimator="@null"
-            android:text="Buy Now"
+            android:text="Mua ngay"
             android:textColor="@color/colorWhite"
             android:visibility="gone" />
     </LinearLayout>

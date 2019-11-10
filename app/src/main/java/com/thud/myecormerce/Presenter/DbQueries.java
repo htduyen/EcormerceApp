@@ -97,7 +97,7 @@ public class DbQueries {
     public static List<NotificationModel> notificationModelList = new ArrayList<>();
     private static ListenerRegistration registration;
     //Categories
-    public static void loadCategories(final RecyclerView recyclerView_Cate, final Context context){
+    public static void loadCategories(final RecyclerView recyclerView_Cate, final Context context)  {
         categoryModels.clear();
         firebaseFirestore.collection("CATEGORIES").orderBy("index").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -121,7 +121,7 @@ public class DbQueries {
     }
 
     public static void setLayout(final RecyclerView recyclerViewHomePage, final Context context, final int index, String cateName){
-
+        //Toast.makeText(context, "Cate name loading:" + cateName.toUpperCase(), Toast.LENGTH_SHORT).show();
         firebaseFirestore.collection("CATEGORIES")
                 .document(cateName.toUpperCase())
                 .collection("TOP_DEALS").orderBy("index").get()
@@ -185,8 +185,6 @@ public class DbQueries {
                                     }
                                     //Toast.makeText(getContext(), "Size: " + sliderModelList.size(), Toast.LENGTH_SHORT).show();
                                     lists.get(index).add(new HomePageModel(3, documentSnapshot.get("group_product_title").toString(),documentSnapshot.get("background_group_product").toString(), gridProductList));
-
-
                                 }
                             }
                             //Luu vao adapter

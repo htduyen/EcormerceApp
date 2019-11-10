@@ -145,9 +145,9 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Chi Tiết Sản Phẩm");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
 
         productImageViewPager = findViewById(R.id.product_img_viewpapeger);
         viewPagerIndicator = findViewById(R.id.view_pager_indicator);
@@ -478,7 +478,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                             idData.put("list_size", (long) (DbQueries.id_wishlist.size() + 1));
 
                             firebaseFirestore.collection("USERS").document(currentUser.getUid()).collection("USER_DATA").document("MY_WISHLIST")
-                                    .set(idData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    .update(idData).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {

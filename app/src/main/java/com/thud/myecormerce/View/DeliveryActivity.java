@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.icu.util.Calendar;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -655,7 +656,7 @@ public class DeliveryActivity extends AppCompatActivity {
                 orderDetails.put("Total_Items", totalItemss);
                 orderDetails.put("Total_Items_Price",totalItemsPrice);
                 orderDetails.put("Total_Amount", totalAmount);
-                //orderDetails.put("Save_Amount", cartItemModel.getSaveAmount());
+                orderDetails.put("time_ordered", FieldValue.serverTimestamp());
                 orderDetails.put("Delivery_Price", dilivery);
                 //Chua xu ly Payment and Order status
                 orderDetails.put("Payment_Status", "Chưa thanh toán");

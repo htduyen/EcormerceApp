@@ -83,7 +83,7 @@ public class ProductHorizonAdapter extends RecyclerView.Adapter<ProductHorizonAd
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.image_place)).into(imv_product);
             txt_name_pro.setText(name);
             txt_descr.setText(descr);
-            txt_price.setText(price+ " Đ");
+            txt_price.setText(price+ " đ");
             if(!name.equals("")) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

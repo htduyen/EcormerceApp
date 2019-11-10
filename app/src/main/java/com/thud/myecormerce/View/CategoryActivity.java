@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -39,6 +40,7 @@ public class CategoryActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         String title = getIntent().getStringExtra("name_cate"); //tu cate_adapter
         getSupportActionBar().setTitle(title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -79,15 +81,19 @@ public class CategoryActivity extends AppCompatActivity {
 
         adapter = new HomePageAdapter(homePageModePlacelList);
 
+
         int listposition = 0;
         for (int x = 0; x < listNameCategories.size(); x++){
             if(listNameCategories.get(x).equals(title.toUpperCase())){
                 listposition = x;
+//                Log.d("List Cate: ", listNameCategories.get(x));
+//                Log.d("Title:", title.toUpperCase());
             }
         }
         if (listposition == 0 ){
             listNameCategories.add(title.toUpperCase());
             lists.add(new ArrayList<HomePageModel>());
+            //adapter = new HomePageAdapter(lists.get(listNameCategories.size() -1)); // delete
             setLayout(recyclerView_cate,this, listNameCategories.size() -1, title);
         }
         else {
@@ -111,11 +117,11 @@ public class CategoryActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        Intent intentSearch =new Intent(CategoryActivity.this, SearchActivity.class);
-        startActivity(intentSearch);
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.icon_search) {
-
+            Intent intentSearch =new Intent(CategoryActivity.this, SearchActivity.class);
+            startActivity(intentSearch);
             return true;
         }
         else if(id == android.R.id.home)
