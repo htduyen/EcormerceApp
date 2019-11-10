@@ -60,11 +60,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }
         private void setData(String image, String body, boolean readed){
             Glide.with(itemView.getContext()).load(image).into(imageView);
-            if(readed){
-                textView.setAlpha(0.5f);
-            }else {
-                textView.setAlpha(1f);
-            }
+//            if(readed){
+//                textView.setAlpha(0.5f);
+//            }else {
+//                textView.setAlpha(1f);
+//            }
             textView.setText(body);
 
         }

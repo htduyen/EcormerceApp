@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/design_default_color_primary"
+    android:background="@drawable/signin"
     tools:context=".Fragments.SignInFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -75,23 +75,11 @@
                 android:textStyle="bold"/>
         </android.support.design.widget.TextInputLayout>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ckb_remember_me"
-            android:layout_below="@+id/layout_password_password"
-            android:textColor="@color/colorWhite"
-            android:layout_marginLeft="30dp"
-            android:text="Remember me"
-            android:buttonTint="@color/colorWhite"
-            android:layout_marginTop="5dp"
-
-            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/layout_both_fogot_signup"
-            android:layout_below="@id/ckb_remember_me">
+            android:layout_below="@id/layout_password_password">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -121,7 +109,7 @@
             android:layout_margin="10dp"/>
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:id="@+id/btn_signin_signin"
             android:layout_below="@+id/progress_signin"
             android:padding="10dp"
@@ -130,6 +118,8 @@
             android:layout_marginRight="30dp"
             android:layout_marginTop="10dp"
             android:text="Sign In"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:textAllCaps="false"
             />
 

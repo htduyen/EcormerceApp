@@ -67,7 +67,7 @@ public class SignInFragment extends Fragment {
         btn_close_signin = view.findViewById(R.id.icon_lose_sigin);
         edt_email = view.findViewById(R.id.edt_email_signin);
         edt_password = view.findViewById(R.id.edt_password_signin);
-        ckb_rememberme = view.findViewById(R.id.ckb_remember_me);
+
         txt_forgot_password = view.findViewById(R.id.txt_fogot_pass_signin);
         progressBar = view.findViewById(R.id.progress_signin);
         btn_signin = view.findViewById(R.id.btn_signin_signin);

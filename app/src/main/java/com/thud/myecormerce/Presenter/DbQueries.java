@@ -719,8 +719,14 @@ public class DbQueries {
     }
 
     public static void checkNotification(boolean remove,@Nullable final TextView count){
+
         if(remove){
-            registration.remove();
+            try{
+                registration.remove();
+            }catch (Exception e){
+                Log.d("Error", e.toString());
+            }
+
         }else {
             registration = firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_NOTIFICATIONS")
                     .addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -729,28 +735,33 @@ public class DbQueries {
                             if(documentSnapshot != null && documentSnapshot.exists()){
                                 notificationModelList.clear();
                                 int unread = 0;
-                                for(long x =0;x < (long) documentSnapshot.get("list_size");x++){
-                                    notificationModelList.add(0,new NotificationModel(
-                                            documentSnapshot.get("Image_" + x).toString(),
-                                            documentSnapshot.get("Body_" + x).toString(),
-                                            documentSnapshot.getBoolean("Readed_" + x)));
-                                    if(!documentSnapshot.getBoolean("Readed_" + x)){
-                                        unread++;
-                                        if(count != null){
-                                            if(unread > 0) {
-                                                count.setVisibility(View.VISIBLE);
-                                                if (unread < 99) {
+                                if((long) documentSnapshot.get("list_size") > 0){
+                                    for(long x =0;x < (long) documentSnapshot.get("list_size");x++){
+                                        notificationModelList.add(0,new NotificationModel(
+                                                documentSnapshot.get("Image_" + x).toString(),
+                                                documentSnapshot.get("Body_" + x).toString(),
+                                                documentSnapshot.getBoolean("Readed_" + x)));
+                                        if(!documentSnapshot.getBoolean("Readed_" + x)){
+                                            unread++;
+                                            if(count != null){
+                                                if(unread > 0) {
+                                                    count.setVisibility(View.VISIBLE);
+                                                    if (unread < 99) {
                                                         count.setText(String.valueOf(unread));
-                                                } else {
-                                                    count.setText("99+");
+                                                    } else {
+                                                        count.setText("99+");
+                                                    }
+                                                }else {
+                                                    count.setVisibility(View.INVISIBLE);
                                                 }
-                                            }else {
-                                                count.setVisibility(View.INVISIBLE);
                                             }
                                         }
-                                    }
 
+                                    }
+                                }else {
+                                    count.setVisibility(View.INVISIBLE);
                                 }
+
                                 if(NotificationActivity.adapter != null){
                                     NotificationActivity.adapter.notifyDataSetChanged();
                                 }

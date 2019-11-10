@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
     public static  boolean resetMainActivity = false;
 
     private TextView badget_count;
-
+    private TextView notify_count;
     private int currentFragment = -1;
     private NavigationView navigationView;
     private ImageView actionBar_logo;
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity
             navigationView.getMenu().getItem(navigationView.getMenu().size()-1).setEnabled(false);
         }
         else {
-
+            DbQueries.checkNotification(false, notify_count);
             if(DbQueries.email == null) {
                 FirebaseFirestore.getInstance().collection("USERS").document(currentUser.getUid())
                         .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity
             notificationItem.setActionView(R.layout.badge_layout);
             ImageView notification_icon = notificationItem.getActionView().findViewById(R.id.imv_badge_icon_cart);
             notification_icon.setImageResource(R.drawable.notification_bell_main);
-            TextView notify_count = notificationItem.getActionView().findViewById(R.id.txt_badge_count);
+            notify_count = notificationItem.getActionView().findViewById(R.id.txt_badge_count);
             if(currentUser != null){
                 DbQueries.checkNotification(false,notify_count);
             }
