@@ -286,7 +286,7 @@ public class DeliveryActivity extends AppCompatActivity {
             btn_continute.setEnabled(false);
             btn_changeOrAddAddress.setEnabled(false);
             constraint_order_confirm_layout.setVisibility(View.VISIBLE);
-            txt_order_id_confirm.setText("Your order id: " + order_id);
+            txt_order_id_confirm.setText("Mã đơn hàng: " + order_id);
             btn_continute_shopping_confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

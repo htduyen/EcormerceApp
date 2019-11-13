@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/signup"
     tools:context=".Fragments.SignUpFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,156 +24,158 @@
             android:background="@android:color/transparent"
             android:src="@drawable/button_close" />
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/img_logo_signup"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_below="@+id/icon_lose_signup"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/logo"
-            app:civ_border_color="#fffefe"
-            app:civ_border_width="2dp" />
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/img_logo_signup"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_below="@+id/icon_lose_signup"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/logo"
+                app:civ_border_color="#fffefe"
+                app:civ_border_width="2dp" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/layout_username_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/img_logo_signup">
-
-            <EditText
-                android:id="@+id/edt_username_signup"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/layout_username_signup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimaryDark"
-                android:hint="Nhập tên đăng ký"
-                android:padding="10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white"
-                android:textSize="20sp"
-                />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/img_logo_signup">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/layout_email_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/layout_username_signup">
+                <EditText
+                    android:id="@+id/edt_username_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:hint="Nhập tên đăng ký"
+                    android:padding="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white"
+                    android:textSize="20sp"
+                    />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edt_email_signup"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/layout_email_signup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimaryDark"
-                android:hint="Nhập email"
-                android:padding="10dp"
-                android:inputType="textEmailAddress"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white"
-                android:textSize="20sp"
-                />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/layout_username_signup">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/layout_password_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/layout_email_signup"
-            app:passwordToggleEnabled="true">
+                <EditText
+                    android:id="@+id/edt_email_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:hint="Nhập email"
+                    android:padding="10dp"
+                    android:inputType="textEmailAddress"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white"
+                    android:textSize="20sp"
+                    />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edt_password_signup"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/layout_password_signup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimaryDark"
-                android:hint="Nhập mật khẩu"
-                android:padding="10dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:inputType="textPassword"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white"
-                android:textSize="20sp"
-                />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/layout_email_signup"
+                app:passwordToggleEnabled="true">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/layout_conform_pass_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/layout_password_signup"
-            app:passwordToggleEnabled="true"
->
+                <EditText
+                    android:id="@+id/edt_password_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:hint="Nhập mật khẩu"
+                    android:padding="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:inputType="textPassword"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white"
+                    android:textSize="20sp"
+                    />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/edt_conform_pass_signup"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/layout_conform_pass_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimaryDark"
-                android:hint="Nhập lại mật khẩu"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/layout_password_signup"
+                app:passwordToggleEnabled="true"
+                >
+
+                <EditText
+                    android:id="@+id/edt_conform_pass_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:hint="Nhập lại mật khẩu"
+                    android:padding="10dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:inputType="textPassword"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white"
+                    android:textSize="20sp"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <ProgressBar
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/progress_signup"
+                android:layout_below="@id/layout_conform_pass_password"
+                android:layout_centerHorizontal="true"
+                android:visibility="invisible"
+                android:layout_margin="10dp"/>
+
+            <Button
+                android:id="@+id/btn_signup_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:elevation="5dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:inputType="textPassword"
-                android:textColor="@android:color/white"
-                android:textColorHint="@android:color/white"
-                android:textSize="20sp"
+                android:text="Đăng ký"
+                android:enabled="false"
+                android:textAllCaps="false"
+                android:layout_marginTop="10dp"
+                android:textSize="18sp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:textColor="@color/white"
+                android:layout_below="@id/progress_signup" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="200px"
+                android:layout_height="1dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/btn_signup_signup"
+                android:background="#ff00"
+                android:layout_marginTop="20dp"
                 />
-        </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_signin_signup"
+                android:layout_below="@+id/divider"
+                android:text="Đã có tài khoản! Đăng nhập?"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/colorWhite"
+                android:textStyle="italic"/>
 
-        <ProgressBar
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:id="@+id/progress_signup"
-            android:layout_below="@id/layout_conform_pass_password"
-            android:layout_centerHorizontal="true"
-            android:visibility="invisible"
-            android:layout_margin="10dp"/>
+        </RelativeLayout>
 
-        <Button
-            android:id="@+id/btn_signup_signup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:elevation="5dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:text="Sign Up"
-            android:enabled="false"
-            android:textAllCaps="false"
-            android:layout_marginTop="10dp"
-            android:textSize="18sp"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:textColor="@color/white"
-            android:layout_below="@id/progress_signup" />
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="200px"
-            android:layout_height="1dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/btn_signup_signup"
-            android:background="#ff00"
-            android:layout_marginTop="20dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txt_signin_signup"
-            android:layout_below="@+id/divider"
-            android:text="Alreadly an account! Sign In"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/colorWhite"
-            android:textStyle="italic"/>
-
-    </RelativeLayout>
 
 </FrameLayout>

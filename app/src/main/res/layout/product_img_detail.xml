@@ -153,9 +153,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Available"
-        android:textSize="12sp"
+        android:text="Còn hàng"
         android:textColor="@color/colorGreenDark"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/imv_cod_full_detail"
         app:layout_constraintStart_toStartOf="@+id/imv_cod_full_detail"
         app:layout_constraintTop_toBottomOf="@+id/imv_cod_full_detail" />
@@ -181,7 +181,7 @@
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:gravity="left"
-            android:text="Check if if you have sale bill"
+            android:text="Kiểm tra giảm giá dánh riêng cho bạn"
             android:textColor="@color/colorWhite" />
 
         <Button
@@ -192,7 +192,7 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/button_radius_border"
             android:padding="3dp"
-            android:text="Check price"
+            android:text="Check now"
             android:textAllCaps="false"
 
             android:textColor="@color/colorWhite" />
