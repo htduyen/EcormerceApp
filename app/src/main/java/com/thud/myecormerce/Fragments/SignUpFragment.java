@@ -2,9 +2,12 @@ package com.thud.myecormerce.Fragments;
 
 
 import android.content.Intent;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -26,15 +29,19 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.thud.myecormerce.Models.NotificationModel;
 import com.thud.myecormerce.Presenter.DbQueries;
 import com.thud.myecormerce.R;
 import com.thud.myecormerce.View.MainActivity;
+import com.thud.myecormerce.View.SplashscreenActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +62,7 @@ public class SignUpFragment extends Fragment {
     private ProgressBar process;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-
+    //private FirebaseUser currentUser = firebaseAuth.getCurrentUser();
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     private String username, email, password, conform_pass;
 
@@ -226,6 +233,7 @@ public class SignUpFragment extends Fragment {
                                             firebaseFirestore.collection("USERS").document(firebaseAuth.getUid())
                                                     .set(userData)
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @RequiresApi(api = Build.VERSION_CODES.N)
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if (task.isSuccessful()){
@@ -291,6 +299,34 @@ public class SignUpFragment extends Fragment {
                                                                 notify_signipsuccessMap.put("Image_0",imgSuccess);
                                                                 notify_signipsuccessMap.put("Readed_0", readed_success);
                                                                 FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_NOTIFICATIONS").set(notify_signipsuccessMap);
+
+                                                                Date dt = new Date();
+                                                                Calendar c = Calendar.getInstance();
+                                                                c.setTime(dt);
+                                                                c.add(Calendar.DATE, 1);
+                                                                dt = c.getTime();
+
+                                                                Map<String, Object> flat_discount = new HashMap<>();
+                                                                flat_discount.put("body", "Áp dụng cho lần đầu mua sắm giảm trực tiếp");
+                                                                flat_discount.put("alreadlyUse", false);
+                                                                flat_discount.put("amount","500000");
+                                                                flat_discount.put("lower_limit", "5000000");
+                                                                flat_discount.put("upper_limit", "50000000");
+                                                                flat_discount.put("validity", dt);
+                                                                flat_discount.put("type","Flat");
+                                                                FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_REWARDS").document().set(flat_discount);
+
+                                                                Map<String, Object> percent_discount = new HashMap<>();
+                                                                percent_discount.put("body", "Áp dụng cho lần đầu mua sắm giảm %");
+                                                                percent_discount.put("alreadlyUse", false);
+                                                                percent_discount.put("percent","10");
+                                                                percent_discount.put("lower_limit", "5000000");
+                                                                percent_discount.put("upper_limit", "50000000");
+                                                                percent_discount.put("validity", dt);
+                                                                percent_discount.put("type","Discount");
+                                                                FirebaseFirestore.getInstance().collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_REWARDS").document().set(percent_discount);
+
+                                                                FirebaseFirestore.getInstance().collection("USERS").document(firebaseAuth.getUid()).update("Last seen", FieldValue.serverTimestamp());
 
                                                                 Toast.makeText(getActivity(), "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
 

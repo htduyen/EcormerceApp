@@ -159,13 +159,13 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
                             public Object apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
                                 DocumentSnapshot documentSnapshot = transaction.get(documentReference);
                                 if(numRating != 0){
-                                    Long increase = documentSnapshot.getLong(startPosition + 1 + "_star") + 1;
-                                    Long decrease = documentSnapshot.getLong(numRating +1  + "_star") - 1;
-                                    transaction.update(documentReference, startPosition + 1 + "_star", increase);
-                                    transaction.update(documentReference, numRating +1  + "_star", decrease);
+                                    Long increase = documentSnapshot.getLong("star_" + startPosition + 1) + 1;
+                                    Long decrease = documentSnapshot.getLong("star_" + numRating +1) - 1;
+                                    transaction.update(documentReference, "star_" + startPosition + 1, increase);
+                                    transaction.update(documentReference, "star_" + numRating +1, decrease);
                                 }else {
-                                    Long increase = documentSnapshot.getLong(startPosition +1 + "_star") + 1;
-                                    transaction.update(documentReference, startPosition +1 + "_star", increase);
+                                    Long increase = documentSnapshot.getLong("star_" + startPosition +1) + 1;
+                                    transaction.update(documentReference, "star_" + startPosition +1, increase);
                                 }
                                 return null;
                             }

@@ -666,6 +666,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     DeliveryActivity.fromCart = false;
                     loadingDialog.show();
                     productDetailActivity =ProductDetailActivity.this;
+                    DeliveryActivity.cartItemModelList.clear();
                     DeliveryActivity.cartItemModelList = new ArrayList<>();
                     DeliveryActivity.cartItemModelList.add(new CartItemModel(
                             documentSnapshot.getBoolean("cod"),

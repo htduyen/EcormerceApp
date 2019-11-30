@@ -49,7 +49,7 @@ import java.util.UUID;
 
 import io.grpc.internal.LogId;
 
-public class CartAdapter extends RecyclerView.Adapter {
+public class    CartAdapter extends RecyclerView.Adapter {
 
     private List<CartItemModel> cartItemModelList;
     //private FirebaseFirestore firebaseFirestore;

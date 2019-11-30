@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -282,6 +283,8 @@ public class OrderDateilsActivity extends AppCompatActivity {
                         deliveriedIndicator.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorRed)));
                         deliveriedDate.setText(String.valueOf(simpleDateFormat.format(myOrderItemModel.getCancelDate())));
                         deliveriedBody.setText("Hàng đã hủy đặt");
+                        deliveriedBody.setTextColor(Color.parseColor("#ff142b"));
+                        deliveriedBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff142b")));
 
                         orderedProgress.setProgress(100);
                         packedProgress.setProgress(100);
@@ -299,6 +302,9 @@ public class OrderDateilsActivity extends AppCompatActivity {
                         shippedIndicator.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorRed)));
                         shippedDate.setText(String.valueOf(simpleDateFormat.format(myOrderItemModel.getCancelDate())));
                         shippedBody.setText("Hàng đã hủy đặt");
+                        shippedBody.setTextColor(Color.parseColor("#ff142b"));
+                        shippedBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff142b")));
+
 
                         orderedProgress.setProgress(100);
                         packedProgress.setProgress(100);
@@ -318,6 +324,9 @@ public class OrderDateilsActivity extends AppCompatActivity {
                     packedIndicator.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorRed)));
                     packedDate.setText(String.valueOf(simpleDateFormat.format(myOrderItemModel.getCancelDate())));
                     packedBody.setText("Đã hủy đặt hàng");
+                    packedBody.setTextColor(Color.parseColor("#ff142b"));
+                    packedBody.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff142b")));
+
 
                     orderedProgress.setProgress(100);
                     packedProgress.setVisibility(View.GONE);

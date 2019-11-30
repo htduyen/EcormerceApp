@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,6 +117,7 @@ public class CartFragment extends Fragment {
             DbQueries.loadCartList(getContext(), loadingDialog, true,new TextView(getContext()), txt_total_amount);
         }
         else {
+            Log.d("Type:" ,  String.valueOf(DbQueries.cartItemModelList.get(DbQueries.cartItemModelList.size() -1).getType()));
             if(DbQueries.cartItemModelList.get(DbQueries.cartItemModelList.size() -1).getType() == CartItemModel.TOTAL_AMOUNT)
             {
                 LinearLayout parent = (LinearLayout) txt_total_amount.getParent().getParent();

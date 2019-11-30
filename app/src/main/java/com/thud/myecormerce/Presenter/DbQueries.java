@@ -195,7 +195,7 @@ public class DbQueries {
                         }
                         else {
                             String message = task.getException().getMessage();
-                            Toast.makeText(context, "Error: "  + message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Error1: "  + message, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -301,7 +301,7 @@ public class DbQueries {
             }
         });
     }
-    public static void removeFromWishList(final int index, final Context context){
+     public static void removeFromWishList(final int index, final Context context){
         final String productRemoveID = id_wishlist.get(index);
         id_wishlist.remove(index);
         Map<String,Object> updateWishlist = new HashMap<>();
@@ -328,7 +328,7 @@ public class DbQueries {
                     }
                     id_wishlist.add(index, productRemoveID);
                     String error = task.getException().getMessage();
-                    Toast.makeText(context, "Error: " + error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Error2: " + error, Toast.LENGTH_SHORT).show();
                 }
 //                if(ProductDetailActivity.add_wishlist !=null) {
 //                    ProductDetailActivity.add_wishlist.setEnabled(true);
@@ -376,7 +376,7 @@ public class DbQueries {
                         }
                     } else {
                         String error = task.getException().getMessage();
-                        Toast.makeText(context, "Error: " + error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Error3: " + error, Toast.LENGTH_SHORT).show();
                     }
                     ProductDetailActivity.ratting_running = false;
                 }
@@ -455,10 +455,8 @@ public class DbQueries {
                                                                                 (long) documentSnapshot.get("max_quantity"),
                                                                                 (long) documentSnapshot.get("stock_quantity")));
                                                                     }
-                                                                    if(cartlist.size() == 1){
+                                                                    if(cartlist.size() >= 1){
                                                                         cartItemModelList.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
-                                                                        Log.d("TOTALAMOUND", String.valueOf(CartItemModel.TOTAL_AMOUNT));
-                                                                        Log.d("TOTALAMOUND_num", txt_total_amount.getText().toString());
                                                                         LinearLayout parent = (LinearLayout) txt_total_amount.getParent().getParent();
                                                                         parent.setVisibility(View.VISIBLE);
                                                                     }
@@ -471,14 +469,14 @@ public class DbQueries {
                                                                 }
                                                                 else {
                                                                     String error = task.getException().getMessage();
-                                                                    Toast.makeText(context, "Error: " +error, Toast.LENGTH_SHORT).show();
+                                                                    Toast.makeText(context, "Error4: " +error, Toast.LENGTH_SHORT).show();
                                                                 }
                                                             }
                                                         });
 
                                 } else {
                                     String error = task.getException().getMessage();
-                                    Toast.makeText(context, "Error: " + error, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Error5: " + error, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -490,7 +488,7 @@ public class DbQueries {
                     else {
                         badget_count.setVisibility(View.INVISIBLE);
                     }
-                    if(DbQueries.cartlist.size() < 99){
+                    if(cartlist.size() < 99){
                         badget_count.setText(String.valueOf(DbQueries.cartlist.size()));
                     }
                     else {
@@ -499,7 +497,7 @@ public class DbQueries {
                 }
                 else {
                     String error = task.getException().getMessage();
-                    Toast.makeText(context, "Error: " + error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Error6: " + error, Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
             }
@@ -526,7 +524,7 @@ public class DbQueries {
                     }
                     if(cartlist.size() == 0){
                         LinearLayout parent = (LinearLayout) totalAmount.getParent().getParent();
-                        parent.setVisibility(View.GONE);
+                         parent.setVisibility(View.GONE);
                         Toast.makeText(context, "Giỏ hàng rỗng!", Toast.LENGTH_SHORT).show();
                         cartItemModelList.clear();
                     }else {
@@ -538,7 +536,7 @@ public class DbQueries {
                 else {
                     cartlist.add(index, productRemoveID);
                     String error = task.getException().getMessage();
-                    Toast.makeText(context, "Error: " + error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Error7: " + error, Toast.LENGTH_SHORT).show();
                 }
                 ProductDetailActivity.cart_running =   false;
 
@@ -639,7 +637,7 @@ public class DbQueries {
                                                 }
                                             }else {
                                                 String error = task.getException().getMessage();
-                                                Toast.makeText(context, "Error: " + error, Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(context, "Error8: " + error, Toast.LENGTH_SHORT).show();
 
                                             }
                                             loadingDialog.dismiss();
@@ -648,7 +646,7 @@ public class DbQueries {
                         }else {
                             loadingDialog.dismiss();
                             String error = task.getException().getMessage();
-                            Toast.makeText(context, "Error: " + error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Error9: " + error, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -724,7 +722,7 @@ public class DbQueries {
             try{
                 registration.remove();
             }catch (Exception e){
-                Log.d("Error", e.toString());
+                Log.d("Error10", e.toString());
             }
 
         }else {

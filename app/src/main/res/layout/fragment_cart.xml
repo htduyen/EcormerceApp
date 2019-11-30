@@ -14,8 +14,8 @@
         android:layout_height="60dp"
         android:background="@color/colorWhite"
         android:elevation="8dp"
-        android:visibility="gone"
         android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="3,000,000 VND"
+                android:text="0 VND"
                 android:textColor="@color/colorBlack"
                 android:textSize="20sp"
                 android:textStyle="italic|bold" />
