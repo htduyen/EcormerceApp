@@ -665,8 +665,14 @@ public class ProductDetailActivity extends AppCompatActivity {
                 else {
                     DeliveryActivity.fromCart = false;
                     loadingDialog.show();
-                    productDetailActivity =ProductDetailActivity.this;
-                    DeliveryActivity.cartItemModelList.clear();
+                    productDetailActivity = ProductDetailActivity.this;
+                    try {
+                        DeliveryActivity.cartItemModelList.clear();
+                    }catch (Exception e){
+                        //Toast.makeText(ProductDetailActivity.this, "EXCEPTION " + e,Toast.LENGTH_SHORT).show();
+                        Log.d("Exception: ", e.toString());
+                    }
+
                     DeliveryActivity.cartItemModelList = new ArrayList<>();
                     DeliveryActivity.cartItemModelList.add(new CartItemModel(
                             documentSnapshot.getBoolean("cod"),

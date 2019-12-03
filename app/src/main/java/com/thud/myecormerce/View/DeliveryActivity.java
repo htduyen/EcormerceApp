@@ -174,7 +174,8 @@ public class DeliveryActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerViewDelivery.setLayoutManager(linearLayoutManager);
 
-        cartAdapter = new CartAdapter(cartItemModelList, totalAmount, false);
+        //cartAdapter = new CartAdapter(cartItemModelList, totalAmount, false);
+        cartAdapter = new CartAdapter(DbQueries.cartItemModelList, totalAmount, false);
         recyclerViewDelivery.setAdapter(cartAdapter);
         //Toast.makeText(this, "Total Amound: " + totalAmount.getText().toString(), Toast.LENGTH_LONG).show();
         cartAdapter.notifyDataSetChanged();
@@ -498,7 +499,7 @@ public class DeliveryActivity extends AppCompatActivity {
             getQuantityIDs  = true;
         }
         txt_fullname.setText(DbQueries.addressModelList.get(DbQueries.addressselected).getFullname());
-        txt_address.setText(DbQueries.addressModelList.get(DbQueries.addressselected).getLocationDetail() + DbQueries.addressModelList.get(DbQueries.addressselected).getProvince() + " " + DbQueries.addressModelList.get(DbQueries.addressselected).getCountry());
+        txt_address.setText(DbQueries.addressModelList.get(DbQueries.addressselected).getLocationDetail()+ ", " + DbQueries.addressModelList.get(DbQueries.addressselected).getProvince() + ", " + DbQueries.addressModelList.get(DbQueries.addressselected).getCountry());
         txt_phonenumber.setText(DbQueries.addressModelList.get(DbQueries.addressselected).getPhone());
     }
 

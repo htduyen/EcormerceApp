@@ -19,7 +19,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="@color/colorRed"
-        android:text="View All"
+        android:text="Xem tất cả"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"

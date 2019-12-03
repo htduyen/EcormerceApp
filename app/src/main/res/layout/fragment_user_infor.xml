@@ -90,7 +90,7 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/slider_main"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:text="Update"
+        android:text="Cập nhật"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18sp"

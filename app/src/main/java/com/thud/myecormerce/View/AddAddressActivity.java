@@ -44,7 +44,7 @@ public class AddAddressActivity extends AppCompatActivity {
     private String [] list_gender;
     private String genderSelected;
     private Dialog loadingDialog;
-    private boolean updateAddress = false;
+    private boolean  updateAddress = false;
     private AddressModel addressModel;
     private int position;
 
@@ -92,7 +92,7 @@ public class AddAddressActivity extends AppCompatActivity {
             edt_fullname.setText(addressModel.getFullname());
             edt_phone.setText(addressModel.getPhone());
             edt_email.setText(addressModel.getEmail());
-            btn_save.setText("Update");
+            btn_save.setText("Cập nhật");
         }else {
             position = DbQueries.addressModelList.size();
         }
@@ -115,7 +115,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
                                         Map<String, Object> addressMap = new HashMap<>();
 
-                                        addressMap.put("province_" + String.valueOf(position +1), edt_country.getText().toString());
+                                        addressMap.put("province_" + String.valueOf(position +1), edt_province.getText().toString());
                                         addressMap.put("country_" + String.valueOf(position +1), edt_country.getText().toString());
                                         addressMap.put("gender_" + String.valueOf(position +1), genderSelected);
                                         addressMap.put("locationDetail_" + String.valueOf(position +1), edt_locationDetail.getText().toString());
@@ -123,6 +123,7 @@ public class AddAddressActivity extends AppCompatActivity {
                                         addressMap.put("email_"+ String.valueOf(position+1), edt_email.getText().toString());
                                         addressMap.put("address_"+ String.valueOf(position+1),fullAddress);
                                         addressMap.put("phone_number_"+ String.valueOf(position +1), edt_phone.getText().toString());
+                                        //selected = true
                                         if(!updateAddress) {
                                             addressMap.put("list_size", (long) DbQueries.addressModelList.size() + 1);
                                             if(getIntent().getStringExtra("INTENT").equals("manage")){
@@ -168,6 +169,7 @@ public class AddAddressActivity extends AppCompatActivity {
                                                     else {
                                                         MyAddressActivity.refeshItem(DbQueries.addressselected, DbQueries.addressModelList.size() -1);
                                                     }
+                                                    DbQueries.addressselected = DbQueries.addressModelList.size() -1;
                                                     finish();
                                                 }
                                                 else {

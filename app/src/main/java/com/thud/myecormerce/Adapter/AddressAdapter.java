@@ -124,6 +124,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                         intentAddNew.putExtra("INTENT", "update_address");
                         intentAddNew.putExtra("position", position);
                         itemView.getContext().startActivity(intentAddNew);
+                        refesh = false;
                     }
                 });
                 //remove address

@@ -391,8 +391,6 @@ public class MainActivity extends AppCompatActivity
                         toFragment("Hồ Sơ", new MyAccountFragment(), MYACCOUNT_FRAGMENT);
                     } else if (id == R.id.nav_my_wishlist) {
                         toFragment("Danh sách mong muốn", new MyWishlistFragment(), MYWISHLIST_FRAGMENT);
-                    } else if (id == R.id.nav_setting) {
-
                     } else if (id == R.id.nav_logout) {
                         FirebaseAuth.getInstance().signOut();
                         DbQueries.clearData();

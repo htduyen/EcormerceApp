@@ -36,7 +36,7 @@
                 android:background="@drawable/slider_main"
                 android:backgroundTint="@color/colorRed"
                 android:elevation="4dp"
-                android:text="Sign Out"
+                android:text="Đăng xuất"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textSize="18sp"

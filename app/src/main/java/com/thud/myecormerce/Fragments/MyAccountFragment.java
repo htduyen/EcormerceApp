@@ -106,6 +106,7 @@ public class MyAccountFragment extends Fragment {
         loadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
+
                 for(MyOrderItemModel myOrderItemModel: DbQueries.myOrderItemModelList){
                     if(!myOrderItemModel.isCancelationOrderRequest()){
                         if(!myOrderItemModel.getOrderStatus().equals("Delivered") && !myOrderItemModel.getOrderStatus().equals("Cancelled")){
@@ -138,10 +139,12 @@ public class MyAccountFragment extends Fragment {
                                     shippedProgress.setProgress(100);
                                     break;
                             }
+                            // for MyOrderItemModel
 
                         }
                     }
                 }
+
                 int i = 0;
                 for(MyOrderItemModel orderItemModel: DbQueries.myOrderItemModelList) {
                     if(i < 4) {
@@ -154,7 +157,7 @@ public class MyAccountFragment extends Fragment {
                     }
                 }
                 if(i == 0){
-                    recent_title.setText("Không có san pham order gần đây");
+                    recent_title.setText("Không có sản phẩm đặt hàng gần đây");
                 }
                 if(i < 3){
                     for (int x = i; x < 4; x++){
@@ -167,9 +170,9 @@ public class MyAccountFragment extends Fragment {
                     public void onDismiss(DialogInterface dialog) {
                         loadingDialog.setOnDismissListener(null);
                         if(DbQueries.addressModelList.size() == 0 ){
-                            address.setText("Address: ----");
-                            fullname_address.setText("Họ & tên: ---");
-                            phonenumber.setText("DĐ: ---");
+                            address.setText("Đại Chỉ: Chưa có");
+                            fullname_address.setText("Họ & Tên: Chưa có");
+                            phonenumber.setText("Di Động: Chưa có");
                         }else {
                             setAddress();
                         }
@@ -226,9 +229,9 @@ public class MyAccountFragment extends Fragment {
 
         if(!loadingDialog.isShowing()){
             if(DbQueries.addressModelList.size() == 0 ){
-                address.setText("Address: ----");
+                address.setText("Địa chỉ: ----");
                 fullname_address.setText("Họ & tên: ---");
-                phonenumber.setText("DĐ: ---");
+                phonenumber.setText("Di động: ---");
             }else {
                 setAddress();
             }
@@ -236,9 +239,9 @@ public class MyAccountFragment extends Fragment {
     }
 
     private void setAddress() {
-            fullname_address.setText(DbQueries.addressModelList.get(DbQueries.addressselected).getFullname());
-            address.setText(DbQueries.addressModelList.get(DbQueries.addressselected).getLocationDetail() + DbQueries.addressModelList.get(DbQueries.addressselected).getProvince() + " " + DbQueries.addressModelList.get(DbQueries.addressselected).getCountry());
-            phonenumber.setText(DbQueries.addressModelList.get(DbQueries.addressselected).getPhone());
+            fullname_address.setText("Họ & tên: " +DbQueries.addressModelList.get(DbQueries.addressselected).getFullname());
+            address.setText("Địa chỉ: " +DbQueries.addressModelList.get(DbQueries.addressselected).getLocationDetail()+ ", " + DbQueries.addressModelList.get(DbQueries.addressselected).getProvince() + ", " + DbQueries.addressModelList.get(DbQueries.addressselected).getCountry());
+            phonenumber.setText("Di động: " +DbQueries.addressModelList.get(DbQueries.addressselected).getPhone());
     }
 
 }
