@@ -45,6 +45,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.JsonObject;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
@@ -272,7 +273,7 @@ public class DeliveryActivity extends AppCompatActivity {
         int vndong = Integer.parseInt(total_amount)/22000;
         //int vndong = 1;
         //String order_id = UUID.randomUUID().toString().substring(0,28);
-        PayPalPayment payPalPayment= new PayPalPayment(new BigDecimal(String.valueOf(vndong)), "USD", "Thanh toan mua hang", PayPalPayment.PAYMENT_INTENT_SALE);
+        PayPalPayment payPalPayment= new PayPalPayment(new BigDecimal(String.valueOf(vndong)), "USD", "Thanh toán mua hàng", PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent = new Intent(DeliveryActivity.this, PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, configuration);
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
@@ -307,9 +308,20 @@ public class DeliveryActivity extends AppCompatActivity {
                 if(confirmation != null){
 //                    try {
 
- //                       String paymentDetail = confirmation.toJSONObject().toString();
+                        String paymentDetail = confirmation.toJSONObject().toString();
                         //Toast.makeText(this, "paymentDetail: " + paymentDetail, Toast.LENGTH_SHORT).show();
-                        //Log.d("PaymentDetail", paymentDetail);
+//                        Log.d("PaymentDetail", paymentDetail);
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(paymentDetail);
+                        JSONObject response =  jsonObject.getJSONObject("response");
+                        String ph = response.getString("state");
+//                        Log.d("PH: ", ph);
+//                        Toast.makeText(this, "PH: " + ph, Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
 //                        startActivity(new Intent(this, PaymentDetailsActivity.class)
 //                                        .putExtra("PaymentDetail", paymentDetail)
 //                                        .putExtra("PaymentAmount", Integer.parseInt(total_amount)/22000));
@@ -411,8 +423,10 @@ public class DeliveryActivity extends AppCompatActivity {
                                     loadingDialog.dismiss();
                                 }
                             });
+                }else {
+                    Toast.makeText(this, "Khong thanh toán", Toast.LENGTH_SHORT).show();
                 }
-            }else if(requestCode == Activity.RESULT_CANCELED){
+            }else if(requestCode == RESULT_CANCELED){
                 Toast.makeText(this, "Cancel payment", Toast.LENGTH_SHORT).show();
             }
         }else if(requestCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
@@ -661,7 +675,7 @@ public class DeliveryActivity extends AppCompatActivity {
                 orderDetails.put("Delivery_Price", dilivery);
                 //Chua xu ly Payment and Order status
                 orderDetails.put("Payment_Status", "Chưa thanh toán");
-                orderDetails.put("Order_Status", "Cancelled");
+                orderDetails.put("Order_Status", "Ordered");
 
                 firebaseFirestore.collection("ORDERS").document(order_id)
                         .set(orderDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -677,7 +691,6 @@ public class DeliveryActivity extends AppCompatActivity {
                         }else {
                             String error = task.getException().getMessage();
                             Toast.makeText(DeliveryActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
-
                         }
                     }
                 });

@@ -616,7 +616,12 @@ public class    CartAdapter extends RecyclerView.Adapter {
             }
             //dilivery.setText(diliveryText);
             totalAmound.setText(totalallAmount + " Đ");
-            totalCartAmount.setText(totalallAmount + " Đ");
+            totalAmound.setText(totalallAmount + " Đ");
+            if(totalItemsText == 0){
+                totalCartAmount.setText(0 + " Đ");
+            }else {
+                totalCartAmount.setText(totalallAmount + " Đ");
+            }
             saveAmount.setText("Bạn đã tiết kiệm được: " + savedAmount + " Đ");
 
             LinearLayout parent = (LinearLayout) totalCartAmount.getParent().getParent();

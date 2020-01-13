@@ -415,6 +415,7 @@ public class OrderDateilsActivity extends AppCompatActivity {
         }
         //Rating
         if(myOrderItemModel.isCancelationOrderRequest()){
+            String paymentMT =  myOrderItemModel.getPaymentMethod();
             btn_cancel_order.setVisibility(View.VISIBLE);
             btn_cancel_order.setEnabled(false);
             btn_cancel_order.setText("Đang hủy order");
@@ -422,6 +423,8 @@ public class OrderDateilsActivity extends AppCompatActivity {
             btn_cancel_order.setTextColor(getResources().getColor(R.color.white));
         }else {
             if(myOrderItemModel.getOrderStatus().equals("Ordered") || myOrderItemModel.getOrderStatus().equals("Packed") ){
+                String paymentMT =  myOrderItemModel.getPaymentMethod();
+//                Toast.makeText(this, "Mt: " + paymentMT, Toast.LENGTH_SHORT).show();
                 btn_cancel_order.setVisibility(View.VISIBLE);
                 btn_cancel_order.setOnClickListener(new View.OnClickListener() {
                     @Override
